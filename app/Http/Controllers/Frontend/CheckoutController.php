@@ -540,8 +540,10 @@ class CheckoutController extends Controller
                 } else {
 
                 }
+                $currentDateOrderCount = count(Order::whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', date('Y-m-d') . ' 23:59:59'])->get()) + 1;
+
                 $order = new Order();
-                $order->number = time();
+                $order->number = $currentDateOrderCount . '-' . time() . '-' . date('s') . date('i') . date('H') . date('d') . date('m') . date('Y');
                 $order->account_id = $account->id;
                 $order->transaction_object = json_encode($charge);
                 $order->transact_through = 'Stripe';
@@ -793,9 +795,9 @@ class CheckoutController extends Controller
 
     public function success($orderId)
     {
-        $title = 'Successful Placing Order | GoodGross';
-        $activeNav = 'Successful Placing Order';
-        $order = Order::where('id', $orderId)->with(['account', 'orderTransactions.product.account', 'orderTransactions.product.productProperties'])->first();
+        $title = 'Order Confirmation';
+        $activeNav = 'Order Confirmation';
+        $order = Order::where('id', $orderId)->with(['account', 'orderShipping', 'orderTransactions.product.account', 'orderTransactions.product.productProperties'])->first();
         return view('Frontend.checkout_success', compact('title', 'activeNav', 'order'));
     }
 

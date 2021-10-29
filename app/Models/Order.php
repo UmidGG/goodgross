@@ -18,4 +18,9 @@ class Order extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
+    public function orderShipping()
+    {
+        return $this->hasOne(OrderShipping::class);
+    }
 }

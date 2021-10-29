@@ -2000,7 +2000,7 @@
                     if (result.success === false) {
                         $('#payment_method_error_message').text(result.message);
                     } else if (result.success === true) {
-                        location = '{{ url('checkout/success') }}/' + result.message.id;
+                        location = '{{ url('checkout/success') }}/' + result.payload.id;
                     }
                 },
                 error: function (xhr) {
