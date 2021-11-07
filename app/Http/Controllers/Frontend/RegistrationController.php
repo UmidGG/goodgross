@@ -54,9 +54,9 @@ class RegistrationController extends Controller
 //        if ($gRecaptchaResponse->success === false || $gRecaptchaResponse->score < 0.5 || $gRecaptchaResponse->action !== 'personal_registration_submit') {
 //            return response()->json(['success' => false, 'message' => 'BOT Detected!']);
 //        }
-        $lastPersonalAccount = Account::where('type', 'Personal')->latest()->first();
-        if ($lastPersonalAccount) {
-            $number = explode('-', $lastPersonalAccount->numbebr)[2] + 1;
+        $latestPersonalAccount = Account::where('type', 'Personal')->latest()->first();
+        if ($latestPersonalAccount) {
+            $number = explode('-', $latestPersonalAccount->number)[2] + 1;
         } else {
             $number = 100000;
         }

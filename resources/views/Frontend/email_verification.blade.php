@@ -40,7 +40,7 @@
                         <form id="email_verification_form">
 
                             <div class="form-floating mb-4">
-                                <input type="text" class="form-control" name="verification_code" id="verification_code" placeholder="Verification Code">
+                                <input type="text" class="form-control border-0 border-bottom" name="verification_code" id="verification_code" placeholder="Verification Code" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                 <label for="verification_code">Verification Code</label>
                             </div>
 
@@ -119,7 +119,7 @@
                             $('#email_verification_form_submit_text').removeClass('sr-only');
                             $('#email_verification_form_submit_processing').addClass('sr-only');
                             if (result.success === true) {
-                                location = '{{ url('account/dashboard') }}';
+                                location = '{{ url('account/overview') }}';
                             } else {
                                 $('#email_verification_form_message').text(result.message).addClass('mb-3');
                             }

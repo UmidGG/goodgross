@@ -32,7 +32,7 @@
                 <div class="row mt-4">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 border-bottom pb-2" style="border-color: #e8f3ed !important;">
                         <div class="page_identity_line">
-                            <a href="{{ url('/') }}">Home</a> . Checkout <sub>{{ count($checkoutItems) }} Item(s)</sub>
+                            <a href="{{ url('/') }}">Home</a> . Checkout <sub>@if ($checkoutItems) {{ count($checkoutItems) }} @else 0 @endif Item(s)</sub>
                         </div>
                     </div>
                 </div>
@@ -56,80 +56,79 @@
                                 <div id="delivery_address_form_container">
                                     <form id="delivery_address_form">
 
+                                        <div class="form-floating mb-4">
+                                            <select class="form-select border-0 border-bottom" name="country_id" id="country_id" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                <option value="">Select Country</option>
+                                                @foreach($countries as $country)
+                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="country_id">Country</label>
+                                        </div>
+
                                         <div class="row mb-4">
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating mb-4 mb-sm-0">
-                                                    <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First Name">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="first_name" id="first_name" placeholder="First Name" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                                     <label for="first_name">First Name</label>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="last_name" id="last_name" placeholder="Last Name" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                                     <label for="last_name">Last Name</label>
                                                 </div>
                                             </div>
                                         </div>
 
-
                                         <div class="row mb-4">
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating mb-4 mb-sm-0">
-                                                    <select class="form-select" name="country_id" id="country_id">
-                                                        <option value="">Select Country</option>
-                                                        @foreach($countries as $country)
-                                                            <option value="{{ $country->id }}">{{ $country->country }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <label for="country_id">Country</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6">
-                                                <div id="state_field_holder">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-4 mb-sm-0">
-                                                    <input type="text" class="form-control" name="city" id="city" placeholder="City">
-                                                    <label for="city">City</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6">
-                                                <div class="form-floating">
-                                                    <input type="text" class="form-control" name="postal_code" id="postal_code" placeholder="Postal Code">
-                                                    <label for="postal_code">Postal Code</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-4 mb-sm-0">
-                                                    <textarea class="form-control" id="address_line_1" name="address_line_1" placeholder="Address Line 1"></textarea>
+                                                    <textarea class="form-control border-0 border-bottom" id="address_line_1" name="address_line_1" placeholder="Address Line 1" style="border-color: #b1b1b1 !important; border-radius: 0;"></textarea>
                                                     <label for="address_line_1">Address Line 1</label>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating">
-                                                    <textarea class="form-control" id="address_line_2" name="address_line_2" placeholder="Address Line 2"></textarea>
-                                                    <label for="address_line_2">Address Line 2</label>
+                                                    <textarea class="form-control border-0 border-bottom" id="address_line_2" name="address_line_2" placeholder="Address Line 2 (Optional)" style="border-color: #b1b1b1 !important; border-radius: 0;"></textarea>
+                                                    <label for="address_line_2">Address Line 2 (Optional)</label>
                                                 </div>
                                             </div>
                                         </div>
 
+
+                                        <div class="row mb-4">
+                                            <div class="col-12 col-sm-4">
+                                                <div class="form-floating mb-4 mb-sm-0">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="city" id="city" placeholder="City" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                    <label for="city">City</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-sm-4">
+                                                <div id="state_field_holder">
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-sm-4">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="postal_code" id="postal_code" placeholder="Postal Code" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                    <label for="postal_code">Postal Code</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
                                         <div class="row mb-4">
                                             <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-4 mb-sm-0">
-                                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone">
-                                                    <label for="phone">Phone</label>
+                                                <div id="phone_field_holder">
+
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="email" id="email" placeholder="Email" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                                     <label for="email">Email</label>
                                                 </div>
                                             </div>
@@ -139,13 +138,13 @@
 
                                         <div class="row">
                                             <div class="col d-grid">
-                                                <button type="submit" class="mod_button_1" id="delivery_address_form_submit_button">
+                                                <button type="submit" class="mod_button_1" id="delivery_address_form_submit_button" style="border-radius: 0;">
                                                     <span id="delivery_address_form_submit_button_text">Save</span>
                                                     <span id="delivery_address_form_submit_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                                 </button>
                                             </div>
                                             <div class="col d-grid">
-                                                <button type="button" class="mod_button_2" id="delivery_address_form_cancel_button">Cancel</button>
+                                                <button type="button" class="mod_button_2" id="delivery_address_form_cancel_button" style="border-radius: 0;">Cancel</button>
                                             </div>
                                         </div>
                                     </form>
@@ -165,16 +164,27 @@
                                 <div id="billing_address_container"></div>
                                 <div id="billing_address_form_container">
                                     <form id="billing_address_form">
+                                        <div class="form-floating mb-4">
+                                            <select class="form-select border-0 border-bottom" name="country_id" id="country_id_for_billing" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                <option value="">Select Country</option>
+                                                @foreach($countries as $country)
+                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="country_id_for_billing">Country</label>
+                                        </div>
+
+
                                         <div class="row mb-4">
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating mb-4 mb-sm-0">
-                                                    <input type="text" class="form-control" name="first_name" id="first_name_for_billing" placeholder="First Name">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="first_name" id="first_name_for_billing" placeholder="First Name" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                                     <label for="first_name_for_billing">First Name</label>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control" name="last_name" id="last_name_for_billing" placeholder="Last Name">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="last_name" id="last_name_for_billing" placeholder="Last Name" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                                     <label for="last_name_for_billing">Last Name</label>
                                                 </div>
                                             </div>
@@ -184,31 +194,34 @@
                                         <div class="row mb-4">
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating mb-4 mb-sm-0">
-                                                    <select class="form-select" name="country_id" id="country_id_for_billing">
-                                                        <option value="">Select Country</option>
-                                                        @foreach($countries as $country)
-                                                            <option value="{{ $country->id }}">{{ $country->country }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <label for="country_id_for_billing">Country</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6">
-                                                <div id="state_field_holder_for_billing">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-4 mb-sm-0">
-                                                    <input type="text" class="form-control" name="city" id="city_for_billing" placeholder="City">
-                                                    <label for="city_for_billing">City</label>
+                                                    <textarea class="form-control border-0 border-bottom" id="address_line_1_for_billing" name="address_line_1" placeholder="Address Line 1" style="border-color: #b1b1b1 !important; border-radius: 0;"></textarea>
+                                                    <label for="address_line_1_for_billing">Address Line 1</label>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control" name="postal_code" id="postal_code_for_billing" placeholder="Postal Code">
+                                                    <textarea class="form-control border-0 border-bottom" id="address_line_2_for_billing" name="address_line_2" placeholder="Address Line 2 (Optional)" style="border-color: #b1b1b1 !important; border-radius: 0;"></textarea>
+                                                    <label for="address_line_2_for_billing">Address Line 2 (Optional)</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row mb-4">
+                                            <div class="col-12 col-sm-4">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="city" id="city_for_billing" placeholder="City" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                    <label for="city_for_billing">City</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-sm-4">
+                                                <div id="state_field_holder_for_billing">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-sm-4">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="postal_code" id="postal_code_for_billing" placeholder="Postal Code" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                                     <label for="postal_code_for_billing">Postal Code</label>
                                                 </div>
                                             </div>
@@ -216,29 +229,13 @@
 
                                         <div class="row mb-4">
                                             <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-4 mb-sm-0">
-                                                    <textarea class="form-control" id="address_line_1_for_billing" name="address_line_1" placeholder="Address Line 1"></textarea>
-                                                    <label for="address_line_1_for_billing">Address Line 1</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-sm-6">
-                                                <div class="form-floating">
-                                                    <textarea class="form-control" id="address_line_2_for_billing" name="address_line_2" placeholder="Address Line 2"></textarea>
-                                                    <label for="address_line_2_for_billing">Address Line 2</label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                <div id="phone_field_holder_for_billing">
 
-                                        <div class="row mb-4">
-                                            <div class="col-12 col-sm-6">
-                                                <div class="form-floating mb-4 mb-sm-0">
-                                                    <input type="text" class="form-control" name="phone" id="phone_for_billing" placeholder="Phone">
-                                                    <label for="phone_for_billing">Phone</label>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-floating">
-                                                    <input type="text" class="form-control" name="email" id="email_for_billing" placeholder="Email">
+                                                    <input type="text" class="form-control border-0 border-bottom" name="email" id="email_for_billing" placeholder="Email" style="border-color: #b1b1b1 !important; border-radius: 0;">
                                                     <label for="email_for_billing">Email</label>
                                                 </div>
                                             </div>
@@ -248,13 +245,13 @@
 
                                         <div class="row">
                                             <div class="col d-grid">
-                                                <button type="submit" class="mod_button_1" id="billing_address_form_submit_button">
+                                                <button type="submit" class="mod_button_1" id="billing_address_form_submit_button" style="border-radius: 0;">
                                                     <span id="billing_address_form_submit_button_text">Save</span>
                                                     <span id="billing_address_form_submit_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                                 </button>
                                             </div>
                                             <div class="col d-grid">
-                                                <button type="button" class="mod_button_2" id="billing_address_form_cancel_button">Cancel</button>
+                                                <button type="button" class="mod_button_2" id="billing_address_form_cancel_button" style="border-radius: 0;">Cancel</button>
                                             </div>
                                         </div>
                                     </form>
@@ -304,71 +301,103 @@
                                 </div>
                             </div>
 
+
+
                             <div class="mt-4" id="cards_container"></div>
 
                             <div class="mt-4" id="card_form_container">
 
                                 <form id="card_form">
+
                                     <div class="row mb-4">
-                                        <div class="col-8 pe-0">
+                                        <div class="col-3 pe-0">
+                                            <div class="input-group-text border-0 border-bottom text-wrap small" style="color: #615f75; border-radius: 0; height: 100%; border-color: #b1b1b1 !important;">Name on Card</div>
+                                        </div>
+                                        <div class="col-9 ps-0">
+                                            <div class="row">
+                                                <div class="col pe-0">
+                                                    <div class="form-floating">
+                                                        <input class="form-control border-0 border-bottom" name="first_name" id="first_name_for_card" autocomplete="off" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;" placeholder="First Name">
+                                                        <label for="first_name_for_card">First Name</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col ps-0">
+                                                    <div class="form-floating">
+                                                        <input class="form-control border-0 border-bottom" name="last_name" id="last_name_for_card" autocomplete="off" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;" placeholder="Last Name">
+                                                        <label for="last_name_for_card">Last Name</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mb-4">
+                                        <div class="col-8">
                                             <div class="form-floating">
-                                                <input autocomplete="off" class="form-control" type="text" name="card_number" id="card_number" placeholder="Card Number">
+                                                <input autocomplete="off" class="form-control border-0 border-bottom" type="text" name="card_number" id="card_number" placeholder="Card Number" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
                                                 <label for="card_number">Card Number</label>
                                             </div>
                                         </div>
-                                        <div class="col-4 ps-0">
+                                        <div class="col-4">
                                             <div class="form-floating">
-                                                <input type="text" autocomplete="off" class="form-control" size="4" name="security_code" id="security_code" placeholder="Security Code">
+                                                <input type="text" autocomplete="off" class="form-control border-0 border-bottom" size="4" name="security_code" id="security_code" placeholder="Security Code" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
                                                 <label for="security_code">Security Code</label>
                                             </div>
                                         </div>
                                     </div>
 
 
-
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text" style="font-size: small; color: #615f75; width: 20%;">Expiry Date</span>
-                                        <div class="form-floating" style="width: 40%;">
-                                            <select class="form-select" name="expiry_month" id="expiry_month">
-                                                <option value="">Select Month</option>
-                                                <option value="January">January</option>
-                                                <option value="February">February</option>
-                                                <option value="March">March</option>
-                                                <option value="April">April</option>
-                                                <option value="May">May</option>
-                                                <option value="June">June</option>
-                                                <option value="July">July</option>
-                                                <option value="August">August</option>
-                                                <option value="September">September</option>
-                                                <option value="October">October</option>
-                                                <option value="November">November</option>
-                                                <option value="December">December</option>
-                                            </select>
-                                            <label for="expiry_month">Month</label>
+                                    <div class="row mb-4">
+                                        <div class="col-3 pe-0">
+                                            <div class="input-group-text small border-0 border-bottom text-wrap" style="color: #615f75; border-radius: 0; height: 100%; border-color: #b1b1b1 !important;">Expiry Date</div>
                                         </div>
-                                        <div class="form-floating" style="width: 40%;">
-                                            <select class="form-select" name="expiry_year" id="expiry_year">
-                                                <option value="">Select Year</option>
-                                                @for($i = date('Y'); $i <= date('Y') + 10; $i++)
-                                                    <option value="{{ $i }}">{{ $i }}</option>
-                                                @endfor
-                                            </select>
-                                            <label for="expiry_year">Year</label>
+                                        <div class="col-9 ps-0">
+                                            <div class="row">
+                                                <div class="col pe-0">
+                                                    <div class="form-floating">
+                                                        <select class="form-select border-0 border-bottom" name="expiry_month" id="expiry_month" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
+                                                            <option value="">Select Month</option>
+                                                            <option value="January">January</option>
+                                                            <option value="February">February</option>
+                                                            <option value="March">March</option>
+                                                            <option value="April">April</option>
+                                                            <option value="May">May</option>
+                                                            <option value="June">June</option>
+                                                            <option value="July">July</option>
+                                                            <option value="August">August</option>
+                                                            <option value="September">September</option>
+                                                            <option value="October">October</option>
+                                                            <option value="November">November</option>
+                                                            <option value="December">December</option>
+                                                        </select>
+                                                        <label for="expiry_month">Month</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col ps-0">
+                                                    <div class="form-floating">
+                                                        <select class="form-select border-0 border-bottom" name="expiry_year" id="expiry_year" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
+                                                            <option value="">Select Year</option>
+                                                            @for($i = date('Y'); $i <= date('Y') + 10; $i++)
+                                                                <option value="{{ $i }}">{{ $i }}</option>
+                                                            @endfor
+                                                        </select>
+                                                        <label for="expiry_year">Year</label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-
                                     </div>
-
-
 
                                     <div class="row">
                                         <div class="col d-grid">
-                                            <button type="submit" class="mod_button_1" id="card_form_submit_button">
+                                            <button type="submit" class="mod_button_1" id="card_form_submit_button" style="border-radius: 0;">
                                                 <span id="card_form_submit_button_text">Done</span>
                                                 <span id="card_form_submit_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                             </button>
                                         </div>
                                         <div class="col d-grid">
-                                            <button type="button" class="mod_button_2" id="card_form_cancel_button">Cancel</button>
+                                            <button type="button" class="mod_button_2" id="card_form_cancel_button" style="border-radius: 0;">Cancel</button>
                                         </div>
                                     </div>
                                 </form>
@@ -518,11 +547,11 @@
                                     <hr style="color: #a5d4ba;">
                                     <div class="text-danger text-center small" id="payment_option_message">Select a Payment Option</div>
                                     <div class="my-4 d-grid gap-3">
-                                        <button class="btn primary_btn_default" id="place_order_button" disabled>
+                                        <button class="btn primary_btn_default" id="place_order_button" style="border-radius: 0;" disabled>
                                             <span id="place_order_button_text">Confirm to Place Order</span>
                                             <span id="place_order_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                         </button>
-                                        <button class="btn btn-outline-info">Continue Shopping</button>
+                                        <button class="btn btn-outline-info" style="border-radius: 0;">Continue Shopping</button>
                                     </div>
                                 </div>
                             </div>
@@ -550,25 +579,63 @@
         //////////////////////////////////////////////////////Shipping Section Start//////////////////////////////////////////////////////////
 
         $(document).on('change', '#country_id', function () {
+            let countryId = $(this).val();
             $.ajax({
                 method: 'get',
                 url: '{{ url('get/states/by/country/id') }}',
                 data: {
-                    country_id: $(this).val()
+                    country_id: countryId
                 },
                 cache: false,
-                success: function (result) {
-                    console.log(result);
-
+                success: function (states) {
+                    console.log(states);
                     $('#state_field_holder').empty();
-                    if (result.length > 0) {
-                        $('#state_field_holder').append('<div class="form-floating"><select class="form-select" name="state" id="state"><option value="">Select State</option></select><label for="state">State</label></div>');
-                        $.each(result, function (key, state) {
+                    if (states.length > 0) {
+                        $('#state_field_holder').append('<div class="form-floating"><select class="form-select border-0 border-bottom" name="state" id="state" style="border-color: #b1b1b1 !important; border-radius: 0;"><option value="">Select State</option></select><label for="state">State</label></div>');
+                        $.each(states, function (key, state) {
                             $('#state').append('<option value="' + state.state + '">' + state.state + '</option>');
                         });
                     } else {
-                        $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state" placeholder="State"><label for="state">State</label></div>');
+                        $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="state" id="state" placeholder="State" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="state">State</label></div>');
                     }
+
+                    $.ajax({
+                        method: 'get',
+                        url: '{{ url('get/country/by/id') }}',
+                        data: {
+                            id: countryId
+                        },
+                        cache: false,
+                        success: function (result) {
+                            console.log(result);
+                            $('#phone_field_holder').empty();
+                            if (result.payload !== null) {
+                                $('#phone_field_holder').append(`
+                                    <div class="row">
+                                        <div class="col-4 pe-0" style="padding-top: 18px;">
+                                            <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 18px;">
+                                                <img src="` + result.payload.flag + `" style="height: 20px;">
+                                                <span class="">` + result.payload.dialling_code + `</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 ps-0">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                <label for="phone">Phone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `);
+                            } else {
+                                $('#phone_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="phone">Phone</label></div>');
+                            }
+                        },
+                        error: function (xhr) {
+                            console.log(xhr);
+                        }
+                    });
+
+
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -580,6 +647,7 @@
             $('#delivery_address_form').find('#id').remove();
             $('#country_id option').removeAttr('selected');
             $('#state_field_holder').empty();
+            $('#phone_field_holder').empty();
             $('#delivery_address_form').find('.invalid-feedback').remove();
             $('#delivery_address_form').find('.is-invalid').removeClass('is-invalid');
             $('#delivery_address_form')[0].reset();
@@ -591,54 +659,60 @@
                 url: '{{ url('checkout/get/account/delivery/addresses') }}',
                 success: function (result) {
                     console.log(result);
-                    $('#delivery_addresses_container').empty();
-                    if (result.payload.length > 1) {
-                        let links;
-                        let selectedText;
-                        let selectedColor;
-                        let marginTop;
-                        $.each(result.payload, function (key, accountShipping) {
-                            links = parseInt(accountShipping.is_selected) === 0 ? '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_delivery_address_for_account" data-id="' + accountShipping.id + '">Delete</a> | <a href="javascript:void(0)" class="select_delivery_address_for_account" data-id="' + accountShipping.id + '">Select</a>' : '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a>';
-                            selectedText = parseInt(accountShipping.is_selected) === 1 ? '<div style="position: absolute; left: 0; top: 0; background-color: #37bd4b; border-radius: 5px; color: white; padding: 2px 5px;">Selected for Checkout</div>' : '';
-                            selectedColor = parseInt(accountShipping.is_selected) === 1 ? 'ghostwhite' : 'white';
-                            marginTop = parseInt(accountShipping.is_selected) === 1 ? '15px' : '0';
-                            $('#delivery_addresses_container').append(`
-                                <div class="card mb-3" style="background-color: ` + selectedColor + `">
+                    if (result.payload !== null && Object.keys(result.payload).length > 0) {
+                        let bottomLinks;
+                        let addressLine2;
+                        $('#delivery_addresses_container').empty();
+                        if (result.payload.length > 1) {
+                            let selectedText;
+                            let selectedColor;
+                            let selectForCheckoutButton;
+                            $.each(result.payload, function (key, accountShipping) {
+                                bottomLinks = parseInt(accountShipping.is_selected) === 0 ? '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_delivery_address_for_account" data-id="' + accountShipping.id + '">Delete</a>' : '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a>';
+                                selectedText = parseInt(accountShipping.is_selected) === 1 ? '<div style="position: absolute; left: 0; top: 0; background: #626f68; color: #fff; padding: 5px 50px;">Selected</div>' : '';
+                                selectedColor = parseInt(accountShipping.is_selected) === 1 ? 'ghostwhite' : 'white';
+                                addressLine2 = accountShipping.address_line_2 !== null ? ', ' + accountShipping.address_line_2 : '';
+                                selectForCheckoutButton = parseInt(accountShipping.is_selected) === 0 ? '<button class="btn btn-outline-secondary select_delivery_address_for_account" style="position: absolute; left: 0; top: 0; border-radius: 0; padding: 5px 15px; font-size: 14px; border-color: #c9cfd5 !important;" data-id="' + accountShipping.id + '">Select for Checkout</button>' : '';
+                                $('#delivery_addresses_container').append(`
+                                <div class="card mb-3" style="background-color: ` + selectedColor + `; border-radius: 0;">
                                     <div class="card-body">
-                                        ` + selectedText + `
-                                        <div style="margin-top: ` + marginTop + `">` + accountShipping.first_name + ' ' + accountShipping.last_name + `</div>
-                                        <div>` + accountShipping.address_line_1 + ', ' + accountShipping.address_line_2 + `</div>
+                                        ` + selectedText + selectForCheckoutButton + `
+                                        <div class="mt-4">` + accountShipping.first_name + ' ' + accountShipping.last_name + `</div>
+                                        <div>` + accountShipping.address_line_1 + addressLine2 + `</div>
                                         <div>` + accountShipping.city + ' ' + accountShipping.postal_code + `</div>
                                         <div>` + accountShipping.state + `</div>
-                                        <div>` + accountShipping.country + `</div>
-                                        <div>` + accountShipping.phone.substring(0,2) + 'xxxxxxx' + accountShipping.phone.slice(-2) + `</div>
-                                        <div class="mt-1">` + links + `</div>
+                                        <div>` + accountShipping.country.name + `</div>
+                                        <div><img src="` + accountShipping.country.flag + `" style="height: 20px;"> <span>` + accountShipping.country.dialling_code + `</span> ` + accountShipping.phone + `</div>
+                                        <div class="mt-1">` + bottomLinks + `</div>
                                     </div>
                                 </div>
                             `);
-                        });
-                        $('#delivery_addresses_container').append(`
-                            <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_delivery_address_for_account">Add New Address</button></div></div>
-                        `);
-                    } else {
-                        let links;
-                        $.each(result.payload, function (key, accountShipping) {
-                            links = '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a>';
+                            });
                             $('#delivery_addresses_container').append(`
+                                <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_delivery_address_for_account" style="border-radius: 0;">Add New Address</button></div></div>
+                            `);
+                        } else {
+                            $.each(result.payload, function (key, accountShipping) {
+                                bottomLinks = '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a>';
+                                addressLine2 = accountShipping.address_line_2 !== null ? ', ' + accountShipping.address_line_2 : '';
+                                $('#delivery_addresses_container').append(`
                                 <div style="background-color: white;">
                                     <div>` + accountShipping.first_name + ' ' + accountShipping.last_name + `</div>
-                                    <div>` + accountShipping.address_line_1 + ', ' + accountShipping.address_line_2 + `</div>
+                                    <div>` + accountShipping.address_line_1 + addressLine2 + `</div>
                                     <div>` + accountShipping.city + ' ' + accountShipping.postal_code + `</div>
                                     <div>` + accountShipping.state + `</div>
-                                    <div>` + accountShipping.country + `</div>
-                                    <div>` + accountShipping.phone.substring(0,2) + 'xxxxxxx' + accountShipping.phone.slice(-2) + `</div>
-                                    <div class="mt-1">` + links + `</div>
+                                    <div>` + accountShipping.country.name + `</div>
+                                    <div><img src="` + accountShipping.country.flag + `" style="height: 20px;"> <span>` + accountShipping.country.dialling_code + `</span> ` + accountShipping.phone + `</div>
+                                    <div class="mt-1">` + bottomLinks + `</div>
                                 </div>
                             `);
-                        });
-                        $('#delivery_addresses_container').append(`
-                            <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_delivery_address_for_account">Add New Address</button></div></div>
-                        `);
+                            });
+                            $('#delivery_addresses_container').append(`
+                                <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_delivery_address_for_account" style="border-radius: 0;">Add New Address</button></div></div>
+                            `);
+                        }
+                    } else {
+
                     }
                 },
                 error: function (xhr) {
@@ -702,7 +776,7 @@
                     console.log(states);
                     $('#state_field_holder').empty();
                     if (states.length > 0) {
-                        $('#state_field_holder').append('<div class="form-floating"><select class="form-select" name="state" id="state"><option value="">Select State</option></select><label for="state">State</label></div>');
+                        $('#state_field_holder').append('<div class="form-floating"><select class="form-select border-0 border-bottom" name="state" id="state" style="border-color: #b1b1b1 !important; border-radius: 0;"><option value="">Select State</option></select><label for="state">State</label></div>');
                         $.each(states, function (key, state) {
                             if (userState === state.state) {
                                 $('#state').append('<option value="' + state.state + '" selected>' + state.state + '</option>');
@@ -711,11 +785,46 @@
                             }
                         });
                     } else {
-                        $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state" placeholder="State" value="' + userState + '"><label for="state">State</label></div>');
+                        $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="state" id="state" placeholder="State" value="' + userState + '" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="state">State</label></div>');
                     }
+                    $.ajax({
+                        method: 'get',
+                        url: '{{ url('get/country/by/id') }}',
+                        data: {
+                            id: $('#country_id').val()
+                        },
+                        cache: false,
+                        success: function (result) {
+                            console.log(result);
+                            $('#phone_field_holder').empty();
+                            if (result.payload !== null) {
+                                $('#phone_field_holder').append(`
+                                    <div class="row">
+                                        <div class="col-4 pe-0" style="padding-top: 18px;">
+                                            <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 18px;">
+                                                <img src="` + result.payload.flag + `" style="height: 20px;">
+                                                <span class="">` + result.payload.dialling_code + `</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 ps-0">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                <label for="phone">Phone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `);
+                            } else {
+                                $('#phone_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="phone">Phone</label></div>');
+                            }
+                            $('#delivery_address_form_submit_button_text').text('Save');
+                            $('#delivery_address_form_container').show(1000);
+                        },
+                        error: function (xhr) {
+                            console.log(xhr);
+                        }
+                    });
 
-                    $('#delivery_address_form_submit_button_text').text('Save');
-                    $('#delivery_address_form_container').show(1000);
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -734,13 +843,12 @@
                 },
                 success: function (result) {
                     console.log(result);
-                    $('#delivery_addresses_container').empty();
                     clearDeliveryAddressForm();
+                    $('#delivery_addresses_container').empty();
                     $('#delivery_address_form').append('<input type="hidden" name="id" id="id" value="' + result.payload.id + '">');
                     $('#first_name').val(result.payload.first_name);
                     $('#last_name').val(result.payload.last_name);
-                    $('#country_id option:contains(' + result.payload.country + ')').attr('selected', true);
-
+                    $('#country_id').val(result.payload.country_id);
                     $.ajax({
                         method: 'get',
                         url: '{{ url('get/states/by/country/id') }}',
@@ -752,7 +860,7 @@
                             console.log(states);
                             $('#state_field_holder').empty();
                             if (states.length > 0) {
-                                $('#state_field_holder').append('<div class="form-floating"><select class="form-select" name="state" id="state"><option value="">Select State</option></select><label for="state">State</label></div>');
+                                $('#state_field_holder').append('<div class="form-floating"><select class="form-select border-0 border-bottom" name="state" id="state" style="border-color: #b1b1b1 !important; border-radius: 0;"><option value="">Select State</option></select><label for="state">State</label></div>');
                                 $.each(states, function (key, state) {
                                     if (result.payload.state === state.state) {
                                         $('#state').append('<option value="' + state.state + '" selected>' + state.state + '</option>');
@@ -761,13 +869,28 @@
                                     }
                                 });
                             } else {
-                                $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state" placeholder="State" value="' + result.payload.state + '"><label for="state">State</label></div>');
+                                $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="state" id="state" placeholder="State" value="' + result.payload.state + '" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="state">State</label></div>');
                             }
                             $('#city').val(result.payload.city);
                             $('#postal_code').val(result.payload.postal_code);
                             $('#address_line_1').val(result.payload.address_line_1);
                             $('#address_line_2').val(result.payload.address_line_2);
-                            $('#phone').val(result.payload.phone);
+                            $('#phone_field_holder').append(`
+                                <div class="row">
+                                    <div class="col-4 pe-0" style="padding-top: 18px;">
+                                        <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 18px;">
+                                            <img src="` + result.payload.country.flag + `" style="height: 20px;">
+                                            <span class="">` + result.payload.country.dialling_code + `</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-8 ps-0">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" value="` + result.payload.phone + `" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                            <label for="phone">Phone</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
                             $('#email').val(result.payload.email);
                             $('#delivery_address_form_submit_button_text').text('Update');
                             $('#delivery_address_form_container').show(1000);
@@ -791,16 +914,22 @@
                 url: '{{ url('checkout/get/guest/delivery/address') }}',
                 success: function (result) {
                     console.log(result);
-                    $('#delivery_addresses_container').empty();
-                    $('#delivery_addresses_container').append(`
-                        <div>` + result.payload.first_name + ' ' + result.payload.last_name + `</div>
-                        <div>` + result.payload.address_line_1 + ', ' + result.payload.address_line_2 + `</div>
-                        <div>` + result.payload.city + ' ' + result.payload.postal_code + `</div>
-                        <div>` + result.payload.state + `</div>
-                        <div>` + result.payload.country + `</div>
-                        <div>` + result.payload.phone.substring(0,2) + 'xxxxxxx' + result.payload.phone.slice(-2) + `</div>
-                        <div class="mt-3"><a href="javascript:void(0)" id="edit_delivery_address_for_guest">Edit</a></div>
-                    `);
+                    if (result.payload !== null && Object.keys(result.payload).length > 0) {
+                        let addressLine2 = result.payload.address_line_2 !== null ? ', ' + result.payload.address_line_2 : '';
+                        $('#delivery_addresses_container').empty();
+                        $('#delivery_addresses_container').append(`
+                            <div>` + result.payload.first_name + ' ' + result.payload.last_name + `</div>
+                            <div>` + result.payload.address_line_1 + addressLine2 + `</div>
+                            <div>` + result.payload.city + ' ' + result.payload.postal_code + `</div>
+                            <div>` + result.payload.state + `</div>
+                            <div>` + result.payload.country.name + `</div>
+                            <div><img src="` + result.payload.country.flag + `" style="height: 20px;"> <span>` + result.payload.country.dialling_code + `</span> ` + result.payload.phone + `</div>
+                            <div class="mt-3"><a href="javascript:void(0)" id="edit_delivery_address_for_guest">Edit</a></div>
+                        `);
+                    } else {
+
+                    }
+
                 },
                 error: function (xhr) {
                     console.log(xhr)
@@ -821,7 +950,7 @@
                     $('#delivery_addresses_container').empty();
                     $('#first_name').val(result.payload.first_name);
                     $('#last_name').val(result.payload.last_name);
-                    $('#country_id option:contains(' + result.payload.country + ')').attr('selected', true);
+                    $('#country_id').val(result.payload.country_id);
                     $.ajax({
                         method: 'get',
                         url: '{{ url('get/states/by/country/id') }}',
@@ -833,7 +962,7 @@
                             console.log(states);
                             $('#state_field_holder').empty();
                             if (states.length > 0) {
-                                $('#state_field_holder').append('<div class="form-floating"><select class="form-select" name="state" id="state"><option value="">Select State</option></select><label for="state">State</label></div>');
+                                $('#state_field_holder').append('<div class="form-floating"><select class="form-select border-0 border-bottom" name="state" id="state" style="border-color: #b1b1b1 !important; border-radius: 0;"><option value="">Select State</option></select><label for="state">State</label></div>');
                                 $.each(states, function (key, state) {
                                     if (result.payload.state === state.state) {
                                         $('#state').append('<option value="' + state.state + '" selected>' + state.state + '</option>');
@@ -842,13 +971,28 @@
                                     }
                                 });
                             } else {
-                                $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state" placeholder="State" value="' + result.payload.state + '"><label for="state">State</label></div>');
+                                $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="state" id="state" placeholder="State" value="' + result.payload.state + '" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="state">State</label></div>');
                             }
                             $('#city').val(result.payload.city);
                             $('#postal_code').val(result.payload.postal_code);
                             $('#address_line_1').val(result.payload.address_line_1);
                             $('#address_line_2').val(result.payload.address_line_2);
-                            $('#phone').val(result.payload.phone);
+                            $('#phone_field_holder').append(`
+                                <div class="row">
+                                    <div class="col-4 pe-0" style="padding-top: 18px;">
+                                        <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 18px;">
+                                            <img src="` + result.payload.country.flag + `" style="height: 20px;">
+                                            <span class="">` + result.payload.country.dialling_code + `</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-8 ps-0">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" value="` + result.payload.phone + `" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                            <label for="phone">Phone</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
                             $('#email').val(result.payload.email);
                             $('#delivery_address_form_submit_button_text').text('Update');
                             $('#delivery_address_form_container').show(1000);
@@ -867,45 +1011,6 @@
 
         });
 
-
-        {{--$(document).on('click', '#change_delivery_address_for_guest', function () {--}}
-        {{--    $('#delivery_addresses_container').empty();--}}
-        {{--    clearDeliveryAddressForm();--}}
-
-        {{--    let userCountry = '{{ $userCountry }}';--}}
-        {{--    let userState = '{{ $userState }}';--}}
-        {{--    if (userCountry) {--}}
-        {{--        $('#country_id option:contains(' + userCountry + ')').attr('selected', true);--}}
-        {{--    }--}}
-        {{--    $.ajax({--}}
-        {{--        method: 'get',--}}
-        {{--        url: '{{ url('get/states/by/country/id') }}',--}}
-        {{--        data: {--}}
-        {{--            country_id: $('#country_id').val()--}}
-        {{--        },--}}
-        {{--        cache: false,--}}
-        {{--        success: function (states) {--}}
-        {{--            console.log(states);--}}
-        {{--            $('#state_field_holder').empty();--}}
-        {{--            if (states.length > 0) {--}}
-        {{--                $('#state_field_holder').append('<div class="form-floating"><select class="form-select" name="state" id="state"><option value="">Select State</option></select><label for="state">State</label></div>');--}}
-        {{--                $.each(states, function (key, state) {--}}
-        {{--                    if (userState === state.state) {--}}
-        {{--                        $('#state').append('<option value="' + state.state + '" selected>' + state.state + '</option>');--}}
-        {{--                    } else {--}}
-        {{--                        $('#state').append('<option value="' + state.state + '">' + state.state + '</option>');--}}
-        {{--                    }--}}
-        {{--                });--}}
-        {{--            } else {--}}
-        {{--                $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state" placeholder="State" value="' + userState + '"><label for="state">State</label></div>');--}}
-        {{--            }--}}
-        {{--            $('#delivery_address_form_container').show(1000);--}}
-        {{--        },--}}
-        {{--        error: function (xhr) {--}}
-        {{--            console.log(xhr);--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--});--}}
 
         $(document).on('submit', '#delivery_address_form', function (event) {
             event.preventDefault();
@@ -975,25 +1080,60 @@
 
 
         $(document).on('change', '#country_id_for_billing', function () {
+            let countryId = $(this).val();
             $.ajax({
                 method: 'get',
                 url: '{{ url('get/states/by/country/id') }}',
                 data: {
-                    country_id: $(this).val()
+                    country_id: countryId
                 },
                 cache: false,
                 success: function (result) {
                     console.log(result);
-
                     $('#state_field_holder_for_billing').empty();
                     if (result.length > 0) {
-                        $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select" name="state" id="state_for_billing"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');
+                        $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select border-0 border-bottom" name="state" id="state_for_billing" style="border-color: #b1b1b1 !important; border-radius: 0;"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');
                         $.each(result, function (key, state) {
                             $('#state_for_billing').append('<option value="' + state.state + '">' + state.state + '</option>');
                         });
                     } else {
-                        $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state_for_billing" placeholder="State"><label for="state_for_billing">State</label></div>');
+                        $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="state" id="state_for_billing" placeholder="State" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="state_for_billing">State</label></div>');
                     }
+                    $.ajax({
+                        method: 'get',
+                        url: '{{ url('get/country/by/id') }}',
+                        data: {
+                            id: countryId
+                        },
+                        cache: false,
+                        success: function (result) {
+                            console.log(result);
+                            $('#phone_field_holder_for_billing').empty();
+                            if (result.payload !== null) {
+                                $('#phone_field_holder_for_billing').append(`
+                                    <div class="row">
+                                        <div class="col-4 pe-0" style="padding-top: 18px;">
+                                            <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 18px;">
+                                                <img src="` + result.payload.flag + `" style="height: 20px;">
+                                                <span class="">` + result.payload.dialling_code + `</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 ps-0">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone_for_billing" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                <label for="phone_for_billing">Phone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `);
+                            } else {
+                                $('#phone_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="phone" id="phone_for_billing" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="phone_for_billing">Phone</label></div>');
+                            }
+                        },
+                        error: function (xhr) {
+                            console.log(xhr);
+                        }
+                    });
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -1006,6 +1146,7 @@
             $('#billing_address_form').find('#id_for_billing').remove();
             $('#country_id_for_billing option').removeAttr('selected');
             $('#state_field_holder_for_billing').empty();
+            $('#phone_field_holder_for_billing').empty();
             $('#billing_address_form').find('.invalid-feedback').remove();
             $('#billing_address_form').find('.is-invalid').removeClass('is-invalid');
             $('#billing_address_form')[0].reset();
@@ -1017,16 +1158,22 @@
                 url: '{{ url('checkout/get/account/billing/address') }}',
                 success: function (result) {
                     console.log(result);
-                    $('#billing_address_container').empty();
-                    $('#billing_address_container').append(`
-                        <div>` + result.payload.first_name + ' ' + result.payload.last_name + `</div>
-                        <div>` + result.payload.address_line_1 + ', ' + result.payload.address_line_2 + `</div>
-                        <div>` + result.payload.city + ' ' + result.payload.postal_code + `</div>
-                        <div>` + result.payload.state + `</div>
-                        <div>` + result.payload.country + `</div>
-                        <div>` + result.payload.phone.substring(0,2) + 'xxxxxxx' + result.payload.phone.slice(-2) + `</div>
-                        <div class="mt-3"><a href="javascript:void(0)" id="edit_billing_address_for_account" data-id="` + result.payload.id + `">Edit</a></div>
-                    `);
+                    if (result.payload !== null && Object.keys(result.payload).length > 0) {
+                        let addressLine2 = result.payload.address_line_2 !== null ? ', ' + result.payload.address_line_2 : '';
+                        $('#billing_address_container').empty();
+                        $('#billing_address_container').append(`
+                            <div>` + result.payload.first_name + ' ' + result.payload.last_name + `</div>
+                            <div>` + result.payload.address_line_1 + addressLine2 + `</div>
+                            <div>` + result.payload.city + ' ' + result.payload.postal_code + `</div>
+                            <div>` + result.payload.state + `</div>
+                            <div>` + result.payload.country.name + `</div>
+                            <div><img src="` + result.payload.country.flag + `" style="height: 20px;"> <span>` + result.payload.country.dialling_code + `</span> ` + result.payload.phone + `</div>
+                            <div class="mt-3"><a href="javascript:void(0)" id="edit_billing_address_for_account" data-id="` + result.payload.id + `">Edit</a></div>
+                        `);
+                    } else {
+
+                    }
+
                 },
                 error: function (xhr) {
                     console.log(xhr)
@@ -1040,16 +1187,22 @@
                 url: '{{ url('checkout/get/guest/billing/address') }}',
                 success: function (result) {
                     console.log(result);
-                    $('#billing_address_container').empty();
-                    $('#billing_address_container').append(`
-                        <div>` + result.payload.first_name + ' ' + result.payload.last_name + `</div>
-                        <div>` + result.payload.address_line_1 + ', ' + result.payload.address_line_2 + `</div>
-                        <div>` + result.payload.city + ' ' + result.payload.postal_code + `</div>
-                        <div>` + result.payload.state + `</div>
-                        <div>` + result.payload.country + `</div>
-                        <div>` + result.payload.phone.substring(0,2) + 'xxxxxxx' + result.payload.phone.slice(-2) + `</div>
-                        <div class="mt-3"><a href="javascript:void(0)" id="edit_billing_address_for_guest">Edit</a></div>
-                    `);
+                    if (result.payload !== null && Object.keys(result.payload).length > 0) {
+                        let addressLine2 = result.payload.address_line_2 !== null ? ', ' + result.payload.address_line_2 : '';
+                        $('#billing_address_container').empty();
+                        $('#billing_address_container').append(`
+                            <div>` + result.payload.first_name + ' ' + result.payload.last_name + `</div>
+                            <div>` + result.payload.address_line_1 + addressLine2 + `</div>
+                            <div>` + result.payload.city + ' ' + result.payload.postal_code + `</div>
+                            <div>` + result.payload.state + `</div>
+                            <div>` + result.payload.country.name + `</div>
+                            <div><img src="` + result.payload.country.flag + `" style="height: 20px;"> <span>` + result.payload.country.dialling_code + `</span> ` + result.payload.phone + `</div>
+                            <div class="mt-3"><a href="javascript:void(0)" id="edit_billing_address_for_guest">Edit</a></div>
+                        `);
+                    } else {
+
+                    }
+
                 },
                 error: function (xhr) {
                     console.log(xhr)
@@ -1072,7 +1225,7 @@
                     $('#billing_address_form').append('<input type="hidden" name="id" id="id_for_billing" value="' + result.payload.id + '">');
                     $('#first_name_for_billing').val(result.payload.first_name);
                     $('#last_name_for_billing').val(result.payload.last_name);
-                    $('#country_id_for_billing option:contains(' + result.payload.country + ')').attr('selected', true);
+                    $('#country_id_for_billing').val(result.payload.country_id);
                     $.ajax({
                         method: 'get',
                         url: '{{ url('get/states/by/country/id') }}',
@@ -1084,7 +1237,7 @@
                             console.log(states);
                             $('#state_field_holder_for_billing').empty();
                             if (states.length > 0) {
-                                $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select" name="state" id="state_for_billing"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');
+                                $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select border-0 border-bottom" name="state" id="state_for_billing" style="border-color: #b1b1b1 !important; border-radius: 0;"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');
                                 $.each(states, function (key, state) {
                                     if (result.payload.state === state.state) {
                                         $('#state_for_billing').append('<option value="' + state.state + '" selected>' + state.state + '</option>');
@@ -1093,13 +1246,28 @@
                                     }
                                 });
                             } else {
-                                $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state_for_billing" placeholder="State" value="' + result.payload.state + '"><label for="state_for_billing">State</label></div>');
+                                $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="state" id="state_for_billing" placeholder="State" value="' + result.payload.state + '" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="state_for_billing">State</label></div>');
                             }
                             $('#city_for_billing').val(result.payload.city);
                             $('#postal_code_for_billing').val(result.payload.postal_code);
                             $('#address_line_1_for_billing').val(result.payload.address_line_1);
                             $('#address_line_2_for_billing').val(result.payload.address_line_2);
-                            $('#phone_for_billing').val(result.payload.phone);
+                            $('#phone_field_holder_for_billing').append(`
+                                <div class="row">
+                                    <div class="col-4 pe-0" style="padding-top: 17px;">
+                                        <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 18px;">
+                                            <img src="` + result.payload.country.flag + `" style="height: 20px;">
+                                            <span class="">` + result.payload.country.dialling_code + `</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-8 ps-0">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone_for_billing" placeholder="Phone" value="` + result.payload.phone + `" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                            <label for="phone_for_billing">Phone</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
                             $('#email_for_billing').val(result.payload.email);
                             $('#billing_address_form_submit_button_text').text('Update');
                             $('#billing_address_form_container').show(1000);
@@ -1132,7 +1300,7 @@
                     $('#billing_address_container').empty();
                     $('#first_name_for_billing').val(result.payload.first_name);
                     $('#last_name_for_billing').val(result.payload.last_name);
-                    $('#country_id_for_billing option:contains(' + result.payload.country + ')').attr('selected', true);
+                    $('#country_id_for_billing').val(result.payload.country_id);
                     $.ajax({
                         method: 'get',
                         url: '{{ url('get/states/by/country/id') }}',
@@ -1144,7 +1312,7 @@
                             console.log(states);
                             $('#state_field_holder_for_billing').empty();
                             if (states.length > 0) {
-                                $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select" name="state" id="state_for_billing"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');
+                                $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select border-0 border-bottom" name="state" id="state_for_billing" style="border-color: #b1b1b1 !important; border-radius: 0;"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');
                                 $.each(states, function (key, state) {
                                     if (result.payload.state === state.state) {
                                         $('#state_for_billing').append('<option value="' + state.state + '" selected>' + state.state + '</option>');
@@ -1153,13 +1321,28 @@
                                     }
                                 });
                             } else {
-                                $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state_for_billing" placeholder="State" value="' + result.payload.state + '"><label for="state_for_billing">State</label></div>');
+                                $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="state" id="state_for_billing" placeholder="State" value="' + result.payload.state + '" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="state_for_billing">State</label></div>');
                             }
                             $('#city_for_billing').val(result.payload.city);
                             $('#postal_code_for_billing').val(result.payload.postal_code);
                             $('#address_line_1_for_billing').val(result.payload.address_line_1);
                             $('#address_line_2_for_billing').val(result.payload.address_line_2);
-                            $('#phone_for_billing').val(result.payload.phone);
+                            $('#phone_field_holder_for_billing').append(`
+                                <div class="row">
+                                    <div class="col-4 pe-0" style="padding-top: 17px;">
+                                        <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 18px;">
+                                            <img src="` + result.payload.country.flag + `" style="height: 20px;">
+                                            <span class="">` + result.payload.country.dialling_code + `</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-8 ps-0">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone_for_billing" placeholder="Phone" value="` + result.payload.phone + `" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                            <label for="phone_for_billing">Phone</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
                             $('#email_for_billing').val(result.payload.email);
                             $('#billing_address_form_submit_button_text').text('Update');
                             $('#billing_address_form_container').show(1000);
@@ -1168,103 +1351,12 @@
                             console.log(xhr);
                         }
                     });
-
                 },
                 error: function (xhr) {
                     console.log(xhr);
                 }
             });
-
-
         });
-
-
-        {{--$(document).on('click', '#change_billing_address_for_account', function () {--}}
-        {{--    $('#billing_address_container').empty();--}}
-        {{--    clearBillingAddressForm();--}}
-
-        {{--    $('#billing_address_form').append('<input type="hidden" name="id" id="id_for_billing" value="' + $(this).data('id') + '">');--}}
-
-        {{--    let userCountry = '{{ $userCountry }}';--}}
-        {{--    let userState = '{{ $userState }}';--}}
-        {{--    if (userCountry) {--}}
-        {{--        $('#country_id_for_billing option:contains(' + userCountry + ')').attr('selected', true);--}}
-        {{--    }--}}
-        {{--    $.ajax({--}}
-        {{--        method: 'get',--}}
-        {{--        url: '{{ url('get/states/by/country/id') }}',--}}
-        {{--        data: {--}}
-        {{--            country_id: $('#country_id_for_billing').val()--}}
-        {{--        },--}}
-        {{--        cache: false,--}}
-        {{--        success: function (states) {--}}
-        {{--            console.log(states);--}}
-        {{--            $('#state_field_holder_for_billing').empty();--}}
-        {{--            if (states.length > 0) {--}}
-        {{--                $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select" name="state" id="state_for_billing"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');--}}
-        {{--                $.each(states, function (key, state) {--}}
-        {{--                    if (userState === state.state) {--}}
-        {{--                        $('#state_for_billing').append('<option value="' + state.state + '" selected>' + state.state + '</option>');--}}
-        {{--                    } else {--}}
-        {{--                        $('#state_for_billing').append('<option value="' + state.state + '">' + state.state + '</option>');--}}
-        {{--                    }--}}
-        {{--                });--}}
-        {{--            } else {--}}
-        {{--                $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state_for_billing" placeholder="State" value="' + userState + '"><label for="state_for_billing">State</label></div>');--}}
-        {{--            }--}}
-        {{--            $('#billing_address_form_container').show(1000);--}}
-        {{--        },--}}
-        {{--        error: function (xhr) {--}}
-        {{--            console.log(xhr);--}}
-        {{--        }--}}
-        {{--    });--}}
-
-
-
-        {{--});--}}
-
-        {{--$(document).on('click', '#change_billing_address_for_guest', function () {--}}
-        {{--    $('#billing_address_container').empty();--}}
-        {{--    clearBillingAddressForm();--}}
-
-        {{--    let userCountry = '{{ $userCountry }}';--}}
-        {{--    let userState = '{{ $userState }}';--}}
-        {{--    if (userCountry) {--}}
-        {{--        $('#country_id_for_billing option:contains(' + userCountry + ')').attr('selected', true);--}}
-        {{--    }--}}
-        {{--    $.ajax({--}}
-        {{--        method: 'get',--}}
-        {{--        url: '{{ url('get/states/by/country/id') }}',--}}
-        {{--        data: {--}}
-        {{--            country_id: $('#country_id_for_billing').val()--}}
-        {{--        },--}}
-        {{--        cache: false,--}}
-        {{--        success: function (states) {--}}
-        {{--            console.log(states);--}}
-        {{--            $('#state_field_holder_for_billing').empty();--}}
-        {{--            if (states.length > 0) {--}}
-        {{--                $('#state_field_holder_for_billing').append('<div class="form-floating"><select class="form-select" name="state" id="state_for_billing"><option value="">Select State</option></select><label for="state_for_billing">State</label></div>');--}}
-        {{--                $.each(states, function (key, state) {--}}
-        {{--                    if (userState === state.state) {--}}
-        {{--                        $('#state_for_billing').append('<option value="' + state.state + '" selected>' + state.state + '</option>');--}}
-        {{--                    } else {--}}
-        {{--                        $('#state_for_billing').append('<option value="' + state.state + '">' + state.state + '</option>');--}}
-        {{--                    }--}}
-        {{--                });--}}
-        {{--            } else {--}}
-        {{--                $('#state_field_holder_for_billing').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state_for_billing" placeholder="State" value="' + userState + '"><label for="state_for_billing">State</label></div>');--}}
-        {{--            }--}}
-        {{--            $('#billing_address_form_container').show(1000);--}}
-        {{--        },--}}
-        {{--        error: function (xhr) {--}}
-        {{--            console.log(xhr);--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--});--}}
-
-
-
-
 
 
         $(document).on('submit', '#billing_address_form', function (event) {
@@ -1440,6 +1532,8 @@
                         <form id="card_form_for_edit">
                             <input type="hidden" name="id" value="` + result.payload.id + `">
                             <input type="hidden" name="card_number" value="` + result.payload.card_number + `">
+                            <input type="hidden" name="first_name" value="` + result.payload.first_name + `">
+                            <input type="hidden" name="last_name" value="` + result.payload.last_name + `">
                             <div class="row mt-3">
                                 <div class="col-7">
                                     <div class="row">
@@ -1449,39 +1543,51 @@
                                 </div>
                                 <div class="col-5">
                                     <div class="form-floating">
-                                        <input type="text" autocomplete="off" class="form-control" name="security_code" id="security_code_for_edit" value="` + result.payload.security_code + `">
+                                        <input type="text" autocomplete="off" class="form-control border-0 border-bottom" name="security_code" id="security_code_for_edit" value="` + result.payload.security_code + `" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;" placeholder="Security Code">
                                         <label for="security_code_for_edit">Security Code</label>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="input-group my-4">
-                                <span class="input-group-text" style="font-size: small; color: #615f75; width: 24%;">Expiry Date</span>
-                                <div class="form-floating" style="width: 38%;">
-                                    <select class="form-select" name="expiry_month" id="expiry_month_for_edit" style="font-size: 12px;">
-                                        <option value="">Select Month</option>
-                                        ` + monthOptions + `
-                                    </select>
-                                    <label for="expiry_month_for_edit">Month</label>
-                                </div>
-                                <div class="form-floating" style="width: 38%;">
-                                    <select class="form-select" name="expiry_year" id="expiry_year_for_edit" style="font-size: 12px;">
-                                        <option value="">Select Year</option>
-                                        ` + yearOptions + `
-                                    </select>
-                                    <label for="expiry_year_for_edit">Year</label>
+
+
+                            <div class="row mt-4">
+                                <div class="col-3 pe-0"><div class="input-group-text small border-0 border-bottom text-wrap" style="color: #615f75; border-radius: 0; height: 100%; border-color: #b1b1b1 !important;">Expiry Date</div></div>
+                                <div class="col-9 ps-0">
+                                    <div class="row">
+                                        <div class="col pe-0">
+                                            <div class="form-floating">
+                                                <select class="form-select border-0 border-bottom" name="expiry_month" id="expiry_month_for_edit" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
+                                                    <option value="">Select Month</option>
+                                                    ` + monthOptions + `
+                                                </select>
+                                                <label for="expiry_month_for_edit">Month</label>
+                                            </div>
+                                        </div>
+                                        <div class="col ps-0">
+                                            <div class="form-floating">
+                                                <select class="form-select border-0 border-bottom" name="expiry_year" id="expiry_year_for_edit" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
+                                                    <option value="">Select Year</option>
+                                                    ` + yearOptions + `
+                                                </select>
+                                                <label for="expiry_year_for_edit">Year</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row">
+
+
+                            <div class="row mt-4">
                                 <div class="col d-grid">
-                                    <button type="submit" class="mod_button_1" id="card_form_for_edit_submit_button">
+                                    <button type="submit" class="mod_button_1" id="card_form_for_edit_submit_button" style="border-radius: 0;">
                                         <span id="card_form_for_edit_submit_button_text">Update</span>
                                         <span id="card_form_for_edit_submit_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                     </button>
                                 </div>
                                 <div class="col d-grid">
-                                    <button type="button" class="mod_button_2" id="card_form_for_edit_cancel_button">Cancel</button>
+                                    <button type="button" class="mod_button_2" id="card_form_for_edit_cancel_button" style="border-radius: 0;">Cancel</button>
                                 </div>
                             </div>
 
@@ -1542,17 +1648,17 @@
                         $.each(xhr.responseJSON.errors, function (key, value) {
                             if (key === 'expiry_month' || key === 'expiry_year') {
                                 if (key === 'expiry_month') {
-                                    $('#' + key + '_for_edit').parent().parent().after('<div class="invalid-feedback expiry_month_error_message d-block mb-4"></div>');
+                                    $('#' + key + '_for_edit').parent().parent().parent().parent().parent().after('<div class="invalid-feedback expiry_month_error_message d-block"></div>');
                                     $('#' + key + '_for_edit').addClass('is-invalid');
                                     $.each(value, function (k, v) {
-                                        $('#' + key + '_for_edit').parent().parent().parent().find('.expiry_month_error_message').append('<div>' + v + '</div>');
+                                        $('#card_form_for_edit').find('.expiry_month_error_message').append('<div>' + v + '</div>');
                                     });
                                 }
                                 if (key === 'expiry_year') {
-                                    $('#' + key + '_for_edit').parent().parent().after('<div class="invalid-feedback expiry_year_error_message d-block mb-4"></div>');
+                                    $('#' + key + '_for_edit').parent().parent().parent().parent().parent().after('<div class="invalid-feedback expiry_year_error_message d-block"></div>');
                                     $('#' + key + '_for_edit').addClass('is-invalid');
                                     $.each(value, function (k, v) {
-                                        $('#' + key + '_for_edit').parent().parent().parent().find('.expiry_year_error_message').append('<div>' + v + '</div>');
+                                        $('#card_form_for_edit').find('.expiry_year_error_message').append('<div>' + v + '</div>');
                                     });
                                 }
                             } else {
@@ -1589,34 +1695,37 @@
                 cache: false,
                 success: function (result) {
                     console.log(result);
-                    if (result.payload.length > 0) {
+
+                    if (result.payload !== null && Object.keys(result.payload).length > 0) {
                         $('#cards_container').empty();
                         let cardBrandImagePath;
                         let cardNumberLast4Digits;
                         let selectedCardLast4Digits;
                         if (result.payload.length > 1) {
-                            let cardLinks;
+                            let bottomLinks;
                             let selectedCardColor;
                             let selectedText;
+                            let selectCardForCheckoutButton;
                             $.each(result.payload, function (key, card) {
                                 cardBrandImagePath = card.card_brand === 'Visa' ? '{{ asset('storage/img/application/visa-card.png') }}' : (card.card_brand === 'American Express' ? '{{ asset('storage/img/application/american-express-card.png') }}' : (card.card_brand === 'MasterCard' ? '{{ asset('storage/img/application/master-card.png') }}' : (card.card_brand === 'Discover' ? '{{ asset('storage/img/application/discover-card.png') }}' : '')));
                                 cardNumberLast4Digits = card.card_number.substr(-4);
-                                cardLinks = parseInt(card.is_selected) === 1 ? '<a href="javascript:void(0)" class="edit_card_for_account" data-id="' + card.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_card_from_account" data-id="' + card.id + '">Delete</a>' : '<a href="javascript:void(0)" class="edit_card_for_account" data-id="' + card.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_card_from_account" data-id="' + card.id + '">Delete</a> | <a href="javascript:void(0)" class="select_card_for_account" data-id="' + card.id + '">Select</a>';
+                                bottomLinks = '<a href="javascript:void(0)" class="edit_card_for_account" data-id="' + card.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_card_from_account" data-id="' + card.id + '">Delete</a>';
                                 selectedCardColor = parseInt(card.is_selected) === 1 ? 'ghostwhite' : 'white';
-                                selectedText = parseInt(card.is_selected) === 1 ? '<div style="position: absolute; left: 0; top: 0; background-color: #37bd4b; border-radius: 5px; color: white; padding: 2px 5px;">Selected for Checkout</div>' : '';
+                                selectedText = parseInt(card.is_selected) === 1 ? '<div style="position: absolute; left: 0; top: 0; background: #626f68; color: #fff; padding: 5px 50px;">Selected</div>' : '';
+                                selectCardForCheckoutButton = parseInt(card.is_selected) === 0 ? '<button class="btn btn-outline-secondary select_card_for_account" data-id="' + card.id + '" style="position: absolute; left: 0; top: 0; border-radius: 0; padding: 5px 15px; font-size: 14px; border-color: #c9cfd5 !important;">Select for Checkout</button>' : '';
                                 if (parseInt(card.is_selected) === 1) {
                                     selectedCardLast4Digits = card.card_number.substr(-4);
                                 }
                                 $('#cards_container').append(`
                                     <div class="ps-xxl-4 ps-xl-4 ps-lg-4 ps-md-4 ps-sm-4 p-0">
-                                        <div class="card mb-4" style="background-color: ` + selectedCardColor + `">
+                                        <div class="card mb-4" style="background-color: ` + selectedCardColor + `; border-radius: 0;">
                                             <div class="card-body small">
-                                                ` + selectedText + `
-                                                <div class="row mt-3" id="card_` + card.id + `">
+                                                ` + selectedText + selectCardForCheckoutButton + `
+                                                <div class="row mt-4" id="card_` + card.id + `">
                                                     <div class="col-8">
                                                         <div>` + card.card_brand + ` ending in ` + cardNumberLast4Digits + `</div>
-                                                        <div>Expires on ` + card.expiry_month + '/' + card.expiry_year  + `</div>
-                                                        <div class="mt-3">` + cardLinks + `</div>
+                                                        <div class="mt-1">Expires on <span style="color: #084298;">` + card.expiry_month + '/' + card.expiry_year  + `</span></div>
+                                                        <div class="mt-3">` + bottomLinks + `</div>
                                                     </div>
                                                     <div class="col-4"><img src="` + cardBrandImagePath + `" class="img-fluid"></div>
                                                 </div>
@@ -1632,7 +1741,7 @@
                                 selectedCardLast4Digits = card.card_number.substr(-4);
                                 $('#cards_container').append(`
                                     <div class="ps-xxl-4 ps-xl-4 ps-lg-4 ps-md-4 ps-sm-4 p-0">
-                                        <div class="card">
+                                        <div class="card" style="border-radius: 0;">
                                             <div class="card-body small">
                                                 <div class="row mt-3" id="card_` + card.id + `">
                                                     <div class="col-8">
@@ -1653,11 +1762,11 @@
                             });
                         }
                         if (result.payload.length < 3) {
-                            $('#cards_container').append('<div class="mt-4 ps-4 d-grid"><button type="button" class="mod_button_1" id="add_card_for_account">Add New Card</button></div>');
+                            $('#cards_container').append('<div class="mt-4 ps-4 d-grid"><button type="button" class="mod_button_1" id="add_card_for_account" style="border-radius: 0;">Add New Card</button></div>');
                         }
 
                         $('#cards_container').show(1000);
-                        $('#payment_option_message').removeClass('text-danger').addClass('text-success').text('You will Finish Checkout with Card ending in ' + selectedCardLast4Digits);
+                        $('#payment_option_message').removeClass('text-danger').addClass('text-success').text('You will finish checkout with card ending in ' + selectedCardLast4Digits);
                         $('#place_order_button_text').text('Place Order');
                         $('#place_order_button').removeAttr('disabled');
                     } else {
@@ -1683,6 +1792,11 @@
                 cache: false,
                 success: function (result) {
                     console.log(result);
+                    if (result.payload !== null && Object.keys(result.payload).length > 0) {
+
+                    } else {
+
+                    }
                     if (result.payload !== null) {
 
                         $('#cards_container').empty();
@@ -1710,7 +1824,7 @@
                             </div>
                         `);
                         $('#cards_container').show(1000);
-                        $('#payment_option_message').removeClass('text-danger').addClass('text-success').text('You will Finish Checkout with Card ending in ' + result.payload.card_number.substr(-4));
+                        $('#payment_option_message').removeClass('text-danger').addClass('text-success').text('You will finish checkout with card ending in ' + result.payload.card_number.substr(-4));
                         $('#place_order_button_text').text('Place Order');
                         $('#place_order_button').removeAttr('disabled');
 
@@ -1778,6 +1892,8 @@
                         <form id="card_form_for_edit">
 
                             <input type="hidden" name="card_number" value="` + result.payload.card_number + `">
+                            <input type="hidden" name="first_name" value="` + result.payload.first_name + `">
+                            <input type="hidden" name="last_name" value="` + result.payload.last_name + `">
                             <div class="row mt-3">
                                 <div class="col-7">
                                     <div class="row">
@@ -1787,39 +1903,49 @@
                                 </div>
                                 <div class="col-5">
                                     <div class="form-floating">
-                                        <input type="text" autocomplete="off" class="form-control" name="security_code" id="security_code_for_edit" value="` + result.payload.security_code + `">
+                                        <input type="text" autocomplete="off" class="form-control border-0 border-bottom" name="security_code" id="security_code_for_edit" value="` + result.payload.security_code + `" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
                                         <label for="security_code_for_edit">Security Code</label>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="input-group my-4">
-                                <span class="input-group-text" style="font-size: small; color: #615f75; width: 24%;">Expiry Date</span>
-                                <div class="form-floating" style="width: 38%;">
-                                    <select class="form-select" name="expiry_month" id="expiry_month_for_edit" style="font-size: 12px;">
-                                        <option value="">Select Month</option>
-                                        ` + monthOptions + `
-                                    </select>
-                                    <label for="expiry_month_for_edit">Month</label>
-                                </div>
-                                <div class="form-floating" style="width: 38%;">
-                                    <select class="form-select" name="expiry_year" id="expiry_year_for_edit" style="font-size: 12px;">
-                                        <option value="">Select Year</option>
-                                        ` + yearOptions + `
-                                    </select>
-                                    <label for="expiry_year_for_edit">Year</label>
+
+                            <div class="row mt-4">
+                                <div class="col-3 pe-0"><div class="input-group-text small border-0 border-bottom text-wrap" style="color: #615f75; border-radius: 0; height: 100%; border-color: #b1b1b1 !important;">Expiry Date</div></div>
+                                <div class="col-9 ps-0">
+                                    <div class="row">
+                                        <div class="col pe-0">
+                                            <div class="form-floating">
+                                                <select class="form-select border-0 border-bottom" name="expiry_month" id="expiry_month_for_edit" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
+                                                    <option value="">Select Month</option>
+                                                    ` + monthOptions + `
+                                                </select>
+                                                <label for="expiry_month_for_edit">Month</label>
+                                            </div>
+                                        </div>
+                                        <div class="col ps-0">
+                                            <div class="form-floating">
+                                                <select class="form-select border-0 border-bottom" name="expiry_year" id="expiry_year_for_edit" style="font-size: 12px; border-color: #b1b1b1 !important; border-radius: 0;">
+                                                    <option value="">Select Year</option>
+                                                    ` + yearOptions + `
+                                                </select>
+                                                <label for="expiry_year_for_edit">Year</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row">
+
+                            <div class="row mt-4">
                                 <div class="col d-grid">
-                                    <button type="submit" class="mod_button_1" id="card_form_for_edit_submit_button">
+                                    <button type="submit" class="mod_button_1" id="card_form_for_edit_submit_button" style="border-radius: 0;">
                                         <span id="card_form_for_edit_submit_button_text">Update</span>
                                         <span id="card_form_for_edit_submit_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                     </button>
                                 </div>
                                 <div class="col d-grid">
-                                    <button type="button" class="mod_button_2" id="card_form_for_edit_cancel_button">Cancel</button>
+                                    <button type="button" class="mod_button_2" id="card_form_for_edit_cancel_button" style="border-radius: 0;">Cancel</button>
                                 </div>
                             </div>
 
@@ -1862,7 +1988,7 @@
                 }
 
             } else if ($(this).val() === 'PayPal') {
-                $('#payment_option_message').removeClass('text-danger').addClass('text-success').text('You will Finish Checkout with PayPal');
+                $('#payment_option_message').removeClass('text-danger').addClass('text-success').text('You will finish checkout with PayPal');
                 $('#place_order_button_text').text('Place Order');
                 $('#place_order_button').removeAttr('disabled');
                 $('#cards_container').hide(1000);
@@ -1906,6 +2032,11 @@
                         } else {
                             loadCardsForAccount();
                         }
+                        $('#cards_container').before('<div id="card_saved_alert"></div>');
+                        $('#card_saved_alert').addClass('alert alert-success alert-dismissible fade show mt-4').attr('role', 'alert').css('margin-left', '25px').append('<div>The card ending in ' + result.payload.card_number.substr(-4) + ' has been saved.</div>').append('<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>');
+                        setTimeout(function() {
+                            $("#card_saved_alert").alert('close');
+                        }, 10000);
                     } else {
                         $('#card_form').prepend('<div class="text-danger small invalid-feedback d-block mb-4">' + result.message + '</div>');
                     }
@@ -1921,19 +2052,34 @@
                     if (xhr.responseJSON.hasOwnProperty('errors')) {
 
                         $.each(xhr.responseJSON.errors, function (key, value) {
-                            if (key === 'expiry_month' || key === 'expiry_year') {
+                            if (key === 'expiry_month' || key === 'expiry_year' || key === 'first_name' || key === 'last_name') {
                                 if (key === 'expiry_month') {
-                                    $('#' + key).parent().parent().after('<div class="invalid-feedback expiry_month_error_message d-block mb-4"></div>');
+                                    $('#' + key).parent().parent().parent().parent().parent().after('<div class="invalid-feedback expiry_month_error_message d-block"></div>');
                                     $('#' + key).addClass('is-invalid');
                                     $.each(value, function (k, v) {
-                                        $('#' + key).parent().parent().parent().find('.expiry_month_error_message').append('<div>' + v + '</div>');
+                                        $('#card_form').parent().parent().find('.expiry_month_error_message').append('<div>' + v + '</div>');
                                     });
                                 }
                                 if (key === 'expiry_year') {
-                                    $('#' + key).parent().parent().after('<div class="invalid-feedback expiry_year_error_message d-block mb-4"></div>');
+                                    $('#' + key).parent().parent().parent().parent().parent().after('<div class="invalid-feedback expiry_year_error_message d-block"></div>');
                                     $('#' + key).addClass('is-invalid');
                                     $.each(value, function (k, v) {
-                                        $('#' + key).parent().parent().parent().find('.expiry_year_error_message').append('<div>' + v + '</div>');
+                                        $('#card_form').find('.expiry_year_error_message').append('<div>' + v + '</div>');
+                                    });
+                                }
+
+                                if (key === 'first_name') {
+                                    $('#' + key + '_for_card').parent().parent().parent().parent().parent().after('<div class="invalid-feedback first_name_for_card_error_message d-block"></div>');
+                                    $('#' + key + '_for_card').addClass('is-invalid');
+                                    $.each(value, function (k, v) {
+                                        $('#card_form').find('.first_name_for_card_error_message').append('<div>' + v + '</div>');
+                                    });
+                                }
+                                if (key === 'last_name') {
+                                    $('#' + key + '_for_card').parent().parent().parent().parent().parent().after('<div class="invalid-feedback last_name_for_card_error_message d-block"></div>');
+                                    $('#' + key + '_for_card').addClass('is-invalid');
+                                    $.each(value, function (k, v) {
+                                        $('#card_form').find('.last_name_for_card_error_message').append('<div>' + v + '</div>');
                                     });
                                 }
                             } else {
@@ -1998,9 +2144,9 @@
                 success: function (result) {
                     console.log(result);
                     if (result.success === false) {
-                        $('#payment_method_error_message').text(result.message);
+                        $('#payment_option_message').text(result.message);
                     } else if (result.success === true) {
-                        location = '{{ url('checkout/success') }}/' + result.payload.id;
+                        location = '{{ url('checkout/success') }}';
                     }
                 },
                 error: function (xhr) {
@@ -2010,75 +2156,7 @@
             });
         });
 
-        {{--$(document).on('submit', '#checkout_form', function () {--}}
-        {{--    $('#checkout_form').find('.is-invalid').removeClass('is-invalid');--}}
-        {{--    $('#checkout_form').find('.invalid-feedback').remove();--}}
-        {{--    $('#payment_method_error_message').empty();--}}
-        {{--    let formData = new FormData(this);--}}
-        {{--    formData.append('_token', '{{ csrf_token() }}');--}}
-        {{--    $.ajax({--}}
-        {{--        method: 'post',--}}
-        {{--        url: '{{ url('checkout') }}',--}}
-        {{--        data: formData,--}}
-        {{--        processData: false,--}}
-        {{--        contentType: false,--}}
-        {{--        cache: false,--}}
-        {{--        success: function (result) {--}}
-        {{--            console.log(result);--}}
-        {{--            if (result.success === false) {--}}
-        {{--                $('#payment_method_error_message').text(result.message);--}}
-        {{--            } else if (result.success === true) {--}}
-        {{--                location = '{{ url('checkout/success') }}/' + result.message.id;--}}
-        {{--            }--}}
-        {{--        },--}}
-        {{--        error: function (xhr) {--}}
-        {{--            console.log(xhr);--}}
-        {{--            if (xhr.hasOwnProperty('responseJSON')) {--}}
-        {{--                if (xhr.responseJSON.hasOwnProperty('errors')) {--}}
-        {{--                    $.each(xhr.responseJSON.errors, function (key, value) {--}}
 
-        {{--                        if (key !== 'phone' && key !== 'payment_method' && key !== 'country' && key !== 'expiry_month' && key !== 'expiry_year') {--}}
-        {{--                            $('#' + key).after('<div class="invalid-feedback"></div>');--}}
-        {{--                            $('#' + key).addClass('is-invalid');--}}
-        {{--                            $.each(value, function (k, v) {--}}
-        {{--                                $('#' + key).parent().find('.invalid-feedback').append(v + ' ');--}}
-        {{--                            });--}}
-        {{--                        } else {--}}
-        {{--                            if (key === 'phone' || key === 'country') {--}}
-        {{--                                $('#' + key).after('<div class="invalid-feedback"></div>');--}}
-        {{--                                $('#' + key).addClass('is-invalid');--}}
-        {{--                                $.each(value, function (k, v) {--}}
-        {{--                                    $('#' + key).parent().find('.invalid-feedback').append( v + ' ');--}}
-        {{--                                });--}}
-        {{--                            }--}}
-        {{--                            if (key === 'expiry_month' || key === 'expiry_year') {--}}
-        {{--                                if ($('#' + key).parent().find('.invalid-feedback').length === 0) {--}}
-        {{--                                    $('#' + key).parent().append('<span class="invalid-feedback"></span>');--}}
-        {{--                                }--}}
-        {{--                                $('#' + key).addClass('is-invalid');--}}
-        {{--                                $.each(value, function (k, v) {--}}
-        {{--                                    $('#' + key).parent().find('.invalid-feedback').append(v + ' ');--}}
-        {{--                                });--}}
-        {{--                            }--}}
-        {{--                            if (key === 'payment_method') {--}}
-
-        {{--                                $('#payment_method_error_message').text('Please Select a Payment Method');--}}
-        {{--                            }--}}
-
-
-
-        {{--                        }--}}
-
-
-
-        {{--                    });--}}
-        {{--                }--}}
-        {{--            }--}}
-        {{--        }--}}
-        {{--    });--}}
-
-        {{--    return false;--}}
-        {{--});--}}
     </script>
 
 

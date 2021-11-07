@@ -14,8 +14,9 @@ use App\Models\AccountCard;
 use App\Models\AccountShipping;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\User;
 use App\Models\UserNotification;
-use App\Models\Guest;
+use App\Models\GuestAccount;
 use App\Models\AccountNotification;
 use App\Models\Option;
 use App\Models\Order;
@@ -58,6 +59,22 @@ use \Stripe\Exception\ApiErrorException;
 
 class CheckoutController extends Controller
 {
+
+    protected $months = [
+        '01' => 'January',
+        '02' => 'February',
+        '03' => 'March',
+        '04' => 'April',
+        '05' => 'May',
+        '06' => 'June',
+        '07' => 'July',
+        '08' => 'August',
+        '09' => 'September',
+        '10' => 'October',
+        '11' => 'November',
+        '12' => 'December',
+    ];
+
     //private $apiContext;
 
 //    public function __construct()
@@ -102,15 +119,11 @@ class CheckoutController extends Controller
         return response()->json(['success' => true, 'message' => 'Checkout Items Fetched Successfully', 'payload' => Session::get('checkout_items')]);
     }
 
-//    public function getAccountDeliveryAddress(): JsonResponse
-//    {
-//        $accountShipping = AccountShipping::where('account_id', auth()->user()->account->id)->where('is_primary', 1)->first();
-//        return response()->json(['success' => true, 'message' => 'Account Delivery Address Fetched Successfully', 'payload' => $accountShipping]);
-//    }
+
 
     public function getAccountDeliveryAddresses(): JsonResponse
     {
-        $accountShippings = AccountShipping::where('account_id', auth()->user()->account->id)->latest('is_selected')->latest('created_at')->get();
+        $accountShippings = AccountShipping::where('account_id', auth()->user()->account->id)->latest('is_selected')->latest('created_at')->with('country')->get();
         return response()->json(['success' => true, 'message' => 'Delivery Addresses Fetched Successfully', 'payload' => $accountShippings]);
     }
 
@@ -128,18 +141,17 @@ class CheckoutController extends Controller
     }
     public function getAccountDeliveryAddressById(Request $request): JsonResponse
     {
-        $accountShipping = AccountShipping::where('id', $request->id)->first();
+        $accountShipping = AccountShipping::where('id', $request->id)->with('country')->first();
         return response()->json(['success' => true, 'message' => 'Delivery Address Fetched Successfully', 'payload' => $accountShipping]);
     }
 
     public function saveAccountDeliveryAddress(DeliveryAddressRequest $request): JsonResponse
     {
-        $country = Country::where('id', $request->country_id)->first()->country;
         $accountShipping = $request->has('id') ? AccountShipping::find($request->id) : new AccountShipping();
         $accountShipping->account_id = auth()->user()->account->id;
         $accountShipping->first_name = $request->first_name;
         $accountShipping->last_name = $request->last_name;
-        $accountShipping->country = $country;
+        $accountShipping->country_id = $request->country_id;
         $accountShipping->state = $request->state;
         $accountShipping->city = $request->city;
         $accountShipping->postal_code = $request->postal_code;
@@ -147,53 +159,31 @@ class CheckoutController extends Controller
         $accountShipping->address_line_2 = $request->address_line_2;
         $accountShipping->phone = $request->phone;
         $accountShipping->email = $request->email;
-//        if ($request->has('id')) {
-//            if ($request->has('is_primary')) {
-//                if ($request->is_primary) {
-//                    AccountShipping::where('account_id', auth()->user()->account->id)->update(['is_primary' => 0]);
-//                    $accountShipping->is_primary = 1;
-//                }
-//            }
-//        } else {
-//            if ($request->is_primary === 'true' || (int)$request->is_primary === 1) {
-//                AccountShipping::where('account_id', auth()->user()->account->id)->update(['is_primary' => 0]);
-//                $accountShipping->is_primary = 1;
-//            } else {
-//                $accountShipping->is_primary = 0;
-//            }
-//            if ($request->has('is_selected')) {
-//                $accountShipping->is_selected = $request->is_selected;
-//            } else {
-//                $accountShipping->is_selected = 0;
-//            }
-//        }
-
         if ( ! $request->has('id')) {
+            AccountShipping::where('account_id', auth()->user()->account->id)->update(['is_selected' => 0]);
             $accountShipping->is_selected = 1;
         }
-
         $accountShipping->save();
         return response()->json(['success' => true, 'message' => 'Delivery Address Saved Successfully', 'payload' => null]);
     }
 
     public function getGuestDeliveryAddress(): JsonResponse
     {
-        return response()->json(['success' => true, 'message' => 'Guest Delivery Address Fetched Successfully', 'payload' => Session::get('delivery_address_for_guest')]);
+        $shippingAddress = Session::get('delivery_address_for_guest');
+        return response()->json(['success' => true, 'message' => 'Guest Delivery Address Fetched Successfully', 'payload' => $shippingAddress]);
     }
 
     public function saveGuestDeliveryAddress(DeliveryAddressRequest $request): JsonResponse
     {
-        $country = Country::where('id', $request->country_id)->first()->country;
-        $deliveryAddress = $request->except(['_token', 'country_id']);
-        $deliveryAddress['country'] = $country;
-        Session::forget('delivery_address_for_guest');
+        $deliveryAddress = $request->except(['_token']);
+        $deliveryAddress['country'] = Country::where('id', $request->country_id)->first();
         Session::put('delivery_address_for_guest', $deliveryAddress);
         return response()->json(['success' => true, 'message' => 'Delivery Address Saved Successfully', 'payload' => null]);
     }
 
     public function getAccountBillingAddress(): JsonResponse
     {
-        $accountBilling = AccountBilling::where('account_id', auth()->user()->account->id)->first();
+        $accountBilling = AccountBilling::where('account_id', auth()->user()->account->id)->with('country')->first();
         return response()->json(['success' => true, 'message' => 'Account Billing Address Fetched Successfully', 'payload' => $accountBilling]);
     }
 
@@ -205,19 +195,18 @@ class CheckoutController extends Controller
 
     public function getAccountBillingAddressById(Request $request): JsonResponse
     {
-        $accountBilling = AccountBilling::where('id', $request->id)->first();
+        $accountBilling = AccountBilling::where('id', $request->id)->with('country')->first();
         return response()->json(['success' => true, 'message' => 'Billing Address Fetched Successfully', 'payload' => $accountBilling]);
     }
 
 
     public function saveBillingAddressForAccount(DeliveryAddressRequest $request): JsonResponse
     {
-        $country = Country::where('id', $request->country_id)->first()->country;
         $accountBilling = AccountBilling::find($request->id);
         $accountBilling->account_id = auth()->user()->account->id;
         $accountBilling->first_name = $request->first_name;
         $accountBilling->last_name = $request->last_name;
-        $accountBilling->country = $country;
+        $accountBilling->country_id = $request->country_id;
         $accountBilling->state = $request->state;
         $accountBilling->city = $request->city;
         $accountBilling->postal_code = $request->postal_code;
@@ -231,10 +220,9 @@ class CheckoutController extends Controller
 
     public function saveBillingAddressForGuest(DeliveryAddressRequest $request): JsonResponse
     {
-        $country = Country::where('id', $request->country_id)->first()->country;
-        $billingAddress = $request->except(['_token', 'country_id']);
-        $billingAddress['country'] = $country;
-        Session::forget('billing_address_for_guest');
+
+        $billingAddress = $request->except(['_token']);
+        $billingAddress['country'] = Country::where('id', $request->country_id)->first();
         Session::put('billing_address_for_guest', $billingAddress);
         return response()->json(['success' => true, 'message' => 'Billing Address Saved Successfully', 'payload' => null]);
     }
@@ -277,26 +265,11 @@ class CheckoutController extends Controller
             $stripeConf['secret']
         );
 
-        $months = [
-            '01' => 'January',
-            '02' => 'February',
-            '03' => 'March',
-            '04' => 'April',
-            '05' => 'May',
-            '06' => 'June',
-            '07' => 'July',
-            '08' => 'August',
-            '09' => 'September',
-            '10' => 'October',
-            '11' => 'November',
-            '12' => 'December',
-        ];
-
         try {
             $token = $stripe->tokens->create([
                 'card' => [
                     'number' => $request->card_number,
-                    'exp_month' => array_keys($months, $request->expiry_month)[0],
+                    'exp_month' => array_keys($this->months, $request->expiry_month)[0],
                     'exp_year' => $request->expiry_year,
                     'cvc' => $request->security_code,
                 ],
@@ -312,19 +285,17 @@ class CheckoutController extends Controller
             $accountCard = $request->has('id') ? AccountCard::find($request->id) : new AccountCard();
             if ( ! $request->has('id')) {
                 $accountCard->account_id = auth()->user()->account->id;
+                $accountCard->first_name = $request->first_name;
+                $accountCard->last_name = $request->last_name;
                 $accountCard->card_number = $request->card_number;
                 $accountCard->card_brand = $token->card->brand;
+                $accountCard->is_selected = 1;
             }
-
             $accountCard->security_code = $request->security_code;
             $accountCard->expiry_month = $request->expiry_month;
             $accountCard->expiry_year = $request->expiry_year;
-            if ( ! $request->has('id')) {
-                $accountCard->is_selected = 1;
-            }
-
             $accountCard->save();
-            return response()->json(['success' => true, 'message' => 'Card Saved Successfully', 'payload' => null]);
+            return response()->json(['success' => true, 'message' => 'Card Saved Successfully', 'payload' => $accountCard]);
 
 
         } catch (Exception $exception) {
@@ -353,26 +324,11 @@ class CheckoutController extends Controller
             $stripeConf['secret']
         );
 
-        $months = [
-            '01' => 'January',
-            '02' => 'February',
-            '03' => 'March',
-            '04' => 'April',
-            '05' => 'May',
-            '06' => 'June',
-            '07' => 'July',
-            '08' => 'August',
-            '09' => 'September',
-            '10' => 'October',
-            '11' => 'November',
-            '12' => 'December',
-        ];
-
         try {
             $token = $stripe->tokens->create([
                 'card' => [
                     'number' => $request->card_number,
-                    'exp_month' => array_keys($months, $request->expiry_month)[0],
+                    'exp_month' => array_keys($this->months, $request->expiry_month)[0],
                     'exp_year' => $request->expiry_year,
                     'cvc' => $request->security_code,
                 ],
@@ -384,11 +340,17 @@ class CheckoutController extends Controller
             $guestCard['card_brand'] = $token->card->brand;
             Session::forget('card_for_guest');
             Session::put('card_for_guest', $guestCard);
-            return response()->json(['success' => true, 'message' => 'Card Saved Successfully', 'payload' => null]);
+            return response()->json(['success' => true, 'message' => 'Card Saved Successfully', 'payload' => $guestCard]);
 
         } catch (Exception $exception) {
             return response()->json(['success' => false, 'message' => $exception->getMessage(), 'payload' => null]);
         }
+    }
+
+    public function getCountryId(Request $request)
+    {
+        $country = Country::where('id', $request->id)->first();
+        return response()->json(['success' => true, 'message' => 'Country Information', 'payload' => $country]);
     }
 
 
@@ -409,102 +371,27 @@ class CheckoutController extends Controller
 
     public function processCheckout(CheckoutRequest $request): JsonResponse
     {
-
-//        $clientId = env('PAYPAL_CLIENT_ID');
-//        $clientSecret = env('PAYPAL_SECRET');
-//
-//        $environment = new SandboxEnvironment($clientId, $clientSecret);
-//        $client = new PayPalHttpClient($environment);
-//
-//        $request = new OrdersCreateRequest();
-//
-//
-//        $request->prefer('return=representation');
-//        $request->body = [
-//            "intent" => "CAPTURE",
-//            "purchase_units" => [[
-//                "reference_id" => "test_ref_id1",
-//                "amount" => [
-//                    "value" => "100.00",
-//                    "currency_code" => "USD"
-//                ]
-//            ]],
-//            "application_context" => [
-//                "cancel_url" => "https://example.com/cancel",
-//                "return_url" => "https://example.com/return"
-//            ]
-//        ];
-//
-//        try {
-//
-//            $response = $client->execute($request);
-//
-//
-//            print_r($response->statusCode);
-//        }catch (HttpException $ex) {
-//            echo $ex->statusCode;
-//            print_r($ex->getMessage());
-//        }
-//
-//
-//
-//        $shippingInformation = $request->all(['first_name_for_shipping', 'last_name_for_shipping', 'address_line_1_for_shipping', 'address_line_2_for_shipping', 'country_for_shipping', 'city_for_shipping', 'region_for_shipping', 'postal_code_for_shipping', 'email_for_shipping', 'phone_for_shipping']);
-//        Session::put('shipping_information', $shippingInformation);
-//
-//        if ($request->has('different_from_shipping_information')) {
-//            $billingInformation = $request->all(['first_name_for_billing', 'last_name_for_billing', 'address_line_1_for_billing', 'address_line_2_for_billing', 'country_for_billing', 'city_for_billing', 'region_for_billing', 'postal_code_for_billing', 'email_for_billing', 'phone_for_billing']);
-//            $billingInformation['is_different_from_shipping'] = true;
-//        } else {
-//            $billingInformation['is_different_from_shipping'] = false;
-//        }
-//        Session::put('billing_information', $billingInformation);
-//
-//        if ($request->get('payment_method') === 'Card') {
-//            $cardInformation = $request->all(['card_number', 'card_cvc', 'expiry_month', 'expiry_year']);
-//            Session::put('card_information', $cardInformation);
-//        }
-//        if ($request->has('create_an_account')) {
-//            $accountInformation = $request->all(['first_name_for_account', 'last_name_for_account', 'email_for_account', 'password_for_account']);
-//        } else {
-//            $accountInformation = null;
-//        }
-//        Session::put('account_information', $accountInformation);
         if ($request->payment_option === 'PayPal') {
             $this->initiatePaypal();
         } elseif ($request->payment_option === 'Card') {
-            return response()->json($this->initiateCard());
+            return response()->json($this->processStripe());
         }
-
     }
 
 
-    public function initiateCard(): array
+    public function processStripe(): array
     {
         $stripeConf = Config::get('stripe');
         $stripe = new StripeClient(
             $stripeConf['secret']
         );
-        $months = [
-            '01' => 'January',
-            '02' => 'February',
-            '03' => 'March',
-            '04' => 'April',
-            '05' => 'May',
-            '06' => 'June',
-            '07' => 'July',
-            '08' => 'August',
-            '09' => 'September',
-            '10' => 'October',
-            '11' => 'November',
-            '12' => 'December',
-        ];
-        $cardInformation = auth()->check() ? AccountCard::where('account_id', auth()->user()->account->id)->where('is_selected', 1)->first() : Session::get('card_for_guest');
-        //return ['success' => true, 'message' => 'nothing', 'payload' => array_keys($months, $cardInformation['expiry_month'])[0]];
+
         try {
+            $cardInformation = auth()->check() ? AccountCard::where('account_id', auth()->user()->account->id)->where('is_selected', 1)->first() : Session::get('card_for_guest');
             $token = $stripe->tokens->create([
                 'card' => [
                     'number' => $cardInformation['card_number'],
-                    'exp_month' => intval(array_keys($months, $cardInformation['expiry_month'])[0]),
+                    'exp_month' => intval(array_keys($this->months, $cardInformation['expiry_month'])[0]),
                     'exp_year' => intval($cardInformation['expiry_year']),
                     'cvc' => $cardInformation['security_code'],
                 ],
@@ -516,28 +403,50 @@ class CheckoutController extends Controller
             $checkoutItems = Session::get('checkout_items');
             $checkoutTotal = 0;
             foreach ($checkoutItems as $key => $checkoutItem) {
-                //return ['success' => true, 'message' => 'nothing', 'payload' => $checkoutItem];
                 $checkoutTotal += $checkoutItem->productProperties->where('property.property', 'Price')->first('value')->value * $checkoutItem->quantity;
             }
-            //return ['success' => true, 'message' => 'nothing', 'payload' => $checkoutTotal];
-
             $charge = $stripe->charges->create([
                 'currency' => 'USD',
                 'amount' => $checkoutTotal * 100,
                 'source' => $token->id,
                 'description' => 'Checkout',
             ]);
-
-            //return ['success' => true, 'message' => 'nothing', 'payload' => $charge];
-
             if($charge->status == 'succeeded') {
-
-
                 if (auth()->check()) {
                     $account = auth()->user()->account;
                     $shippingInformation = AccountShipping::where('account_id', auth()->user()->account->id)->where('is_selected', 1)->first();
                     $billingInformation = AccountBilling::where('account_id', auth()->user()->account->id)->first();
                 } else {
+                    $shippingInformation = Session::get('delivery_address_for_guest');
+                    $billingInformation = Session::get('billing_address_for_guest');
+                    $user = new User();
+                    $user->name = $billingInformation['first_name'] . ' ' . $billingInformation['last_name'];
+                    $user->email = $billingInformation['email'];
+                    $user->type = 'Account';
+                    $user->status = 'Inactive';
+                    $user->save();
+
+                    $latestGuestAccount = Account::where('type', 'Guest')->latest()->first();
+                    if ($latestGuestAccount) {
+                        $number = explode('-', $latestGuestAccount->number)[2] + 1;
+                    } else {
+                        $number = 100000;
+                    }
+                    $account = new Account();
+                    $account->user_id = $user->id;
+                    $account->number = 'G-' . date('Ymd') . '-' . $number;
+                    $account->type = 'Guest';
+                    $account->status = 'Pending';
+                    $account->save();
+
+                    $guestAccount = new GuestAccount();
+                    $guestAccount->account_id = $account->id;
+                    $guestAccount->first_name = $billingInformation['first_name'];
+                    $guestAccount->last_name = $billingInformation['last_name'];
+                    $guestAccount->email = $billingInformation['email'];
+                    $guestAccount->phone = $billingInformation['phone'];
+                    $guestAccount->save();
+
 
                 }
                 $currentDateOrderCount = count(Order::whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', date('Y-m-d') . ' 23:59:59'])->get()) + 1;
@@ -558,7 +467,7 @@ class CheckoutController extends Controller
                 $orderShipping->phone = $shippingInformation['phone'];
                 $orderShipping->address_line_1 = $shippingInformation['address_line_1'];
                 $orderShipping->address_line_2 = $shippingInformation['address_line_2'];
-                $orderShipping->country = $shippingInformation['country'];
+                $orderShipping->country_id = $shippingInformation['country_id'];
                 $orderShipping->city = $shippingInformation['city'];
                 $orderShipping->state = $shippingInformation['state'];
                 $orderShipping->postal_code = $shippingInformation['postal_code'];
@@ -572,7 +481,7 @@ class CheckoutController extends Controller
                 $orderBilling->phone = $billingInformation['phone'];
                 $orderBilling->address_line_1 = $billingInformation['address_line_1'];
                 $orderBilling->address_line_2 = $billingInformation['address_line_2'];
-                $orderBilling->country = $billingInformation['country'];
+                $orderBilling->country_id = $billingInformation['country_id'];
                 $orderBilling->city = $billingInformation['city'];
                 $orderBilling->region = $billingInformation['state'];
                 $orderBilling->postal_code = $billingInformation['postal_code'];
@@ -607,6 +516,10 @@ class CheckoutController extends Controller
                     $userNotification->save();
                 }
                 Session::forget(['checkout_items', 'cart_items']);
+                if ( ! auth()->check()) {
+                    Session::forget(['delivery_address_for_guest', 'billing_address_for_guest', 'card_for_guest']);
+                }
+                Session::put('order_id', $order->id);
                 return ['success' => true, 'message' => 'Order Placed Successfully', 'payload' => $order];
             } else {
                 return ['success' => false, 'message' => 'Failed to Charge the Payment', 'payload' => null];
@@ -627,10 +540,14 @@ class CheckoutController extends Controller
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage(), 'payload' => null];
         }
+    }
 
-
-
-
+    public function success()
+    {
+        $title = 'Order Confirmation';
+        $activeNav = 'Order Confirmation';
+        $order = Order::where('id', Session::get('order_id'))->with(['account', 'orderShipping', 'orderTransactions.product.account', 'orderTransactions.product.productProperties'])->first();
+        return view('Frontend.checkout_success', compact('title', 'activeNav', 'order'));
     }
 
 
@@ -748,7 +665,7 @@ class CheckoutController extends Controller
         if ($result->getState() == 'approved') {
 
             $shipTo = Session::get('ship_to');
-            $guest = new Guest();
+            $guest = new GuestAccount();
             $guest->country = $shipTo['country'];
             $guest->first_name = $shipTo['first_name'];
             $guest->last_name = $shipTo['last_name'];
@@ -793,13 +710,7 @@ class CheckoutController extends Controller
     }
 
 
-    public function success($orderId)
-    {
-        $title = 'Order Confirmation';
-        $activeNav = 'Order Confirmation';
-        $order = Order::where('id', $orderId)->with(['account', 'orderShipping', 'orderTransactions.product.account', 'orderTransactions.product.productProperties'])->first();
-        return view('Frontend.checkout_success', compact('title', 'activeNav', 'order'));
-    }
+
 
     public function paypalPaymentCancel()
     {

@@ -30,6 +30,18 @@ class CardRequest extends FormRequest
             'numeric'
         ];
 
+        $rules['first_name'] = [
+            'required',
+            'string',
+            'max:255'
+        ];
+
+        $rules['last_name'] = [
+            'required',
+            'string',
+            'max:255'
+        ];
+
         $rules['card_number'] = [
             'required',
             'digits_between:14,16',

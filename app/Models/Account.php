@@ -19,7 +19,9 @@ class Account extends Model
         return $this->hasOne(BusinessAccount::class);
     }
 
-
+    public function guestAccount() {
+        return $this->hasOne(GuestAccount::class);
+    }
 
     public function connectedAccounts()
     {

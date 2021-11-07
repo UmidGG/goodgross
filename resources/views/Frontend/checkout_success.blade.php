@@ -11,7 +11,7 @@
         @endphp
     @endforeach
 
-    <div class="container-fluid">
+    <div class="container-fluid bg-white">
 
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mx-auto">
@@ -25,35 +25,36 @@
                 </div>
 
 
-                <div class="row mt-4 bg-white">
+                <div class="row mt-4">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-7 mx-auto">
 
 
+{{--                        <div class="row mt-4 border-bottom pb-4" style="border-color: #e8f3ed !important;">--}}
+{{--                            <div class="col text-center">--}}
+{{--                                <div><i class="far fa-check-circle text-success fa-3x"></i></div>--}}
+{{--                                <div class="mt-3 text-success">Order Placed Successfully</div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+
+
                         <div class="row mt-4 border-bottom pb-4" style="border-color: #e8f3ed !important;">
-                            <div class="col text-center">
-                                <div><i class="far fa-check-circle text-success fa-3x"></i></div>
-                                <div class="mt-3 text-success">Order Placed Successfully</div>
-                            </div>
-                        </div>
-
-
-                        <div class="row mt-3 border-bottom pb-4" style="border-color: #e8f3ed !important;">
                             <div class="col">
-                                <div>Hi {{ $order->account->type === 'Personal' ? $order->account->personalAccount->first_name : $order->account->businessAccount->name }},</div>
-                                <div class="mt-3 lead">
+{{--                                <div>Hi {{ $order->account->type === 'Personal' ? $order->account->personalAccount->first_name : ($order->account->type === 'Business' ? $order->account->businessAccount->name : $order->account->guestAccount->first_name) }},</div>--}}
+                                <div>Hi Guest,</div>
+                                <div class="mt-2 lead">
                                     <i class="fas fa-check text-success"></i> <span class="text-success">Your order has been confirmed.</span>
                                 </div>
-                                <div class="mt-3 text-justify">
+                                <div class="mt-2 text-justify">
                                     Thanks you so much for shopping with us. Your order is being processed for shipping and you will be notified soon by email.
                                 </div>
 
                             </div>
                         </div>
 
-                        <div class="row mt-4 border-bottom pb-4" style="border-color: #e8f3ed !important;">
+                        <div class="row mt-4 border-bottom" style="border-color: #e8f3ed !important;">
                             <div class="col-12 col-sm-6">
-                                <div class="pt-xxl-3">Order: <span class="font-weight-bold"><a href="#" class="text-info text-decoration-none">{{ $order->number }}</a></span></div>
-                                <div class="mt-3"><button type="button" class="btn primary_btn_default">Track or Manage Order</button></div>
+                                <div class="pt-xxl-3">Order: <span class="font-weight-bold"><a href="#" class="text-success text-decoration-none">{{ $order->number }}</a></span></div>
+                                <div class="mt-2"><button type="button" class="btn primary_btn_default">Track or Manage Order</button></div>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <table class="table table-borderless w-100">
@@ -82,7 +83,7 @@
 
 
 
-                        <div class="row mt-4 border-bottom pb-4" style="border-color: #e8f3ed !important;">
+                        <div class="row mt-4 border-bottom" style="border-color: #e8f3ed !important;">
                             <div class="col">
 
                                 @foreach($order->orderTransactions as $orderTransaction)
@@ -124,26 +125,18 @@
                                 <div class="shadow-sm p-3">
                                     <div class="row">
                                         <div class="col-12 col-sm-6 border-end">
-                                            <div class="card border-0">
-                                                <div class="card-body">
-                                                    <div class="text-success">Shipping To</div>
-                                                    <div class="small">
-                                                        <div>{{ $order->orderShipping->first_name }} {{ $order->orderShipping->first_name }}</div>
-                                                        <div>{{ $order->orderShipping->address_line_1 }}</div>
-                                                        <div>{{ $order->orderShipping->address_line_2 }}</div>
-                                                        <div>{{ $order->orderShipping->city }} {{ $order->orderShipping->state }} {{ $order->orderShipping->postal_code }}</div>
-                                                        <div>{{ $order->orderShipping->country }}</div>
-                                                    </div>
-                                                </div>
+                                            <div class="text-success">Shipping To</div>
+                                            <div class="small">
+                                                <div>{{ $order->orderShipping->first_name }} {{ $order->orderShipping->first_name }}</div>
+                                                <div>{{ $order->orderShipping->address_line_1 }}</div>
+                                                <div>{{ $order->orderShipping->address_line_2 }}</div>
+                                                <div>{{ $order->orderShipping->city }} {{ $order->orderShipping->state }} {{ $order->orderShipping->postal_code }}</div>
+                                                <div>{{ $order->orderShipping->country }}</div>
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
-                                            <div class="card border-0 mt-5">
-                                                <div class="card-body">
-                                                    <div class="text-secondary">Estimated Delivery</div>
-                                                    <div class="small">{{ date('F d, Y', strtotime('+7 days', strtotime(date('Y-m-d')))) }} - {{ date('F d, Y', strtotime('+10 days', strtotime(date('Y-m-d')))) }}</div>
-                                                </div>
-                                            </div>
+                                            <div class="text-secondary mt-4">Estimated Delivery</div>
+                                            <div class="small">{{ date('F d, Y', strtotime('+7 days', strtotime(date('Y-m-d')))) }} - {{ date('F d, Y', strtotime('+10 days', strtotime(date('Y-m-d')))) }}</div>
 
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2021 at 10:50 PM
+-- Generation Time: Nov 05, 2021 at 10:37 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.16
 
@@ -45,7 +45,8 @@ CREATE TABLE `accounts` (
 INSERT INTO `accounts` (`id`, `user_id`, `number`, `type`, `verification_code`, `status`, `created_at`, `updated_at`) VALUES
 (1, 2, 'P-20210518-100000', 'Personal', NULL, 'Verified', '2021-05-18 14:15:59', '2021-05-18 14:20:23'),
 (2, 3, 'R-20210604-100000', 'Business', NULL, 'Verified', '2021-06-04 14:22:07', '2021-06-04 14:23:26'),
-(3, 4, 'W-20210615-100000', 'Business', NULL, 'Verified', '2021-06-15 15:24:00', '2021-06-15 15:28:30');
+(3, 4, 'W-20210615-100000', 'Business', NULL, 'Verified', '2021-06-15 15:24:00', '2021-06-15 15:28:30'),
+(4, 5, 'G-20211030-100000', 'Guest', NULL, 'Pending', '2021-10-30 05:19:51', '2021-10-30 05:19:51');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,7 @@ CREATE TABLE `account_billings` (
   `phone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `address_line_1` mediumtext COLLATE utf8_unicode_ci DEFAULT NULL,
   `address_line_2` mediumtext COLLATE utf8_unicode_ci DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `country_id` int(10) UNSIGNED DEFAULT NULL,
   `city` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `state` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `postal_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -74,8 +75,9 @@ CREATE TABLE `account_billings` (
 -- Dumping data for table `account_billings`
 --
 
-INSERT INTO `account_billings` (`id`, `account_id`, `first_name`, `last_name`, `email`, `phone`, `address_line_1`, `address_line_2`, `country`, `city`, `state`, `postal_code`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Umid', 'Tadjitdin', 'abc@gmail.com', '123456', 'Homme House', 'Darker Lane', 'United States', 'Arizona', 'Arizona', '123456', '2021-10-08 12:37:15', '2021-10-12 21:54:29');
+INSERT INTO `account_billings` (`id`, `account_id`, `first_name`, `last_name`, `email`, `phone`, `address_line_1`, `address_line_2`, `country_id`, `city`, `state`, `postal_code`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Umid', 'Tadjitdin', 'abc@gmail.com', '123456', 'Homme House', 'Darker Lane', 223, 'Arizona', 'Arizona', '123456', '2021-10-08 12:37:15', '2021-10-12 21:54:29'),
+(2, 2, 'Tasmia', 'Tashahud', 'tasmiatashahud@gmail.com', '1234567890', '1200, Airport Rd', NULL, 223, 'Sedona', 'Arizona', '86336', '2021-10-30 05:38:23', '2021-11-04 02:52:10');
 
 -- --------------------------------------------------------
 
@@ -87,6 +89,8 @@ CREATE TABLE `account_cards` (
   `id` int(10) UNSIGNED NOT NULL,
   `account_id` int(10) UNSIGNED DEFAULT NULL,
   `card_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `first_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `card_brand` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `security_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `expiry_month` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -100,9 +104,12 @@ CREATE TABLE `account_cards` (
 -- Dumping data for table `account_cards`
 --
 
-INSERT INTO `account_cards` (`id`, `account_id`, `card_number`, `card_brand`, `security_code`, `expiry_month`, `expiry_year`, `is_selected`, `created_at`, `updated_at`) VALUES
-(13, 1, '371449635398431', 'American Express', '123', 'December', 2025, 1, '2021-10-25 15:26:37', '2021-10-27 15:02:28'),
-(14, 1, '2223003122003222', 'MasterCard', '123', 'December', 2026, 0, '2021-10-25 15:27:06', '2021-10-27 15:02:28');
+INSERT INTO `account_cards` (`id`, `account_id`, `card_number`, `first_name`, `last_name`, `card_brand`, `security_code`, `expiry_month`, `expiry_year`, `is_selected`, `created_at`, `updated_at`) VALUES
+(13, 1, '371449635398431', NULL, NULL, 'American Express', '123', 'December', 2025, 1, '2021-10-25 15:26:37', '2021-10-27 15:02:28'),
+(14, 1, '2223003122003222', NULL, NULL, 'MasterCard', '123', 'December', 2026, 0, '2021-10-25 15:27:06', '2021-10-27 15:02:28'),
+(26, 2, '6011111111111117', 'Harry', 'Billo', 'Discover', '123', 'December', 2027, 0, '2021-11-05 14:17:41', '2021-11-05 14:22:22'),
+(27, 2, '6011000990139424', 'Manka', 'Manu', 'Discover', '123', 'December', 2024, 0, '2021-11-05 14:21:48', '2021-11-05 14:22:22'),
+(28, 2, '378282246310005', 'Lira', 'Mann', 'American Express', '123', 'December', 2025, 1, '2021-11-05 14:22:22', '2021-11-05 14:22:22');
 
 -- --------------------------------------------------------
 
@@ -144,7 +151,7 @@ CREATE TABLE `account_shippings` (
   `phone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `address_line_1` mediumtext COLLATE utf8_unicode_ci DEFAULT NULL,
   `address_line_2` mediumtext COLLATE utf8_unicode_ci DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `country_id` int(10) UNSIGNED DEFAULT NULL,
   `city` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `state` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `postal_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -157,8 +164,9 @@ CREATE TABLE `account_shippings` (
 -- Dumping data for table `account_shippings`
 --
 
-INSERT INTO `account_shippings` (`id`, `account_id`, `first_name`, `last_name`, `email`, `phone`, `address_line_1`, `address_line_2`, `country`, `city`, `state`, `postal_code`, `is_selected`, `created_at`, `updated_at`) VALUES
-(6, 1, 'David', 'Dhawana', 'info@scoutbeyond.com', '123456789', 'Samoa House', 'American Lane', 'United States', 'Samoa', 'American Samoa', '123456', 1, '2021-10-27 11:15:43', '2021-10-27 12:49:56');
+INSERT INTO `account_shippings` (`id`, `account_id`, `first_name`, `last_name`, `email`, `phone`, `address_line_1`, `address_line_2`, `country_id`, `city`, `state`, `postal_code`, `is_selected`, `created_at`, `updated_at`) VALUES
+(6, 1, 'David', 'Dhawana', 'info@scoutbeyond.com', '123456789', 'Samoa House', 'American Lane', 223, 'Samoa', 'Alaska', '123456', 1, '2021-10-27 11:15:43', '2021-10-27 12:49:56'),
+(10, 2, 'Melan', 'Jola', 'info@melanjola.com', '56931556', 'Lane 25, Parker Street', NULL, 223, 'Manda', 'Delaware', '63001', 1, '2021-11-04 01:08:41', '2021-11-04 01:34:19');
 
 -- --------------------------------------------------------
 
@@ -405,7 +413,14 @@ INSERT INTO `connected_accounts` (`id`, `account_id`, `connected_account_id`, `c
 
 CREATE TABLE `countries` (
   `id` int(10) UNSIGNED NOT NULL,
-  `country` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `code` varchar(2) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `capital` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `region` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `currency_code` varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `currency_symbol` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `flag` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dialling_code` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -415,256 +430,240 @@ CREATE TABLE `countries` (
 -- Dumping data for table `countries`
 --
 
-INSERT INTO `countries` (`id`, `country`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Afghanistan', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(2, 'Albania', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(3, 'Algeria', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(4, 'American Samoa', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(5, 'Andorra', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(6, 'Angola', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(7, 'Anguilla', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(8, 'Antarctica', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(9, 'Antigua & Barbuda', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(10, 'Argentina', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(11, 'Armenia', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(12, 'Aruba', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(13, 'Australia', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(14, 'Austria', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(15, 'Azerbaijan', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(16, 'Bahamas', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(17, 'Bahrain', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(18, 'Bangladesh', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(19, 'Barbados', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(20, 'Belarus', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(21, 'Belgium', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(22, 'Belize', 'Active', '2021-02-21 17:04:52', '2021-02-21 17:04:52'),
-(23, 'Benin', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(24, 'Bermuda', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(25, 'Bhutan', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(26, 'Bolivia', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(27, 'Bosnia & Herzegovina', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(28, 'Botswana', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(29, 'Bouvet Island', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(30, 'Brazil', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(31, 'British Indian Ocean Territory', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(32, 'British Virgin Islands', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(33, 'Brunei', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(34, 'Bulgaria', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(35, 'Burkina Faso', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(36, 'Burundi', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(37, 'Cambodia', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(38, 'Cameroon', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(39, 'Canada', 'Active', '2021-02-21 17:04:53', '2021-02-21 17:04:53'),
-(40, 'Cape Verde', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(41, 'Caribbean Netherlands', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(42, 'Cayman Islands', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(43, 'Central African Republic', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(44, 'Chad', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(45, 'Chile', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(46, 'China', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(47, 'Christmas Island', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(48, 'Cocos (Keeling) Islands', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(49, 'Colombia', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(50, 'Comoros', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(51, 'Congo - Brazzaville', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(52, 'Congo - Kinshasa', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(53, 'Cook Islands', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(54, 'Costa Rica', 'Active', '2021-02-21 17:04:54', '2021-02-21 17:04:54'),
-(55, 'Croatia', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(56, 'Cuba', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(57, 'Curaçao', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(58, 'Cyprus', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(59, 'Czechia', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(60, 'Côte d’Ivoire', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(61, 'Denmark', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(62, 'Djibouti', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(63, 'Dominica', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(64, 'Dominican Republic', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(65, 'Ecuador', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(66, 'Egypt', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(67, 'El Salvador', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(68, 'Equatorial Guinea', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(69, 'Eritrea', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(70, 'Estonia', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(71, 'Eswatini', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(72, 'Ethiopia', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(73, 'Falkland Islands', 'Active', '2021-02-21 17:04:55', '2021-02-21 17:04:55'),
-(74, 'Faroe Islands', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(75, 'Fiji', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(76, 'Finland', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(77, 'France', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(78, 'French Guiana', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(79, 'French Polynesia', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(80, 'French Southern Territories', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(81, 'Gabon', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(82, 'Gambia', 'Active', '2021-02-21 17:04:56', '2021-02-21 17:04:56'),
-(83, 'Georgia', 'Active', '2021-02-21 17:04:57', '2021-02-21 17:04:57'),
-(84, 'Germany', 'Active', '2021-02-21 17:04:57', '2021-02-21 17:04:57'),
-(85, 'Ghana', 'Active', '2021-02-21 17:04:57', '2021-02-21 17:04:57'),
-(86, 'Gibraltar', 'Active', '2021-02-21 17:04:57', '2021-02-21 17:04:57'),
-(87, 'Greece', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(88, 'Greenland', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(89, 'Grenada', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(90, 'Guadeloupe', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(91, 'Guam', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(92, 'Guatemala', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(93, 'Guernsey', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(94, 'Guinea', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(95, 'Guinea-Bissau', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(96, 'Guyana', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(97, 'Haiti', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(98, 'Heard & McDonald Islands', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(99, 'Honduras', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(100, 'Hong Kong SAR China', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(101, 'Hungary', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(102, 'Iceland', 'Active', '2021-02-21 17:04:58', '2021-02-21 17:04:58'),
-(103, 'India', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(104, 'Indonesia', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(105, 'Iran', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(106, 'Iraq', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(107, 'Ireland', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(108, 'Isle of Man', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(109, 'Israel', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(110, 'Italy', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(111, 'Jamaica', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(112, 'Japan', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(113, 'Jersey', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(114, 'Jordan', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(115, 'Kazakhstan', 'Active', '2021-02-21 17:04:59', '2021-02-21 17:04:59'),
-(116, 'Kenya', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(117, 'Kiribati', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(118, 'Kuwait', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(119, 'Kyrgyzstan', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(120, 'Laos', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(121, 'Latvia', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(122, 'Lebanon', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(123, 'Lesotho', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(124, 'Liberia', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(125, 'Libya', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(126, 'Liechtenstein', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(127, 'Lithuania', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(128, 'Luxembourg', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(129, 'Macao SAR China', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(130, 'Madagascar', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(131, 'Malawi', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(132, 'Malaysia', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(133, 'Maldives', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(134, 'Mali', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(135, 'Malta', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(136, 'Marshall Islands', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(137, 'Martinique', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(138, 'Mauritania', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(139, 'Mauritius', 'Active', '2021-02-21 17:05:00', '2021-02-21 17:05:00'),
-(140, 'Mayotte', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(141, 'Mexico', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(142, 'Micronesia', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(143, 'Moldova', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(144, 'Monaco', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(145, 'Mongolia', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(146, 'Montenegro', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(147, 'Montserrat', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(148, 'Morocco', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(149, 'Mozambique', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(150, 'Myanmar (Burma)', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(151, 'Namibia', 'Active', '2021-02-21 17:05:01', '2021-02-21 17:05:01'),
-(152, 'Nauru', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(153, 'Nepal', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(154, 'Netherlands', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(155, 'New Caledonia', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(156, 'New Zealand', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(157, 'Nicaragua', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(158, 'Niger', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(159, 'Nigeria', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(160, 'Niue', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(161, 'Norfolk Island', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(162, 'North Korea', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(163, 'North Macedonia', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(164, 'Northern Mariana Islands', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(165, 'Norway', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(166, 'Oman', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(167, 'Pakistan', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(168, 'Palau', 'Active', '2021-02-21 17:05:02', '2021-02-21 17:05:02'),
-(169, 'Palestinian Territories', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(170, 'Panama', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(171, 'Papua New Guinea', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(172, 'Paraguay', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(173, 'Peru', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(174, 'Philippines', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(175, 'Pitcairn Islands', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(176, 'Poland', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(177, 'Portugal', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(178, 'Puerto Rico', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(179, 'Qatar', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(180, 'Romania', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(181, 'Russia', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(182, 'Rwanda', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(183, 'Réunion', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(184, 'Samoa', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(185, 'San Marino', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(186, 'Saudi Arabia', 'Active', '2021-02-21 17:05:03', '2021-02-21 17:05:03'),
-(187, 'Senegal', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(188, 'Serbia', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(189, 'Seychelles', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(190, 'Sierra Leone', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(191, 'Singapore', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(192, 'Sint Maarten', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(193, 'Slovakia', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(194, 'Slovenia', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(195, 'Solomon Islands', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(196, 'Somalia', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(197, 'South Africa', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(198, 'South Georgia & South Sandwich Islands', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(199, 'South Korea', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(200, 'South Sudan', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(201, 'Spain', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(202, 'Sri Lanka', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(203, 'St. Barthélemy', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(204, 'St. Helena', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(205, 'St. Kitts & Nevis', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(206, 'St. Lucia', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(207, 'St. Martin', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(208, 'St. Pierre & Miquelon', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(209, 'St. Vincent & Grenadines', 'Active', '2021-02-21 17:05:04', '2021-02-21 17:05:04'),
-(210, 'Sudan', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(211, 'Suriname', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(212, 'Svalbard & Jan Mayen', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(213, 'Sweden', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(214, 'Switzerland', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(215, 'Syria', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(216, 'São Tomé & Príncipe', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(217, 'Taiwan', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(218, 'Tajikistan', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(219, 'Tanzania', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(220, 'Thailand', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(221, 'Timor-Leste', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(222, 'Togo', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(223, 'Tokelau', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(224, 'Tonga', 'Active', '2021-02-21 17:05:05', '2021-02-21 17:05:05'),
-(225, 'Trinidad & Tobago', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(226, 'Tunisia', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(227, 'Turkey', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(228, 'Turkmenistan', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(229, 'Turks & Caicos Islands', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(230, 'Tuvalu', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(231, 'U.S. Outlying Islands', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(232, 'U.S. Virgin Islands', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(233, 'Uganda', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(234, 'Ukraine', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(235, 'United Arab Emirates', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(236, 'United Kingdom', 'Active', '2021-02-21 17:05:06', '2021-02-21 17:05:06'),
-(237, 'United States', 'Active', '2021-02-21 17:05:07', '2021-02-21 17:05:07'),
-(238, 'Uruguay', 'Active', '2021-02-21 17:05:07', '2021-02-21 17:05:07'),
-(239, 'Uzbekistan', 'Active', '2021-02-21 17:05:07', '2021-02-21 17:05:07'),
-(240, 'Vanuatu', 'Active', '2021-02-21 17:05:07', '2021-02-21 17:05:07'),
-(241, 'Vatican City', 'Active', '2021-02-21 17:05:07', '2021-02-21 17:05:07'),
-(242, 'Venezuela', 'Active', '2021-02-21 17:05:07', '2021-02-21 17:05:07'),
-(243, 'Vietnam', 'Active', '2021-02-21 17:05:08', '2021-02-21 17:05:08'),
-(244, 'Wallis & Futuna', 'Active', '2021-02-21 17:05:08', '2021-02-21 17:05:08'),
-(245, 'Western Sahara', 'Active', '2021-02-21 17:05:08', '2021-02-21 17:05:08'),
-(246, 'Yemen', 'Active', '2021-02-21 17:05:08', '2021-02-21 17:05:08'),
-(247, 'Zambia', 'Active', '2021-02-21 17:05:08', '2021-02-21 17:05:08'),
-(248, 'Zimbabwe', 'Active', '2021-02-21 17:05:08', '2021-02-21 17:05:08'),
-(249, 'Åland Islands', 'Active', '2021-02-21 17:05:08', '2021-02-21 17:05:08');
+INSERT INTO `countries` (`id`, `name`, `code`, `capital`, `region`, `currency_code`, `currency_symbol`, `flag`, `dialling_code`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Afghanistan', 'AF', 'Kabul', 'AS', 'AFN', '؋', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AF.svg', '+93', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(2, 'Albania', 'AL', 'Tirana', 'EU', 'ALL', 'L', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AL.svg', '+355', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(3, 'Algeria', 'DZ', 'Algiers', 'AF', 'DZD', 'د.ج', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/DZ.svg', '+213', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(4, 'American Samoa', 'AS', 'Pago Pago', 'OC', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AS.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(5, 'Andorra', 'AD', 'Andorra la Vella', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AD.svg', '+376', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:41'),
+(6, 'Angola', 'AO', 'Luanda', 'AF', 'AOA', 'Kz', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AO.svg', '+244', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(7, 'Anguilla', 'AI', 'The Valley', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AI.svg', '+43', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(8, 'Antigua and Barbuda', 'AG', 'Saint John\'s', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AG.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(9, 'Argentina', 'AR', 'Buenos Aires', 'SA', 'ARS', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AR.svg', '+54', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(10, 'Armenia', 'AM', 'Yerevan', 'AS', 'AMD', NULL, 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AM.svg', '+374', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(11, 'Aruba', 'AW', 'Oranjestad', 'SA', 'AWG', 'ƒ', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AW.svg', '+297', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(12, 'Australia', 'AU', 'Canberra', 'OC', 'AUD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AU.svg', '+61', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(13, 'Azerbaijan', 'AZ', 'Baku', 'AS', 'AZN', NULL, 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AZ.svg', '+994', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(14, 'Bahamas', 'BS', 'Nassau', 'NA', 'BSD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BS.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(15, 'Bahrain', 'BH', 'Manama', 'AS', 'BHD', '.د.ب', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BH.svg', '+973', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(16, 'Bangladesh', 'BD', 'Dhaka', 'AS', 'BDT', '৳', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BD.svg', '+880', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(17, 'Barbados', 'BB', 'Bridgetown', 'NA', 'BBD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BB.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(18, 'Belarus', 'BY', 'Minsk', 'EU', 'BYN', 'Br', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BY.svg', '+375', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(19, 'Belgium', 'BE', 'Brussels', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BE.svg', '+32', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(20, 'Belize', 'BZ', 'Belmopan', 'NA', 'BZD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BZ.svg', '+501', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(21, 'Benin', 'BJ', 'Porto-Novo', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BJ.svg', '+229', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(22, 'Bermuda', 'BM', 'Hamilton', 'NA', 'BMD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BM.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(23, 'Bhutan', 'BT', 'Thimphu', 'AS', 'BTN', 'Nu.', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BT.svg', '+975', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(24, 'Bolivia (Plurinational State of)', 'BO', 'Sucre', 'SA', 'BOB', 'Bs.', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BO.svg', '+591', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(25, 'Bosnia and Herzegovina', 'BA', 'Sarajevo', 'EU', 'BAM', NULL, 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BA.svg', '+387', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(26, 'Botswana', 'BW', 'Gaborone', 'AF', 'BWP', 'P', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BW.svg', '+267', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(27, 'Brazil', 'BR', 'Brasília', 'SA', 'BRL', 'R$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BR.svg', '+55', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(28, 'British Indian Ocean Territory', 'IO', 'Diego Garcia', 'AF', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IO.svg', '+246', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(29, 'Virgin Islands (British)', 'VG', 'Road Town', 'NA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/VG.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(30, 'Virgin Islands (U.S.)', 'VI', 'Charlotte Amalie', 'NA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/VI.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(31, 'Brunei Darussalam', 'BN', 'Bandar Seri Begawan', 'AS', 'BND', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BN.svg', '+673', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(32, 'Bulgaria', 'BG', 'Sofia', 'EU', 'BGN', 'лв', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BG.svg', '+359', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(33, 'Burkina Faso', 'BF', 'Ouagadougou', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BF.svg', '+226', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(34, 'Burundi', 'BI', 'Bujumbura', 'AF', 'BIF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BI.svg', '+257', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(35, 'Cambodia', 'KH', 'Phnom Penh', 'AS', 'KHR', '៛', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KH.svg', '+855', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(36, 'Cameroon', 'CM', 'Yaoundé', 'AF', 'XAF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CM.svg', '+237', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(37, 'Canada', 'CA', 'Ottawa', 'NA', 'CAD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CA.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(38, 'Cabo Verde', 'CV', 'Praia', 'AF', 'CVE', 'Esc', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CV.svg', '+238', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(39, 'Cayman Islands', 'KY', 'George Town', 'NA', 'KYD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KY.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(40, 'Central African Republic', 'CF', 'Bangui', 'AF', 'XAF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CF.svg', '+236', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(41, 'Central African Republic', 'CF', 'Bangui', 'AF', 'XAF', 'Fr', 'https://restcountries.eu/data/caf.svg', '+236', 'Active', '2021-11-03 13:17:12', '2021-11-03 13:17:12'),
+(42, 'Chile', 'CL', 'Santiago', 'SA', 'CLP', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CL.svg', '+56', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(43, 'China', 'CN', 'Beijing', 'AS', 'CNY', '¥', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CN.svg', '+86', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(44, 'Colombia', 'CO', 'Bogotá', 'SA', 'COP', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CO.svg', '+57', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(45, 'Comoros', 'KM', 'Moroni', 'AF', 'KMF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KM.svg', '+269', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(46, 'Congo', 'CG', 'Brazzaville', 'AF', 'XAF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CG.svg', '+242', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(47, 'Congo (Democratic Republic of the)', 'CD', 'Kinshasa', 'AF', 'CDF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CD.svg', '+243', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(48, 'Cook Islands', 'CK', 'Avarua', 'OC', 'NZD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CK.svg', '+682', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(49, 'Costa Rica', 'CR', 'San José', 'NA', 'CRC', '₡', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CR.svg', '+506', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(50, 'Croatia', 'HR', 'Zagreb', 'EU', 'HRK', 'kn', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/HR.svg', '+385', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(51, 'Cuba', 'CU', 'Havana', 'NA', 'CUC', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CU.svg', '+53', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(52, 'Cuba', 'CU', 'Havana', 'NA', 'CUC', '$', 'https://restcountries.eu/data/cub.svg', '+53', 'Active', '2021-11-03 13:17:12', '2021-11-03 13:17:12'),
+(53, 'Cyprus', 'CY', 'Nicosia', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CY.svg', '+357', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(54, 'Czech Republic', 'CZ', 'Prague', 'EU', 'CZK', 'Kč', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CZ.svg', '+420', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(55, 'Denmark', 'DK', 'Copenhagen', 'EU', 'DKK', 'kr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/DK.svg', '+45', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(56, 'Djibouti', 'DJ', 'Djibouti', 'AF', 'DJF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/DJ.svg', '+253', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(57, 'Dominica', 'DM', 'Roseau', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/DM.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(58, 'Dominican Republic', 'DO', 'Santo Domingo', 'NA', 'DOP', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/DO.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(59, 'Ecuador', 'EC', 'Quito', 'SA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/EC.svg', '+593', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(60, 'Egypt', 'EG', 'Cairo', 'AF', 'EGP', '£', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/EG.svg', '+20', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(61, 'El Salvador', 'SV', 'San Salvador', 'NA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SV.svg', '+503', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(62, 'Equatorial Guinea', 'GQ', 'Malabo', 'AF', 'XAF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GQ.svg', '+240', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(63, 'Eritrea', 'ER', 'Asmara', 'AF', 'ERN', 'Nfk', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ER.svg', '+291', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(64, 'Estonia', 'EE', 'Tallinn', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/EE.svg', '+372', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(65, 'Ethiopia', 'ET', 'Addis Ababa', 'AF', 'ETB', 'Br', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ET.svg', '+251', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(66, 'Falkland Islands (Malvinas)', 'FK', 'Stanley', 'SA', 'FKP', '£', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/FK.svg', '+500', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(67, 'Faroe Islands', 'FO', 'Tórshavn', 'EU', 'DKK', 'kr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/FO.svg', '+298', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(68, 'Fiji', 'FJ', 'Suva', 'OC', 'FJD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/FJ.svg', '+679', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(69, 'Finland', 'FI', 'Helsinki', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/FI.svg', '+358', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(70, 'France', 'FR', 'Paris', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/FR.svg', '+33', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(71, 'French Guiana', 'GF', 'Cayenne', 'SA', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GF.svg', '+594', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(72, 'French Polynesia', 'PF', 'Papeetē', 'OC', 'XPF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PF.svg', '+689', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(73, 'Gabon', 'GA', 'Libreville', 'AF', 'XAF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GA.svg', '+241', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(74, 'Gambia', 'GM', 'Banjul', 'AF', 'GMD', 'D', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GM.svg', '+220', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(75, 'Georgia', 'GE', 'Tbilisi', 'AS', 'GEL', 'ლ', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GE.svg', '+995', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(76, 'Germany', 'DE', 'Berlin', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/DE.svg', '+49', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(77, 'Ghana', 'GH', 'Accra', 'AF', 'GHS', '₵', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GH.svg', '+233', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(78, 'Gibraltar', 'GI', 'Gibraltar', 'EU', 'GIP', '£', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GI.svg', '+350', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(79, 'Greece', 'GR', 'Athens', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GR.svg', '+30', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(80, 'Greenland', 'GL', 'Nuuk', 'NA', 'DKK', 'kr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GL.svg', '+299', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(81, 'Grenada', 'GD', 'St. George\'s', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GD.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(82, 'Guadeloupe', 'GP', 'Basse-Terre', 'NA', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GP.svg', '+590', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(83, 'Guam', 'GU', 'Hagåtña', 'OC', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GU.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(84, 'Guatemala', 'GT', 'Guatemala City', 'NA', 'GTQ', 'Q', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GT.svg', '+502', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(85, 'Guinea', 'GN', 'Conakry', 'AF', 'GNF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GN.svg', '+224', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(86, 'Guinea-Bissau', 'GW', 'Bissau', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GW.svg', '+245', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(87, 'Guyana', 'GY', 'Georgetown', 'SA', 'GYD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GY.svg', '+592', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(88, 'Haiti', 'HT', 'Port-au-Prince', 'Americas', 'HTG', 'G', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/HT.svg', '+509', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(89, 'Holy See', 'VA', 'Rome', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/VA.svg', '+39', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(90, 'Honduras', 'HN', 'Tegucigalpa', 'NA', 'HNL', 'L', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/HN.svg', '+504', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(91, 'Hong Kong', 'HK', 'City of Victoria', 'AS', 'HKD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/HK.svg', '+852', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(92, 'Hungary', 'HU', 'Budapest', 'EU', 'HUF', 'Ft', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/HU.svg', '+36', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(93, 'Iceland', 'IS', 'Reykjavík', 'EU', 'ISK', 'kr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IS.svg', '+354', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(94, 'India', 'IN', 'New Delhi', 'AS', 'INR', '₹', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IN.svg', '+91', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(95, 'Indonesia', 'ID', 'Jakarta', 'AS', 'IDR', 'Rp', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ID.svg', '+62', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(96, 'Côte d\'Ivoire', 'CI', 'Yamoussoukro', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CI.svg', '+225', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(97, 'Iran (Islamic Republic of)', 'IR', 'Tehran', 'AS', 'IRR', '﷼', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IR.svg', '+98', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(98, 'Iraq', 'IQ', 'Baghdad', 'AS', 'IQD', 'ع.د', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IQ.svg', '+964', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(99, 'Ireland', 'IE', 'Dublin', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IE.svg', '+353', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(100, 'Israel', 'IL', 'Jerusalem', 'AS', 'ILS', '₪', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IL.svg', '+972', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(101, 'Italy', 'IT', 'Rome', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/IT.svg', '+39', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(102, 'Jamaica', 'JM', 'Kingston', 'NA', 'JMD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/JM.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(103, 'Japan', 'JP', 'Tokyo', 'AS', 'JPY', '¥', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/JP.svg', '+81', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(104, 'Jordan', 'JO', 'Amman', 'AS', 'JOD', 'د.ا', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/JO.svg', '+962', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(105, 'Kazakhstan', 'KZ', 'Astana', 'AS', 'KZT', NULL, 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KZ.svg', '+7', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(106, 'Kenya', 'KE', 'Nairobi', 'AF', 'KES', 'Sh', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KE.svg', '+254', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(107, 'Kiribati', 'KI', 'South Tarawa', 'OC', 'AUD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KI.svg', '+686', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(108, 'Kuwait', 'KW', 'Kuwait City', 'AS', 'KWD', 'د.ك', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KW.svg', '+965', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(109, 'Kyrgyzstan', 'KG', 'Bishkek', 'AS', 'KGS', 'с', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KG.svg', '+996', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(110, 'Lao People\'s Democratic Republic', 'LA', 'Vientiane', 'AS', 'LAK', '₭', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LA.svg', '+856', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(111, 'Latvia', 'LV', 'Riga', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LV.svg', '+371', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(112, 'Lebanon', 'LB', 'Beirut', 'AS', 'LBP', 'ل.ل', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LB.svg', '+961', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(113, 'Lesotho', 'LS', 'Maseru', 'AF', 'LSL', 'L', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LS.svg', '+266', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(114, 'Liberia', 'LR', 'Monrovia', 'AF', 'LRD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LR.svg', '+231', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(115, 'Libya', 'LY', 'Tripoli', 'AF', 'LYD', 'ل.د', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LY.svg', '+218', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(116, 'Liechtenstein', 'LI', 'Vaduz', 'EU', 'CHF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LI.svg', '+423', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(117, 'Lithuania', 'LT', 'Vilnius', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LT.svg', '+370', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(118, 'Luxembourg', 'LU', 'Luxembourg', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LU.svg', '+352', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(119, 'Macao', 'MO', '', 'AS', 'MOP', 'P', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MO.svg', '+853', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(120, 'Macedonia (the former Yugoslav Republic of)', 'MK', 'Skopje', 'EU', 'MKD', 'ден', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MK.svg', '+389', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(121, 'Madagascar', 'MG', 'Antananarivo', 'AF', 'MGA', 'Ar', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MG.svg', '+261', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(122, 'Malawi', 'MW', 'Lilongwe', 'AF', 'MWK', 'MK', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MW.svg', '+265', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(123, 'Malaysia', 'MY', 'Kuala Lumpur', 'AS', 'MYR', 'RM', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MY.svg', '+60', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(124, 'Maldives', 'MV', 'Malé', 'AS', 'MVR', '.ރ', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MV.svg', '+960', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(125, 'Mali', 'ML', 'Bamako', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ML.svg', '+223', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(126, 'Malta', 'MT', 'Valletta', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MT.svg', '+356', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(127, 'Marshall Islands', 'MH', 'Majuro', 'OC', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MH.svg', '+692', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(128, 'Martinique', 'MQ', 'Fort-de-France', 'Americas', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MQ.svg', '+596', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(129, 'Mauritania', 'MR', 'Nouakchott', 'AF', 'MRO', 'UM', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MR.svg', '+222', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(130, 'Mauritius', 'MU', 'Port Louis', 'AF', 'MUR', '₨', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MU.svg', '+230', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(131, 'Mayotte', 'YT', 'Mamoudzou', 'AF', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/YT.svg', '+262', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(132, 'Mexico', 'MX', 'Mexico City', 'NA', 'MXN', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MX.svg', '+52', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(133, 'Micronesia (Federated States of)', 'FM', 'Palikir', 'OC', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/FM.svg', '+691', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(134, 'Moldova (Republic of)', 'MD', 'Chișinău', 'EU', 'MDL', 'L', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MD.svg', '+373', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(135, 'Monaco', 'MC', 'Monaco', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MC.svg', '+377', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(136, 'Mongolia', 'MN', 'Ulan Bator', 'AS', 'MNT', '₮', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MN.svg', '+976', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(137, 'Montenegro', 'ME', 'Podgorica', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ME.svg', '+382', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(138, 'Montserrat', 'MS', 'Plymouth', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MS.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(139, 'Morocco', 'MA', 'Rabat', 'AF', 'MAD', 'د.م.', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MA.svg', '+212', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(140, 'Mozambique', 'MZ', 'Maputo', 'AF', 'MZN', 'MT', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MZ.svg', '+258', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(141, 'Myanmar', 'MM', 'Naypyidaw', 'AS', 'MMK', 'Ks', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MM.svg', '+95', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(142, 'Namibia', 'NA', 'Windhoek', 'AF', 'NAD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NA.svg', '+264', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(143, 'Nauru', 'NR', 'Yaren', 'OC', 'AUD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NR.svg', '+674', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(144, 'Nepal', 'NP', 'Kathmandu', 'AS', 'NPR', '₨', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NP.svg', '+977', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(145, 'Netherlands', 'NL', 'Amsterdam', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NL.svg', '+31', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(146, 'New Caledonia', 'NC', 'Nouméa', 'OC', 'XPF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NC.svg', '+687', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(147, 'New Zealand', 'NZ', 'Wellington', 'OC', 'NZD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NZ.svg', '+64', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(148, 'Nicaragua', 'NI', 'Managua', 'NA', 'NIO', 'C$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NI.svg', '+505', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(149, 'Niger', 'NE', 'Niamey', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NE.svg', '+227', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(150, 'Nigeria', 'NG', 'Abuja', 'AF', 'NGN', '₦', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NG.svg', '+234', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(151, 'Niue', 'NU', 'Alofi', 'OC', 'NZD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NU.svg', '+683', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(152, 'Norfolk Island', 'NF', 'Kingston', 'OC', 'AUD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NF.svg', '+672', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(153, 'Korea (Democratic People\'s Republic of)', 'KP', 'Pyongyang', 'AS', 'KPW', '₩', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KP.svg', '+850', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(154, 'Northern Mariana Islands', 'MP', 'Saipan', 'OC', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MP.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(155, 'Norway', 'NO', 'Oslo', 'EU', 'NOK', 'kr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NO.svg', '+47', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(156, 'Oman', 'OM', 'Muscat', 'AS', 'OMR', 'ر.ع.', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/OM.svg', '+968', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(157, 'Pakistan', 'PK', 'Islamabad', 'AS', 'PKR', '₨', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PK.svg', '+92', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(158, 'Palau', 'PW', 'Ngerulmud', 'OC', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PW.svg', '+680', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(159, 'Palestine, State of', 'PS', 'Ramallah', 'AS', 'ILS', '₪', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PS.svg', '+970', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(160, 'Panama', 'PA', 'Panama City', 'NA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PA.svg', '+507', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(161, 'Papua New Guinea', 'PG', 'Port Moresby', 'OC', 'PGK', 'K', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PG.svg', '+675', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(162, 'Paraguay', 'PY', 'Asunción', 'SA', 'PYG', '₲', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PY.svg', '+595', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(163, 'Peru', 'PE', 'Lima', 'SA', 'PEN', 'S/.', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PE.svg', '+51', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(164, 'Philippines', 'PH', 'Manila', 'AS', 'PHP', '₱', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PH.svg', '+63', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(165, 'Poland', 'PL', 'Warsaw', 'EU', 'PLN', 'zł', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PL.svg', '+48', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(166, 'Portugal', 'PT', 'Lisbon', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PT.svg', '+351', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(167, 'Puerto Rico', 'PR', 'San Juan', 'NA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PR.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(168, 'Qatar', 'QA', 'Doha', 'AS', 'QAR', 'ر.ق', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/QA.svg', '+974', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(169, 'Republic of Kosovo', 'XK', 'Pristina', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/XK.svg', '+381', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(170, 'Réunion', 'RE', 'Saint-Denis', 'AF', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/RE.svg', '+262', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(171, 'Romania', 'RO', 'Bucharest', 'EU', 'RON', 'lei', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/RO.svg', '+40', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(172, 'Russian Federation', 'RU', 'Moscow', 'EU', 'RUB', '₽', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/RU.svg', '+7', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(173, 'Rwanda', 'RW', 'Kigali', 'AF', 'RWF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/RW.svg', '+250', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(174, 'Saint Barthélemy', 'BL', 'Gustavia', 'NA', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BL.svg', '+590', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(175, 'Saint Helena, Ascension and Tristan da Cunha', 'SH', 'Jamestown', 'AF', 'SHP', '£', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SH.svg', '+290', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(176, 'Saint Kitts and Nevis', 'KN', 'Basseterre', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KN.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(177, 'Saint Lucia', 'LC', 'Castries', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LC.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(178, 'Saint Martin (French part)', 'MF', 'Marigot', 'NA', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/MF.svg', '+590', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(179, 'Saint Pierre and Miquelon', 'PM', 'Saint-Pierre', 'NA', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/PM.svg', '+508', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(180, 'Saint Vincent and the Grenadines', 'VC', 'Kingstown', 'NA', 'XCD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/VC.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(181, 'Samoa', 'WS', 'Apia', 'OC', 'WST', 'T', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/WS.svg', '+685', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(182, 'San Marino', 'SM', 'City of San Marino', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SM.svg', '+378', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(183, 'Sao Tome and Principe', 'ST', 'São Tomé', 'AF', 'STD', 'Db', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ST.svg', '+239', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(184, 'Saudi Arabia', 'SA', 'Riyadh', 'AS', 'SAR', 'ر.س', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SA.svg', '+966', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(185, 'Senegal', 'SN', 'Dakar', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SN.svg', '+221', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(186, 'Serbia', 'RS', 'Belgrade', 'EU', 'RSD', 'дин.', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/RS.svg', '+381', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(187, 'Seychelles', 'SC', 'Victoria', 'AF', 'SCR', '₨', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SC.svg', '+248', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(188, 'Sierra Leone', 'SL', 'Freetown', 'AF', 'SLL', 'Le', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SL.svg', '+232', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(189, 'Singapore', 'SG', 'Singapore', 'AS', 'SGD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SG.svg', '+65', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(190, 'Singapore', 'SG', 'Singapore', 'AS', 'SGD', '$', 'https://restcountries.eu/data/sgp.svg', '+65', 'Active', '2021-11-03 13:17:12', '2021-11-03 13:17:12'),
+(191, 'Slovakia', 'SK', 'Bratislava', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SK.svg', '+421', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(192, 'Slovenia', 'SI', 'Ljubljana', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SI.svg', '+386', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(193, 'Solomon Islands', 'SB', 'Honiara', 'OC', 'SBD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SB.svg', '+677', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(194, 'Somalia', 'SO', 'Mogadishu', 'AF', 'SOS', 'Sh', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SO.svg', '+252', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(195, 'South Africa', 'ZA', 'Pretoria', 'AF', 'ZAR', 'R', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ZA.svg', '+27', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(196, 'Korea (Republic of)', 'KR', 'Seoul', 'AS', 'KRW', '₩', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/KR.svg', '+82', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(197, 'Spain', 'ES', 'Madrid', 'EU', 'EUR', '€', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ES.svg', '+34', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(198, 'Sri Lanka', 'LK', 'Colombo', 'AS', 'LKR', 'Rs', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/LK.svg', '+94', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(199, 'Sudan', 'SD', 'Khartoum', 'AF', 'SDG', 'ج.س.', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SD.svg', '+249', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(200, 'Suriname', 'SR', 'Paramaribo', 'SA', 'SRD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SR.svg', '+597', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(201, 'Swaziland', 'SZ', 'Lobamba', 'AF', 'SZL', 'L', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SZ.svg', '+268', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(202, 'Sweden', 'SE', 'Stockholm', 'EU', 'SEK', 'kr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SE.svg', '+46', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(203, 'Switzerland', 'CH', 'Bern', 'EU', 'CHF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/CH.svg', '+41', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(204, 'Syrian Arab Republic', 'SY', 'Damascus', 'AS', 'SYP', '£', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/SY.svg', '+963', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(205, 'Taiwan', 'TW', 'Taipei', 'AS', 'TWD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TW.svg', '+886', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(206, 'Tajikistan', 'TJ', 'Dushanbe', 'AS', 'TJS', 'ЅМ', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TJ.svg', '+992', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(207, 'Tanzania', 'TZ', 'Dodoma', 'AF', 'TZS', 'Sh', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TZ.svg', '+255', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(208, 'Thailand', 'TH', 'Bangkok', 'AS', 'THB', '฿', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TH.svg', '+66', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(209, 'Timor-Leste', 'TL', 'Dili', 'AS', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TL.svg', '+670', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(210, 'Togo', 'TG', 'Lomé', 'AF', 'XOF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TG.svg', '+228', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(211, 'Tokelau', 'TK', 'Fakaofo', 'OC', 'NZD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TK.svg', '+690', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(212, 'Tonga', 'TO', 'Nuku\'alofa', 'OC', 'TOP', 'T$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TO.svg', '+676', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(213, 'Trinidad and Tobago', 'TT', 'Port of Spain', 'SA', 'TTD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TT.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(214, 'Tunisia', 'TN', 'Tunis', 'AF', 'TND', 'د.ت', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TN.svg', '+216', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(215, 'Turkey', 'TR', 'Ankara', 'AS', 'TRY', NULL, 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TR.svg', '+90', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(216, 'Turkmenistan', 'TM', 'Ashgabat', 'AS', 'TMT', 'm', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TM.svg', '+993', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(217, 'Turks and Caicos Islands', 'TC', 'Cockburn Town', 'NA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TC.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(218, 'Tuvalu', 'TV', 'Funafuti', 'OC', 'AUD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/TV.svg', '+688', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(219, 'Uganda', 'UG', 'Kampala', 'AF', 'UGX', 'Sh', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/UG.svg', '+256', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(220, 'Ukraine', 'UA', 'Kiev', 'EU', 'UAH', '₴', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/UA.svg', '+380', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(221, 'United Arab Emirates', 'AE', 'Abu Dhabi', 'AS', 'AED', 'د.إ', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AE.svg', '+971', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(222, 'United Kingdom', 'GB', 'London', 'EU', 'GBP', '£', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/GB.svg', '+44', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(223, 'United States', 'US', 'Washington, D.C.', 'NA', 'USD', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/US.svg', '+1', 'Active', '2021-11-03 13:17:12', '2021-11-03 13:17:12'),
+(224, 'Uruguay', 'UY', 'Montevideo', 'SA', 'UYU', '$', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/UY.svg', '+598', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(225, 'Uzbekistan', 'UZ', 'Tashkent', 'AS', 'UZS', NULL, 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/UZ.svg', '+998', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(226, 'Vanuatu', 'VU', 'Port Vila', 'OC', 'VUV', 'Vt', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/VU.svg', '+678', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(227, 'Venezuela (Bolivarian Republic of)', 'VE', 'Caracas', 'SA', 'VEF', 'Bs F', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/VE.svg', '+58', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(228, 'Viet Nam', 'VN', 'Hanoi', 'AS', 'VND', '₫', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/VN.svg', '+84', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(229, 'Wallis and Futuna', 'WF', 'Mata-Utu', 'OC', 'XPF', 'Fr', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/WF.svg', '+681', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(230, 'Wallis and Futuna', 'WF', 'Mata-Utu', 'OC', 'XPF', 'Fr', 'https://restcountries.eu/data/wlf.svg', '+681', 'Active', '2021-11-03 13:17:12', '2021-11-03 13:17:12'),
+(231, 'Yemen', 'YE', 'Sana\'a', 'AS', 'YER', '﷼', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/YE.svg', '+967', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(232, 'Zambia', 'ZM', 'Lusaka', 'AF', 'ZMW', 'ZK', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ZM.svg', '+260', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42'),
+(233, 'Zimbabwe', 'ZW', 'Harare', 'AF', 'BWP', 'P', 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/ZW.svg', '+263', 'Active', '2021-11-03 13:17:12', '2021-11-03 14:21:42');
 
 -- --------------------------------------------------------
 
@@ -683,6 +682,13 @@ CREATE TABLE `guest_accounts` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `guest_accounts`
+--
+
+INSERT INTO `guest_accounts` (`id`, `account_id`, `first_name`, `last_name`, `email`, `phone`, `image`, `created_at`, `updated_at`) VALUES
+(1, 4, 'Bilal', 'Mahmud', 'root@archiverz.com', '+123985563', NULL, '2021-10-30 05:19:51', '2021-10-30 05:19:51');
 
 -- --------------------------------------------------------
 
@@ -812,7 +818,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `number`, `account_id`, `transaction_object`, `transact_through`, `status`, `created_at`, `updated_at`) VALUES
-(1, '1635452209', 1, '{\"id\":\"ch_3Jpf1oLPDJySyDJU1YO6HfA1\",\"object\":\"charge\",\"amount\":500000,\"amount_captured\":500000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3Jpf1oLPDJySyDJU1dFlWILR\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"GOODGROSS.COM\",\"captured\":true,\"created\":1635452208,\"currency\":\"usd\",\"customer\":null,\"description\":\"Checkout\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":58,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1Jpf1oLPDJySyDJUi97vIM9C\",\"payment_method_details\":{\"card\":{\"brand\":\"amex\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":12,\"exp_year\":2025,\"fingerprint\":\"JL6vac5RR1iPOkru\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"8431\",\"network\":\"amex\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https:\\/\\/pay.stripe.com\\/receipts\\/acct_1HTHScLPDJySyDJU\\/ch_3Jpf1oLPDJySyDJU1YO6HfA1\\/rcpt_KUeKZFyLT9nUc5FFiJ2CExPEaRq3LYK\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"\\/v1\\/charges\\/ch_3Jpf1oLPDJySyDJU1YO6HfA1\\/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1Jpf1oLPDJySyDJUi97vIM9C\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"American Express\",\"country\":\"US\",\"customer\":null,\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":12,\"exp_year\":2025,\"fingerprint\":\"JL6vac5RR1iPOkru\",\"funding\":\"credit\",\"last4\":\"8431\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', 'Stripe', 'Processing', '2021-10-28 14:16:49', '2021-10-28 14:16:49');
+(1, '1-1635592791-51191130102021', 4, '{\"id\":\"ch_3JqFbFLPDJySyDJU06H5vMOx\",\"object\":\"charge\",\"amount\":2000000,\"amount_captured\":2000000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JqFbFLPDJySyDJU0792Ta7x\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"GOODGROSS.COM\",\"captured\":true,\"created\":1635592789,\"currency\":\"usd\",\"customer\":null,\"description\":\"Checkout\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":15,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JqFbFLPDJySyDJUcnM2Mor8\",\"payment_method_details\":{\"card\":{\"brand\":\"mastercard\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":12,\"exp_year\":2025,\"fingerprint\":\"LgClIJOugpipsqPy\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4444\",\"network\":\"mastercard\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https:\\/\\/pay.stripe.com\\/receipts\\/acct_1HTHScLPDJySyDJU\\/ch_3JqFbFLPDJySyDJU06H5vMOx\\/rcpt_KVG7HX2xNzMMpA0ElutjurP6c1eDb1A\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"\\/v1\\/charges\\/ch_3JqFbFLPDJySyDJU06H5vMOx\\/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JqFbFLPDJySyDJUcnM2Mor8\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"MasterCard\",\"country\":\"US\",\"customer\":null,\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":12,\"exp_year\":2025,\"fingerprint\":\"LgClIJOugpipsqPy\",\"funding\":\"credit\",\"last4\":\"4444\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', 'Stripe', 'Processing', '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(2, '2-1635593937-57381130102021', 2, '{\"id\":\"ch_3JqFtjLPDJySyDJU0RFyFWoC\",\"object\":\"charge\",\"amount\":2500000,\"amount_captured\":2500000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JqFtjLPDJySyDJU0ELg0R4P\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"GOODGROSS.COM\",\"captured\":true,\"created\":1635593935,\"currency\":\"usd\",\"customer\":null,\"description\":\"Checkout\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":51,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JqFtjLPDJySyDJUtZSrN6s9\",\"payment_method_details\":{\"card\":{\"brand\":\"discover\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":12,\"exp_year\":2031,\"fingerprint\":\"ahAWboISJLBUDdiG\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"1117\",\"network\":\"discover\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https:\\/\\/pay.stripe.com\\/receipts\\/acct_1HTHScLPDJySyDJU\\/ch_3JqFtjLPDJySyDJU0RFyFWoC\\/rcpt_KVGQphxPyq7hrgYg2RG0R1W5whzpjoe\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"\\/v1\\/charges\\/ch_3JqFtjLPDJySyDJU0RFyFWoC\\/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JqFtjLPDJySyDJUtZSrN6s9\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Discover\",\"country\":\"US\",\"customer\":null,\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":12,\"exp_year\":2031,\"fingerprint\":\"ahAWboISJLBUDdiG\",\"funding\":\"credit\",\"last4\":\"1117\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', 'Stripe', 'Processing', '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(3, '1-1635644514-54410131102021', 2, '{\"id\":\"ch_3JqT3ULPDJySyDJU0mPELt4b\",\"object\":\"charge\",\"amount\":2000000,\"amount_captured\":2000000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JqT3ULPDJySyDJU0ZlB25Tq\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"GOODGROSS.COM\",\"captured\":true,\"created\":1635644512,\"currency\":\"usd\",\"customer\":null,\"description\":\"Checkout\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":0,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JqT3TLPDJySyDJUn7tyNOJM\",\"payment_method_details\":{\"card\":{\"brand\":\"discover\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":12,\"exp_year\":2031,\"fingerprint\":\"ahAWboISJLBUDdiG\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"1117\",\"network\":\"discover\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https:\\/\\/pay.stripe.com\\/receipts\\/acct_1HTHScLPDJySyDJU\\/ch_3JqT3ULPDJySyDJU0mPELt4b\\/rcpt_KVU1nDCp0gC0jF3P3ORErPiMfhdcnd4\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"\\/v1\\/charges\\/ch_3JqT3ULPDJySyDJU0mPELt4b\\/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JqT3TLPDJySyDJUn7tyNOJM\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Discover\",\"country\":\"US\",\"customer\":null,\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":12,\"exp_year\":2031,\"fingerprint\":\"ahAWboISJLBUDdiG\",\"funding\":\"credit\",\"last4\":\"1117\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', 'Stripe', 'Processing', '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(4, '2-1635646400-20130231102021', 2, '{\"id\":\"ch_3JqTXtLPDJySyDJU0zyjaEZJ\",\"object\":\"charge\",\"amount\":2500000,\"amount_captured\":2500000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_3JqTXtLPDJySyDJU0l7BN7V3\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"GOODGROSS.COM\",\"captured\":true,\"created\":1635646397,\"currency\":\"usd\",\"customer\":null,\"description\":\"Checkout\",\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":63,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1JqTXtLPDJySyDJUv76SSwff\",\"payment_method_details\":{\"card\":{\"brand\":\"discover\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":12,\"exp_year\":2031,\"fingerprint\":\"ahAWboISJLBUDdiG\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"1117\",\"network\":\"discover\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https:\\/\\/pay.stripe.com\\/receipts\\/acct_1HTHScLPDJySyDJU\\/ch_3JqTXtLPDJySyDJU0zyjaEZJ\\/rcpt_KVUWctaDtzdQa41JEic0jC78O9eP4JO\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"\\/v1\\/charges\\/ch_3JqTXtLPDJySyDJU0zyjaEZJ\\/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1JqTXtLPDJySyDJUv76SSwff\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Discover\",\"country\":\"US\",\"customer\":null,\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":12,\"exp_year\":2031,\"fingerprint\":\"ahAWboISJLBUDdiG\",\"funding\":\"credit\",\"last4\":\"1117\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', 'Stripe', 'Processing', '2021-10-30 20:13:20', '2021-10-30 20:13:20');
 
 -- --------------------------------------------------------
 
@@ -842,7 +851,10 @@ CREATE TABLE `order_billings` (
 --
 
 INSERT INTO `order_billings` (`id`, `order_id`, `first_name`, `last_name`, `email`, `phone`, `address_line_1`, `address_line_2`, `country`, `city`, `region`, `postal_code`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Umid', 'Tadjitdin', 'abc@gmail.com', '123456', 'Homme House', 'Darker Lane', 'United States', 'Arizona', 'Arizona', '123456', '2021-10-28 14:16:49', '2021-10-28 14:16:49');
+(1, 1, 'Bilal', 'Mahmud', 'root@archiverz.com', '+123985563', '600 E Washington St', NULL, 'United States', 'Phoenix', 'Arizona', '85004', '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(2, 2, 'Tasmia', 'Tashahud', 'tasmiatashahud@gmail.com', '+1234567890', '1200 Airport Rd', NULL, 'United States', 'Sedona', 'Arizona', '86336', '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(3, 3, 'Tasmia', 'Tashahud', 'tasmiatashahud@gmail.com', '+1234567890', '1200 Airport Rd', NULL, 'United States', 'Sedona', 'Arizona', '86336', '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(4, 4, 'Tasmia', 'Tashahud', 'tasmiatashahud@gmail.com', '+1234567890', '1200 Airport Rd', NULL, 'United States', 'Sedona', 'Arizona', '86336', '2021-10-30 20:13:20', '2021-10-30 20:13:20');
 
 -- --------------------------------------------------------
 
@@ -872,7 +884,10 @@ CREATE TABLE `order_shippings` (
 --
 
 INSERT INTO `order_shippings` (`id`, `order_id`, `first_name`, `last_name`, `email`, `phone`, `address_line_1`, `address_line_2`, `country`, `city`, `state`, `postal_code`, `created_at`, `updated_at`) VALUES
-(1, 1, 'David', 'Dhawana', 'info@scoutbeyond.com', '123456789', 'Samoa House', 'American Lane', 'United States', 'Samoa', 'American Samoa', '123456', '2021-10-28 14:16:49', '2021-10-28 14:16:49');
+(1, 1, 'Bilal', 'Mahmud', 'root@archiverz.com', '+123985563', '600 E Washington St', NULL, 'United States', 'Phoenix', 'Arizona', '85004', '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(2, 2, 'Tasmia', 'Tashahud', 'tasmiatashahud@gmail.com', '+1234567890', '1200 Airport Rd', NULL, 'United States', 'Sedona', 'Arizona', '86336', '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(3, 3, 'Tasmia', 'Tashahud', 'tasmiatashahud@gmail.com', '+1234567890', '1200 Airport Rd', NULL, 'United States', 'Sedona', 'Arizona', '86336', '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(4, 4, 'Tasmia', 'Tashahud', 'tasmiatashahud@gmail.com', '+1234567890', '1200 Airport Rd', NULL, 'United States', 'Sedona', 'Arizona', '86336', '2021-10-30 20:13:20', '2021-10-30 20:13:20');
 
 -- --------------------------------------------------------
 
@@ -900,7 +915,14 @@ CREATE TABLE `order_transactions` (
 --
 
 INSERT INTO `order_transactions` (`id`, `order_id`, `product_id`, `quantity`, `price_per_unit`, `payment_status`, `payout_status`, `transfer_object`, `delivery_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 5000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-28 14:16:49', '2021-10-28 14:16:49');
+(1, 1, 1, 1, 5000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(2, 1, 7, 1, 15000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(3, 2, 8, 1, 10000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(4, 2, 3, 1, 15000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(5, 3, 1, 1, 5000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(6, 3, 3, 1, 15000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(7, 4, 7, 1, 15000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 20:13:20', '2021-10-30 20:13:20'),
+(8, 4, 8, 1, 10000, 'Released', 'Held', NULL, 'Processing', 'Processing', '2021-10-30 20:13:20', '2021-10-30 20:13:20');
 
 -- --------------------------------------------------------
 
@@ -1414,65 +1436,65 @@ CREATE TABLE `states` (
 --
 
 INSERT INTO `states` (`id`, `country_id`, `state`, `status`, `created_at`, `updated_at`) VALUES
-(1, 237, 'Alabama', 'Active', '2021-02-21 17:27:33', '2021-02-21 17:27:33'),
-(2, 237, 'Alaska', 'Active', '2021-02-21 17:27:33', '2021-02-21 17:27:33'),
-(3, 237, 'American Samoa', 'Active', '2021-02-21 17:27:33', '2021-02-21 17:27:33'),
-(4, 237, 'Arizona', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(5, 237, 'Arkansas', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(6, 237, 'California', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(7, 237, 'Colorado', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(8, 237, 'Connecticut', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(9, 237, 'Delaware', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(10, 237, 'District Of Columbia', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(11, 237, 'Federated States Of Micronesia', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(12, 237, 'Florida', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(13, 237, 'Georgia', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
-(14, 237, 'Guam', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(15, 237, 'Hawaii', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(16, 237, 'Idaho', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(17, 237, 'Illinois', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(18, 237, 'Indiana', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(19, 237, 'Iowa', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(20, 237, 'Kansas', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(21, 237, 'Kentucky', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(22, 237, 'Louisiana', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(23, 237, 'Maine', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(24, 237, 'Marshall Islands', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(25, 237, 'Maryland', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(26, 237, 'Massachusetts', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(27, 237, 'Michigan', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
-(28, 237, 'Minnesota', 'Active', '2021-02-21 17:27:36', '2021-02-21 17:27:36'),
-(29, 237, 'Mississippi', 'Active', '2021-02-21 17:27:36', '2021-02-21 17:27:36'),
-(30, 237, 'Missouri', 'Active', '2021-02-21 17:27:36', '2021-02-21 17:27:36'),
-(31, 237, 'Montana', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
-(32, 237, 'Nebraska', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
-(33, 237, 'Nevada', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
-(34, 237, 'New Hampshire', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
-(35, 237, 'New Jersey', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
-(36, 237, 'New Mexico', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(37, 237, 'New York', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(38, 237, 'North Carolina', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(39, 237, 'North Dakota', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(40, 237, 'Northern Mariana Islands', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(41, 237, 'Ohio', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(42, 237, 'Oklahoma', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(43, 237, 'Oregon', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
-(44, 237, 'Palau', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(45, 237, 'Pennsylvania', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(46, 237, 'Puerto Rico', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(47, 237, 'Rhode Island', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(48, 237, 'South Carolina', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(49, 237, 'South Dakota', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(50, 237, 'Tennessee', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(51, 237, 'Texas', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(52, 237, 'Utah', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(53, 237, 'Vermont', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(54, 237, 'Virgin Islands', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
-(55, 237, 'Virginia', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
-(56, 237, 'Washington', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
-(57, 237, 'West Virginia', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
-(58, 237, 'Wisconsin', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
-(59, 237, 'Wyoming', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40');
+(1, 223, 'Alabama', 'Active', '2021-02-21 17:27:33', '2021-02-21 17:27:33'),
+(2, 223, 'Alaska', 'Active', '2021-02-21 17:27:33', '2021-02-21 17:27:33'),
+(3, 223, 'American Samoa', 'Active', '2021-02-21 17:27:33', '2021-02-21 17:27:33'),
+(4, 223, 'Arizona', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(5, 223, 'Arkansas', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(6, 223, 'California', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(7, 223, 'Colorado', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(8, 223, 'Connecticut', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(9, 223, 'Delaware', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(10, 223, 'District Of Columbia', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(11, 223, 'Federated States Of Micronesia', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(12, 223, 'Florida', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(13, 223, 'Georgia', 'Active', '2021-02-21 17:27:34', '2021-02-21 17:27:34'),
+(14, 223, 'Guam', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(15, 223, 'Hawaii', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(16, 223, 'Idaho', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(17, 223, 'Illinois', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(18, 223, 'Indiana', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(19, 223, 'Iowa', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(20, 223, 'Kansas', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(21, 223, 'Kentucky', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(22, 223, 'Louisiana', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(23, 223, 'Maine', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(24, 223, 'Marshall Islands', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(25, 223, 'Maryland', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(26, 223, 'Massachusetts', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(27, 223, 'Michigan', 'Active', '2021-02-21 17:27:35', '2021-02-21 17:27:35'),
+(28, 223, 'Minnesota', 'Active', '2021-02-21 17:27:36', '2021-02-21 17:27:36'),
+(29, 223, 'Mississippi', 'Active', '2021-02-21 17:27:36', '2021-02-21 17:27:36'),
+(30, 223, 'Missouri', 'Active', '2021-02-21 17:27:36', '2021-02-21 17:27:36'),
+(31, 223, 'Montana', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
+(32, 223, 'Nebraska', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
+(33, 223, 'Nevada', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
+(34, 223, 'New Hampshire', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
+(35, 223, 'New Jersey', 'Active', '2021-02-21 17:27:37', '2021-02-21 17:27:37'),
+(36, 223, 'New Mexico', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(37, 223, 'New York', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(38, 223, 'North Carolina', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(39, 223, 'North Dakota', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(40, 223, 'Northern Mariana Islands', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(41, 223, 'Ohio', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(42, 223, 'Oklahoma', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(43, 223, 'Oregon', 'Active', '2021-02-21 17:27:38', '2021-02-21 17:27:38'),
+(44, 223, 'Palau', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(45, 223, 'Pennsylvania', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(46, 223, 'Puerto Rico', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(47, 223, 'Rhode Island', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(48, 223, 'South Carolina', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(49, 223, 'South Dakota', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(50, 223, 'Tennessee', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(51, 223, 'Texas', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(52, 223, 'Utah', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(53, 223, 'Vermont', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(54, 223, 'Virgin Islands', 'Active', '2021-02-21 17:27:39', '2021-02-21 17:27:39'),
+(55, 223, 'Virginia', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
+(56, 223, 'Washington', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
+(57, 223, 'West Virginia', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
+(58, 223, 'Wisconsin', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40'),
+(59, 223, 'Wyoming', 'Active', '2021-02-21 17:27:40', '2021-02-21 17:27:40');
 
 -- --------------------------------------------------------
 
@@ -1503,7 +1525,12 @@ INSERT INTO `users` (`id`, `role_id`, `provider_id`, `name`, `email`, `avatar`, 
 (1, 1, NULL, 'Root', 'root@goodgross.com', 'img/application/admin_avatar.jpg', '$2y$10$91OSxMlUV/Mh8duqqMoYb.APq47xyruUh4Ff81Ud9zSkYi.MILTqO', NULL, 'Controller', 'Active', '2021-04-11 11:55:46', '2021-04-11 11:55:46'),
 (2, 0, NULL, 'Asraf Duha', 'seaudbd@gmail.com', NULL, '$2y$10$6oZ/8rrX1x3jh/lwZnIZk.wO3F4DPfwbBffVYSh4Pn7UVDafCgeWW', NULL, 'Account', 'Active', '2021-05-18 14:15:59', '2021-05-18 14:20:23'),
 (3, 0, NULL, 'Arizona Traders', 'tasmiatashahud@gmail.com', NULL, '$2y$10$kZeFdbtkDg7kVE3QLM8vU.bGo8gV5KaX9UgCHH1Cb3V0QPFnKQo0e', NULL, 'Account', 'Active', '2021-06-04 14:22:07', '2021-06-04 14:23:26'),
-(4, 0, NULL, 'Olsen Agro Industries', 'mrtest714@gmail.com', NULL, '$2y$10$dAzfI8Mx0xUKunyRnsU3Ge70aEPygZlS3KAfHBURHNCslmWjdZjG6', NULL, 'Account', 'Active', '2021-06-15 15:24:00', '2021-06-15 15:28:30');
+(4, 0, NULL, 'Olsen Agro Industries', 'mrtest714@gmail.com', NULL, '$2y$10$dAzfI8Mx0xUKunyRnsU3Ge70aEPygZlS3KAfHBURHNCslmWjdZjG6', NULL, 'Account', 'Active', '2021-06-15 15:24:00', '2021-06-15 15:28:30'),
+(5, NULL, NULL, 'Bilal Mahmud', 'root@archiverz.com', NULL, NULL, NULL, 'Account', 'Inactive', '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(6, NULL, NULL, 'David Dhawan', 'abc@gmail.com', NULL, NULL, NULL, 'Account', 'Inactive', '2021-10-30 20:10:11', '2021-10-30 20:10:11'),
+(7, NULL, NULL, 'David Dhawan', 'abc@gmail.com', NULL, NULL, NULL, 'Account', 'Inactive', '2021-10-30 20:10:37', '2021-10-30 20:10:37'),
+(8, NULL, NULL, 'David Dhawan', 'abc@gmail.com', NULL, NULL, NULL, 'Account', 'Inactive', '2021-10-30 20:11:28', '2021-10-30 20:11:28'),
+(9, NULL, NULL, 'David Dhawan', 'abc@gmail.com', NULL, NULL, NULL, 'Account', 'Inactive', '2021-10-30 20:12:17', '2021-10-30 20:12:17');
 
 -- --------------------------------------------------------
 
@@ -1527,8 +1554,22 @@ CREATE TABLE `user_notifications` (
 --
 
 INSERT INTO `user_notifications` (`id`, `user_id`, `order_transaction_id`, `type`, `title`, `read_at`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, 'Transaction', 'An order for the product \"Mazda MX-5 Miata\" has been made from the account number: \"P-20210518-100000\"', NULL, '2021-10-28 14:16:49', '2021-10-28 14:16:49'),
-(2, 1, 1, 'Transaction', 'An order for the product \"Mazda MX-5 Miata\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"P-20210518-100000\"', NULL, '2021-10-28 14:16:49', '2021-10-28 14:16:49');
+(1, 2, 1, 'Transaction', 'An order for the product \"Mazda MX-5 Miata\" has been made from the account number: \"G-20211030-100000\"', NULL, '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(2, 1, 1, 'Transaction', 'An order for the product \"Mazda MX-5 Miata\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"G-20211030-100000\"', NULL, '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(3, 2, 2, 'Transaction', 'An order for the product \"Audi Manhattan Bubble Superior Danapo Lexa 2019\" has been made from the account number: \"G-20211030-100000\"', NULL, '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(4, 1, 2, 'Transaction', 'An order for the product \"Audi Manhattan Bubble Superior Danapo Lexa 2019\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"G-20211030-100000\"', NULL, '2021-10-30 05:19:51', '2021-10-30 05:19:51'),
+(5, 2, 3, 'Transaction', 'An order for the product \"Volkswagen VXL-2019\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(6, 1, 3, 'Transaction', 'An order for the product \"Volkswagen VXL-2019\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(7, 2, 4, 'Transaction', 'An order for the product \"Mercedes-AMG C43\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(8, 1, 4, 'Transaction', 'An order for the product \"Mercedes-AMG C43\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 05:38:57', '2021-10-30 05:38:57'),
+(9, 2, 5, 'Transaction', 'An order for the product \"Mazda MX-5 Miata\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(10, 1, 5, 'Transaction', 'An order for the product \"Mazda MX-5 Miata\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(11, 2, 6, 'Transaction', 'An order for the product \"Mercedes-AMG C43\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(12, 1, 6, 'Transaction', 'An order for the product \"Mercedes-AMG C43\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 19:41:54', '2021-10-30 19:41:54'),
+(13, 2, 7, 'Transaction', 'An order for the product \"Audi Manhattan Bubble Superior Danapo Lexa 2019\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 20:13:20', '2021-10-30 20:13:20'),
+(14, 1, 7, 'Transaction', 'An order for the product \"Audi Manhattan Bubble Superior Danapo Lexa 2019\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 20:13:20', '2021-10-30 20:13:20'),
+(15, 2, 8, 'Transaction', 'An order for the product \"Volkswagen VXL-2019\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 20:13:20', '2021-10-30 20:13:20'),
+(16, 1, 8, 'Transaction', 'An order for the product \"Volkswagen VXL-2019\" owned by the account number: \"P-20210518-100000\" has been made from the account number: \"R-20210604-100000\"', NULL, '2021-10-30 20:13:20', '2021-10-30 20:13:20');
 
 -- --------------------------------------------------------
 
@@ -1745,19 +1786,19 @@ ALTER TABLE `watched_products`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `account_billings`
 --
 ALTER TABLE `account_billings`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `account_cards`
 --
 ALTER TABLE `account_cards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `account_payment_methods`
@@ -1769,7 +1810,7 @@ ALTER TABLE `account_payment_methods`
 -- AUTO_INCREMENT for table `account_shippings`
 --
 ALTER TABLE `account_shippings`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `business_accounts`
@@ -1793,19 +1834,19 @@ ALTER TABLE `category_types`
 -- AUTO_INCREMENT for table `connected_accounts`
 --
 ALTER TABLE `connected_accounts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=234;
 
 --
 -- AUTO_INCREMENT for table `guest_accounts`
 --
 ALTER TABLE `guest_accounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `menus`
@@ -1835,25 +1876,25 @@ ALTER TABLE `options`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_billings`
 --
 ALTER TABLE `order_billings`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_shippings`
 --
 ALTER TABLE `order_shippings`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_transactions`
 --
 ALTER TABLE `order_transactions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
@@ -1865,7 +1906,7 @@ ALTER TABLE `payment_methods`
 -- AUTO_INCREMENT for table `personal_accounts`
 --
 ALTER TABLE `personal_accounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -1907,13 +1948,13 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user_notifications`
 --
 ALTER TABLE `user_notifications`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `watched_products`

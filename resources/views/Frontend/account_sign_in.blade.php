@@ -74,47 +74,74 @@
                     <div class="col-12 col-sm-8 col-md-12 col-lg-10 col-xl-8 col-xxl-7 mx-auto">
 
                         <div class="row">
-                            <div class="col-12 col-sm-12 col-md-7 px-md-5 border-end" style="border-color: #e8f3ed !important;">
-                                <div id="sign_in_form_message" class="text-center text-danger">{{ \Illuminate\Support\Facades\Session::get('error') }}</div>
-                                <form id="sign_in_form">
+                            <div class="col-12 col-sm-12 col-md-7 mx-auto">
 
-                                    <div class="form-floating mb-4">
-                                        <input type="text" class="form-control" name="email" id="email" placeholder="Email">
-                                        <label for="sign_in_id">Email</label>
-                                    </div>
-                                    <div class="input-group mb-4">
-                                        <div class="form-floating" style="width: 70%;">
-                                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" style="border-right: none; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                                            <label for="password">Password</label>
+
+                                <div>
+                                    <div id="sign_in_form_message" class="text-center text-danger">{{ \Illuminate\Support\Facades\Session::get('error') }}</div>
+                                    <form id="sign_in_form">
+                                        <div class="form-floating mb-4">
+                                            <input type="text" class="form-control border-0 border-bottom" name="email" id="email" placeholder="Email" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                            <label for="sign_in_id">Email</label>
                                         </div>
-                                        <div class="input-group-text text-right" style="background-color: #ffffff; width: 30%; justify-content: flex-end;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="password_show_hide">
-                                                <label class="form-check-label small" for="password_show_hide">Show</label>
+                                        <div class="input-group mb-4">
+                                            <div class="form-floating" style="width: 70%;">
+                                                <input type="password" class="form-control border-0 border-bottom" name="password" id="password" placeholder="Password" style="border-color: #b1b1b1 !important; border-radius: 0; border-right: none;">
+                                                <label for="password">Password</label>
+                                            </div>
+                                            <div class="input-group-text text-right border-0 border-bottom" style="border-color: #b1b1b1 !important; border-radius: 0; background-color: #ffffff; width: 30%; justify-content: flex-end;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="password_show_hide">
+                                                    <label class="form-check-label small" for="password_show_hide">Show</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mb-4">
+                                        <div class="row mb-4">
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="remember_me">
+                                                    <label class="form-check-label" for="remember_me">
+                                                        Remember me
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col text-end" style="font-size: 14px;">
+                                                <a href="{{ url('forgot/password') }}" class="text-decoration-none" style="color: #636363;">Forgot Password?</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col d-grid gap-2">
+                                                <button type="submit" class="btn primary_btn_default pr-3 pl-3" id="sign_in_form_submit">
+                                                    <span id="sign_in_form_submit_text">Sign in</span>
+                                                    <span id="sign_in_form_submit_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span>Processing...</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+
+
+                                <div class="">
+                                    <div class="mt-3">Or, Sign in with</div>
+
+                                    <div class="row mt-4">
                                         <div class="col">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="remember_me">
-                                                <label class="form-check-label" for="remember_me">
-                                                    Remember me
-                                                </label>
-                                            </div>
+                                            <a href="{{ url('auth/redirect/to/google/dashboard') }}" class="btn btn-styled btn-block btn-google btn-icon--2 btn-icon-left px-2">
+                                                <i class="icon fab fa-google"></i> Google
+                                            </a>
                                         </div>
-                                        <div class="col text-end" style="font-size: 14px;">
-                                            <a href="{{ url('forgot/password') }}" class="text-decoration-none" style="color: #636363;">Forgot Password?</a>
+                                        <div class="col">
+                                            <a href="{{ url('auth/redirect/to/facebook/dashboard') }}" class="btn btn-styled btn-block btn-facebook btn-icon--2 btn-icon-left px-2">
+                                                <i class="icon fab fa-facebook-f"></i> Facebook
+                                            </a>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col d-grid gap-2">
-                                            <button type="submit" class="btn primary_btn_default pr-3 pl-3" id="sign_in_form_submit">
-                                                <span id="sign_in_form_submit_text">Sign in</span>
-                                                <span id="sign_in_form_submit_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span>Processing...</span>
-                                            </button>
+                                        <div class="col">
+                                            <a href="{{ url('auth/redirect/to/twitter/dashboard') }}" class="btn btn-styled btn-block btn-twitter btn-icon--2 btn-icon-left px-2">
+                                                <i class="icon fab fa-twitter"></i> Twitter
+                                            </a>
                                         </div>
                                     </div>
 
@@ -123,27 +150,12 @@
 
 
 
-
-
-                                </form>
+                                </div>
 
                             </div>
 
 
-                            <div class="col-12 col-sm-12 col-md-5 px-md-5">
 
-
-                                <div class="mt-3">Or, Sign in with</div>
-                                <a href="{{ url('auth/redirect/to/google/dashboard') }}" class="btn btn-styled btn-block btn-google btn-icon--2 btn-icon-left px-4 my-4">
-                                    <i class="icon fab fa-google"></i> Google
-                                </a>
-                                <a href="{{ url('auth/redirect/to/facebook/dashboard') }}" class="btn btn-styled btn-block btn-facebook btn-icon--2 btn-icon-left px-4 my-4">
-                                    <i class="icon fab fa-facebook-f"></i> Facebook
-                                </a>
-                                <a href="{{ url('auth/redirect/to/twitter/dashboard') }}" class="btn btn-styled btn-block btn-twitter btn-icon--2 btn-icon-left px-4 my-4">
-                                    <i class="icon fab fa-twitter"></i> Twitter
-                                </a>
-                            </div>
                         </div>
 
 
@@ -219,7 +231,7 @@
                             $('#sign_in_form_submit_text').removeClass('sr-only');
                             $('#sign_in_form_submit_processing').addClass('sr-only');
                             if (result.success === true) {
-                                location = '{{ url('account/dashboard') }}';
+                                location = '{{ url('account/overview') }}';
                             } else {
                                 if (result.message === 'Pending Account') {
                                     location = '{{ url('email/verification') }}/' + result.account.id;

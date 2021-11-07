@@ -8,7 +8,7 @@
             color: #999999;
         }
     </style>
-    <div class="container-fluid">
+    <div class="container-fluid bg-white">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mx-auto">
 
@@ -24,7 +24,7 @@
 
                 <div class="row mt-4">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-4">
-                        <div class="text-secondary fw-bold p-2 mb-4" style="background-color: #efefef;">Where to deliver your order?</div>
+                        <div class="text-secondary fw-bold p-2 mb-4" style="background-color: #efefef;">Where do we deliver your order?</div>
 
 
                         <form id="delivery_address_form">
@@ -53,9 +53,9 @@
                                                     <option value="">Select Country</option>
                                                     @foreach($countries as $country)
                                                         @if($country->country === $userCountry)
-                                                            <option value="{{ $country->id }}" selected>{{ $country->country }}</option>
+                                                            <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
                                                         @else
-                                                            <option value="{{ $country->id }}">{{ $country->country }}</option>
+                                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -155,9 +155,9 @@
                                                     <option value="">Select Country</option>
                                                     @foreach($countries as $country)
                                                         @if($country->country === $userAccountDetails->country)
-                                                            <option value="{{ $country->id }}" selected>{{ $country->country }}</option>
+                                                            <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
                                                         @else
-                                                            <option value="{{ $country->id }}">{{ $country->country }}</option>
+                                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
@@ -242,10 +242,24 @@
 
                             @else
 
+                                <div class="form-floating mb-4">
+                                    <select class="form-select" name="country_id" id="country_id">
+                                        <option value="">Select Country</option>
+                                        @foreach($countries as $country)
+                                            @if($country->name === $userCountry)
+                                                <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
+                                            @else
+                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <label for="country_id">Country</label>
+                                </div>
+
 
                                 <div class="row mb-4">
                                     <div class="col-12 col-sm-6">
-                                        <div class="form-floating mb-4 mb-sm-0">
+                                        <div class="form-floating">
                                             <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First Name">
                                             <label for="first_name">First Name</label>
                                         </div>
@@ -258,24 +272,29 @@
                                     </div>
                                 </div>
 
-
                                 <div class="row mb-4">
                                     <div class="col-12 col-sm-6">
                                         <div class="form-floating mb-4 mb-sm-0">
-                                            <select class="form-select" name="country_id" id="country_id">
-                                                <option value="">Select Country</option>
-                                                @foreach($countries as $country)
-                                                    @if($country->country === $userCountry)
-                                                        <option value="{{ $country->id }}" selected>{{ $country->country }}</option>
-                                                    @else
-                                                        <option value="{{ $country->id }}">{{ $country->country }}</option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                            <label for="country_id">Country</label>
+                                            <textarea class="form-control" id="address_line_1" name="address_line_1" placeholder="Address Line 1"></textarea>
+                                            <label for="address_line_1">Address Line 1</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" id="address_line_2" name="address_line_2" placeholder="Address Line 2"></textarea>
+                                            <label for="address_line_2">Address Line 2</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-12 col-sm-4">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" name="city" id="city" placeholder="City">
+                                            <label for="city">City</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
                                         <div id="state_field_holder">
                                             <div class="form-floating">
                                                 @if($userCountry === 'United States')
@@ -297,15 +316,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-12 col-sm-6">
-                                        <div class="form-floating mb-4 mb-sm-0">
-                                            <input type="text" class="form-control" name="city" id="city" placeholder="City">
-                                            <label for="city">City</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-sm-6">
+                                    <div class="col-12 col-sm-4">
                                         <div class="form-floating">
                                             <input type="text" class="form-control" name="postal_code" id="postal_code" placeholder="Postal Code">
                                             <label for="postal_code">Postal Code</label>
@@ -313,26 +324,16 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-4">
-                                    <div class="col-12 col-sm-6">
-                                        <div class="form-floating mb-4 mb-sm-0">
-                                            <textarea class="form-control" id="address_line_1" name="address_line_1" placeholder="Address Line 1"></textarea>
-                                            <label for="address_line_1">Address Line 1</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-sm-6">
-                                        <div class="form-floating">
-                                            <textarea class="form-control" id="address_line_2" name="address_line_2" placeholder="Address Line 2"></textarea>
-                                            <label for="address_line_2">Address Line 2</label>
-                                        </div>
-                                    </div>
-                                </div>
+
+
 
                                 <div class="row mb-4">
                                     <div class="col-12 col-sm-6">
-                                        <div class="form-floating mb-4 mb-sm-0">
-                                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone">
-                                            <label for="phone">Phone</label>
+                                        <div id="phone_field_holder">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone">
+                                                <label for="phone">Phone</label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6">
@@ -351,33 +352,13 @@
 
                             <div class="row mb-4">
                                 <div class="col d-grid">
-                                    <button type="submit" class="btn primary_btn_default" id="delivery_address_form_button">
+                                    <button type="submit" class="btn primary_btn_default" id="delivery_address_form_button" style="border-radius: 0;">
                                         <span id="delivery_address_form_button_text">Go to Checkout</span>
                                         <span id="delivery_address_form_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                     </button>
                                 </div>
                             </div>
                         </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                     </div>
@@ -395,11 +376,12 @@
 
 
         $(document).on('change', '#country_id', function () {
+            let countryId = $(this).val();
             $.ajax({
                 method: 'get',
                 url: '{{ url('get/states/by/country/id') }}',
                 data: {
-                    country_id: $(this).val()
+                    country_id: countryId
                 },
                 cache: false,
                 success: function (result) {
@@ -414,6 +396,43 @@
                     } else {
                         $('#state_field_holder').append('<div class="form-floating"><input type="text" class="form-control" name="state" id="state" placeholder="State"><label for="state">State</label></div>');
                     }
+
+                    $.ajax({
+                        method: 'get',
+                        url: '{{ url('get/country/by/id') }}',
+                        data: {
+                            id: countryId
+                        },
+                        cache: false,
+                        success: function (result) {
+                            console.log(result);
+                            $('#phone_field_holder').empty();
+                            if (result.payload !== null) {
+                                $('#phone_field_holder').append(`
+                                    <div class="row">
+                                        <div class="col-4 pe-0" style="padding-top: 17px;">
+                                            <div class="border-bottom" style="border-color: #b1b1b1 !important; padding-bottom: 16px;">
+                                                <img src="` + result.payload.flag + `" style="height: 20px;">
+                                                <span class="">` + result.payload.dialling_code + `</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 ps-0">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;">
+                                                <label for="phone">Phone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `);
+                            } else {
+                                $('#phone_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="phone">Phone</label></div>');
+                            }
+                        },
+                        error: function (xhr) {
+                            console.log(xhr);
+                        }
+                    });
+
                 },
                 error: function (xhr) {
                     console.log(xhr);

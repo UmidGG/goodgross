@@ -7,13 +7,13 @@ use App\Models\Account;
 use App\Models\AccountNotification;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class OverviewController extends Controller
 {
     public function index()
     {
         $title = 'Overview';
         $activeNav = 'Overview';
-        return view('Account.dashboard', compact('title', 'activeNav'));
+        return view('Account.overview', compact('title', 'activeNav'));
 
     }
 

@@ -11,4 +11,8 @@ class AccountBilling extends Model
 
     protected $table = 'account_billings';
     protected $guarded = [];
+
+    public function country() {
+        return $this->belongsTo(Country::class);
+    }
 }

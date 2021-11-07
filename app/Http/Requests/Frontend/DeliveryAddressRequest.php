@@ -42,7 +42,6 @@ class DeliveryAddressRequest extends FormRequest
         $rules['country_id'] = [
             'required',
             'numeric',
-
         ];
 
         $rules['state'] = [

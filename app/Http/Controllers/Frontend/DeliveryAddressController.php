@@ -43,13 +43,11 @@ class DeliveryAddressController extends Controller
 
     public function storeInDatabase(DeliveryAddressRequest $request)
     {
-
-        $country = Country::where('id', $request->country_id)->first()->country;
         $accountShipping = new AccountShipping();
         $accountShipping->account_id = auth()->user()->account->id;
         $accountShipping->first_name = $request->first_name;
         $accountShipping->last_name = $request->last_name;
-        $accountShipping->country = $country;
+        $accountShipping->country_id = $request->country_id;
         $accountShipping->state = $request->state;
         $accountShipping->city = $request->city;
         $accountShipping->postal_code = $request->postal_code;
@@ -57,7 +55,6 @@ class DeliveryAddressController extends Controller
         $accountShipping->address_line_2 = $request->address_line_2;
         $accountShipping->phone = $request->phone;
         $accountShipping->email = $request->email;
-//        $accountShipping->is_primary = $request->is_primary;
         $accountShipping->is_selected = $request->is_selected;
         $accountShipping->save();
 
@@ -65,7 +62,7 @@ class DeliveryAddressController extends Controller
         $accountBilling->account_id = auth()->user()->account->id;
         $accountBilling->first_name = $request->first_name;
         $accountBilling->last_name = $request->last_name;
-        $accountBilling->country = $country;
+        $accountBilling->country_id = $request->country_id;
         $accountBilling->state = $request->state;
         $accountBilling->city = $request->city;
         $accountBilling->postal_code = $request->postal_code;
@@ -73,18 +70,14 @@ class DeliveryAddressController extends Controller
         $accountBilling->address_line_2 = $request->address_line_2;
         $accountBilling->phone = $request->phone;
         $accountBilling->email = $request->email;
-//        $accountBilling->is_primary = $request->is_primary;
-//        $accountBilling->is_selected = $request->is_selected;
         $accountBilling->save();
-
-
         return response()->json(['success' => true, 'message' => 'Delivery Address Saved Successfully', 'payload' => null]);
     }
 
     public function storeInSession(DeliveryAddressRequest $request)
     {
-        $country = Country::where('id', $request->country_id)->first()->country;
-        $deliveryAddress = $request->except(['_token', 'country_id']);
+        $country = Country::where('id', $request->country_id)->first();
+        $deliveryAddress = $request->except(['_token']);
         $deliveryAddress['country'] = $country;
         Session::put('delivery_address_for_guest', $deliveryAddress);
         Session::put('billing_address_for_guest', $deliveryAddress);

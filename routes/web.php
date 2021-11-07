@@ -42,6 +42,34 @@ use \App\Http\Controllers\ControlPanel\Operation\PostedItemController;
 
 
 
+Route::get('save/country/in/db', function() {
+    try {
+        $string = json_decode(\Illuminate\Support\Facades\Storage::get("public/by-code.json"), true);
+        //return dd($string);
+        foreach ($string as $key => $value) {
+            //return $value['currency']['code'];
+            $country = \App\Models\Country::where('code', $key)->first();
+            if ($country) {
+                $country->flag = $value['image'];
+                $country->save();
+            }
+//            $country->name = $value['name'];
+//            $country->code = $value['code'];
+//            $country->capital = $value['capital'];
+//            $country->region = $value['region'];
+//            $country->currency_code = $value['currency']['code'];
+//            $country->currency_symbol = $value['currency']['symbol'];
+//            $country->flag = $value['flag'];
+//            $country->dialling_code = $value['dialling_code'];
+//            $country->status = 'Active';
+//            $country->save();
+        }
+        dd('done');
+    } catch (Exception $exception) {
+        return $exception->getMessage();
+    }
+
+});
 
 
 Route::get('clear', function() {
@@ -56,6 +84,8 @@ Route::get('clear', function() {
 Route::get('check/account/login/status', [SignInController::class, 'checkAccountLoginStatus']);
 Route::get('is/shipping/address/available', [CheckoutController::class, 'isShippingAddressAvailable']);
 Route::get('is/guest/delivery/address/exist', [CheckoutController::class, 'isGuestDeliveryAddressExist']);
+Route::get('get/states/by/country/id', [RegistrationController::class, 'getStatesByCountryId']);
+Route::get('get/country/by/id', [CheckoutController::class, 'getCountryId']);
 
 
 ////////////////////////////////////////////////////////////HOME PAGE////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +153,7 @@ Route::get('checkout/initiate/paypal', [CheckoutController::class, 'initiatePayp
 Route::get('checkout/initiate/stripe', [CheckoutController::class, 'initiateStripe']);
 Route::get('checkout/paypal/payment/status', [CheckoutController::class, 'paypalPaymentStatus']);
 Route::get('checkout/paypal/payment/cancel', [CheckoutController::class, 'paypalPaymentCancel']);
-Route::get('checkout/success/{order_id}', [CheckoutController::class, 'success']);
+Route::get('checkout/success', [CheckoutController::class, 'success']);
 
 
 /////////////////////////////////////////////////////////////////Place an Order////////////////////////////////////////////////////
@@ -147,7 +177,6 @@ Route::post('authenticate/control/panel/sign/in', [SignInController::class, 'aut
 
 ////////////////////////////////////////////////////////////ACCOUNT REGISTRATION////////////////////////////////////////////////////////////////////////////////
 Route::get('registration/{id?}', [RegistrationController::class, 'loadRegistration']);
-Route::get('get/states/by/country/id', [RegistrationController::class, 'getStatesByCountryId']);
 Route::post('register/personal/account', [RegistrationController::class, 'registerPersonalAccount']);
 Route::post('register/business/account', [RegistrationController::class, 'registerBusinessAccount']);
 
@@ -177,7 +206,8 @@ Route::post('post/product', [PostProductController::class, 'postProduct']);
 /////////////////////////////////////////////////////Account///////////////////////////////////////////////////////////////
 
 Route::get('get/account/notifications', [\App\Http\Controllers\Account\DashboardController::class, 'getAccountNotifications'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/dashboard', [\App\Http\Controllers\Account\DashboardController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
+Route::get('account/overview', [\App\Http\Controllers\Account\OverviewController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
+Route::get('account/settings', [\App\Http\Controllers\Account\SettingsController::class, 'account'])->middleware('redirect.to.dashboard.if.authenticated');
 
 Route::get('account/post/product', [\App\Http\Controllers\Account\PostProductController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
 Route::get('account/post/product/get/categories/{made_for}', [\App\Http\Controllers\Account\PostProductController::class, 'getCategories']);

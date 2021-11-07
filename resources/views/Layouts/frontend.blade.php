@@ -3,71 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{{ $title }} | {{ env('APP_NAME') }}</title>
     <link rel="shortcut icon" href="{{ asset('storage/img/application/favicon.ico') }}">
-
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
     <link rel="stylesheet" href="{{ asset('css/jquery.toast.min.css') }}">
     <script src="{{ asset('js/jquery.toast.min.js') }}"></script>
-
-
-    {{--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">--}}
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet">--}}
-
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" rel="stylesheet">--}}
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" rel="stylesheet">
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
-    {{--<link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">--}}
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js"></script>
-    {{--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">--}}
-    {{--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">--}}
-
-
-
-
-
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
-
-    {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
-    {{--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>--}}
-    {{--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>--}}
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>--}}
-
-    {{--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--}}
-    {{--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.7/jquery.jgrowl.min.js"></script>--}}
-    {{--<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>--}}
-    {{--<script src="{{ asset('js/tinymce/tinymce.min.js') }}" type="text/javascript"></script>--}}
-
-
-{{--    <script src="https://www.google.com/recaptcha/api.js?render={{ env('RECAPTCHA_SITE_KEY') }}"></script>--}}
-
-
-
-
-
-
-
-
     <style type="text/css">
-
-
-
         .ui-slider-horizontal {
             height: 1px;
             border: none;
@@ -82,9 +36,9 @@
 
 
         /*////////////////////////////////////////////////////////General///////////////////////////////////////////////////*/
-        .grecaptcha-badge {
-            visibility: hidden;
-        }
+        /*.grecaptcha-badge {*/
+        /*    visibility: hidden;*/
+        /*}*/
 
         body {
             font-family: 'Roboto';
@@ -105,16 +59,25 @@
         .form-control {
             color: #636363;
             font-size: 14px;
+            border: 0;
+            border-bottom: 1px solid #b1b1b1 !important;
+            border-radius: 0;
         }
 
         .form-select {
             color: #636363;
             font-size: 14px;
+            border: 0;
+            border-bottom: 1px solid #b1b1b1 !important;
+            border-radius: 0;
         }
 
         .input-group-text {
             color: #636363;
             font-size: 14px;
+            border: 0;
+            border-bottom: 1px solid #b1b1b1 !important;
+            border-radius: 0;
         }
 
         input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
@@ -142,10 +105,6 @@
         .btn.disabled, .btn:disabled, fieldset:disabled .btn {
             pointer-events: none;
             opacity: 1;
-        }
-
-        .input_group_text_invalid_border_color {
-            border-color: #dc3545 !important;
         }
 
         .primary_text_color_default  {
@@ -192,12 +151,12 @@
         /*////////////////////////////////////////Header///////////////////////////////////////////////*/
 
 
-        #user_dropdown::after {
+        #notification_dropdown::after {
             display: none;
         }
 
-        #notification_dropdown::after {
-            display: none;
+        #user_dropdown::after {
+            content: none;
         }
 
 
@@ -233,10 +192,6 @@
                 padding-bottom: 15px;
             }
         }
-
-        /*#top_right_nav a {*/
-            /*color: white;*/
-        /*}*/
 
         @keyframes shadow-pulse
         {
@@ -397,6 +352,8 @@
             font-size: 12px;
         }
 
+
+
 </style>
 </head>
 <body>
@@ -414,8 +371,8 @@
                         <div class="row">
                             <div class="col-12 col-sm-12 col-md-6">
                                 <div class="input-group">
-                                    <div class="input-group-text" id="search_filter" style="background-color: #ffffff; border-right: none;">
-                                        <select class="form-select" id="search_filter_options" style="border: none; color: #636363;">
+                                    <div class="input-group-text" id="search_filter" style="background-color: #ffffff; border-right: none; border-radius: 0; border-bottom: 0 !important; border-top: 0 !important;">
+                                        <select class="form-select" id="search_filter_options" style="border: none; color: #636363; border-bottom: 0 !important;">
                                             <optgroup>
                                                 <option value="">All</option>
                                                 <option value="">Retail</option>
@@ -425,8 +382,8 @@
                                         </select>
                                     </div>
 
-                                    <input class="form-control" id="search_input" type="text" aria-describedby="search_filter search_button" placeholder="Search here..." style="border-left: none; border-right: none;">
-                                    <div class="input-group-text" id="search_button" style="background-color: #ffffff; cursor: pointer;">
+                                    <input class="form-control" id="search_input" type="text" aria-describedby="search_filter search_button" placeholder="Search here..." style="border-left: none; border-right: none; border-bottom: 0 !important;">
+                                    <div class="input-group-text" id="search_button" style="background-color: #ffffff; cursor: pointer; border-radius: 0; border-bottom: 0 !important; border-top: 0 !important;">
                                         <i class="fas fa-search primary_text_color_default"></i>
                                     </div>
                                 </div>
@@ -435,13 +392,14 @@
 
                                 <div class="row justify-content-end">
                                     <div class="col-sm-auto">
-                                        <a href="{{ url('post/product') }}" id="post_product_button">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                            Post a Product
-                                        </a>
+{{--                                        <a href="{{ url('post/product') }}" id="post_product_button">--}}
+{{--                                            <span></span>--}}
+{{--                                            <span></span>--}}
+{{--                                            <span></span>--}}
+{{--                                            <span></span>--}}
+{{--                                            Post a Product--}}
+{{--                                        </a>--}}
+                                        <a href="{{ url('post/product') }}" class="btn" style="box-shadow: inset 0 0 2px 0; padding: 5px 15px; background: #09bd06b0; font-size: 14px; border-radius: 0; margin-top: 5px; color: seashell;">Post a Product</a>
                                     </div>
                                     <div class="col-sm-auto" style="padding-top: 6px;">
                                         @if( ! auth()->check() )
@@ -466,20 +424,30 @@
 
 
 
-                                            <div class="dropdown d-inline-block ms-3">
+{{--                                            <div class="dropdown d-inline-block ms-3">--}}
 
-                                                <div class="dropdown-toggle" style="background-color: transparent; cursor: pointer;" id="user_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    @if(auth()->user()->avatar !== null)
-                                                        <div style="padding: 1px; border-radius: 50%; border: 1px solid #ffffff;">
-                                                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}" style="height: 30px; width: 30px; border-radius: 50%;">
-                                                        </div>
-                                                    @else
-                                                        <img src="{{ asset('storage/img/application/icons8-user-32.png') }}" width="30" height="30">
-                                                    @endif
-                                                </div>
-                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user_dropdown">
-                                                    <li style="font-size: 14px;"><a class="dropdown-item" href="{{ url('account/profile') }}">Profile</a></li>
-                                                    <li style="font-size: 14px;"><a class="dropdown-item" href="{{ url('account/sign/out') }}">Sign out</a></li>
+{{--                                                <div class="dropdown-toggle" style="background-color: transparent; cursor: pointer;" id="user_dropdown" data-bs-toggle="dropdown" aria-expanded="false">--}}
+{{--                                                    @if(auth()->user()->avatar !== null)--}}
+{{--                                                        <div style="padding: 1px; border-radius: 50%; border: 1px solid #ffffff;">--}}
+{{--                                                            <img src="{{ asset('storage/' . auth()->user()->avatar) }}" style="height: 30px; width: 30px; border-radius: 50%;">--}}
+{{--                                                        </div>--}}
+{{--                                                    @else--}}
+{{--                                                        <img src="{{ asset('storage/img/application/icons8-user-32.png') }}" width="30" height="30">--}}
+{{--                                                    @endif--}}
+{{--                                                </div>--}}
+{{--                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user_dropdown">--}}
+{{--                                                    <li style="font-size: 14px;"><a class="dropdown-item" href="{{ url('account/profile') }}">Profile</a></li>--}}
+{{--                                                    <li style="font-size: 14px;"><a class="dropdown-item" href="{{ url('account/sign/out') }}">Sign out</a></li>--}}
+{{--                                                </ul>--}}
+{{--                                            </div>--}}
+                                            <div class="dropdown d-inline ms-3">
+                                                <button class="dropdown-toggle" type="button" id="user_dropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background: transparent; border: 0;">
+                                                    <img src="{{ asset('storage/img/application/icons8-user-32.png') }}" width="30" height="30">
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="user_dropdown">
+                                                    <li><a class="dropdown-item small" href="{{ url('account/overview') }}">Overview</a></li>
+                                                    <li><a class="dropdown-item small" href="{{ url('account/profile') }}">Settings</a></li>
+                                                    <li><a class="dropdown-item small" href="{{ url('account/sign/out') }}">Sign out</a></li>
                                                 </ul>
                                             </div>
 
@@ -496,11 +464,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-
             </div>
         </div>
     </div>
