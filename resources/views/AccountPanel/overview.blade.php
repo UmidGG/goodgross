@@ -1,4 +1,4 @@
-@extends('Layouts.account')
+@extends('Layouts.account_panel')
 
 @section('content')
 

@@ -388,9 +388,9 @@
                     console.log(result);
 
                     $('#state_field_holder').empty();
-                    if (result.length > 0) {
+                    if (result.payload.length > 0) {
                         $('#state_field_holder').append('<div class="form-floating"><select class="form-select" name="state" id="state"><option value="">Select State</option></select><label for="state">State</label></div>');
-                        $.each(result, function (key, state) {
+                        $.each(result.payload, function (key, state) {
                             $('#state').append('<option value="' + state.state + '">' + state.state + '</option>');
                         });
                     } else {
@@ -448,10 +448,9 @@
             $('#delivery_address_form_button_processing').removeClass('sr-only');
             let formData = new FormData(this);
             formData.append('_token', '{{ csrf_token() }}');
-            // formData.append('is_primary', '1');
             formData.append('is_selected', '1');
             let isGuest = '{{ $isGuest }}';
-            let url = isGuest ? '{{ url('delivery/address/store/in/session') }}' : '{{ url('delivery/address/store/in/database') }}';
+            let url = isGuest ? '{{ url('delivery/address/save/guest/shipping/address') }}' : '{{ url('delivery/address/save/account/shipping/address') }}';
             $.ajax({
                 method: 'post',
                 url: url,

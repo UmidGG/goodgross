@@ -80,155 +80,22 @@ Route::get('clear', function() {
     return response()->json('all cache cleared');
 });
 
-
-Route::get('check/account/login/status', [SignInController::class, 'checkAccountLoginStatus']);
-Route::get('is/shipping/address/available', [CheckoutController::class, 'isShippingAddressAvailable']);
-Route::get('is/guest/delivery/address/exist', [CheckoutController::class, 'isGuestDeliveryAddressExist']);
-Route::get('get/states/by/country/id', [RegistrationController::class, 'getStatesByCountryId']);
-Route::get('get/country/by/id', [CheckoutController::class, 'getCountryId']);
-
-
-////////////////////////////////////////////////////////////HOME PAGE////////////////////////////////////////////////////////////////////////////////
-Route::get('/', [HomeController::class, 'loadHomePage']);
-Route::get('get/category/types', [HomeController::class, 'getCategoryTypes']);
-
-////////////////////////////////////////////////////////////PRODUCT////////////////////////////////////////////////////////////////////////////////
-Route::get('category/{category_id}', [ProductController::class, 'loadCategorizedProducts']);
-Route::get('category/get/categorized/products', [ProductController::class, 'getCategorizedProducts']);
-Route::get('category/get/filter/items', [ProductController::class, 'getFilterItems']);
-Route::get('product/{product_id}', [ProductController::class, 'loadProduct']);
-Route::get('product/add/to/cart', [ProductController::class, 'addToCart']);
-Route::get('product/add/to/watch', [ProductController::class, 'addToWatch']);
-Route::post('product/add/to/session', [ProductController::class, 'addWholesaleItemToSession']);
-
-
-////////////////////////////////////Delivery Address/////////////////////////////////////
-Route::get('delivery/address', [DeliveryAddressController::class, 'loadDeliveryAddress']);
-Route::post('delivery/address/store/in/database', [DeliveryAddressController::class, 'storeInDatabase']);
-Route::post('delivery/address/store/in/session', [DeliveryAddressController::class, 'storeInSession']);
-
-/////////////////////////////////////////////////////////Cart//////////////////////////////////////////////////////
-Route::get('cart', [CartController::class, 'index']);
-Route::get('cart/get/items', [CartController::class, 'getItems']);
-Route::get('cart/delete/item', [CartController::class, 'deleteItem']);
-Route::get('cart/update/item/quantity', [CartController::class, 'updateItemQuantity']);
-Route::get('cart/copy/items/to/checkout', [CartController::class, 'copyItemToCheckout']);
-
-
-
-////////////////////////////////////////////////////////////////Checkout/////////////////////////////////////////////////
-Route::get('checkout', [CheckoutController::class, 'loadCheckout']);
-
-
-Route::get('checkout/get/items', [CheckoutController::class, 'getItems']);
-
-Route::get('checkout/get/account/delivery/addresses', [CheckoutController::class, 'getAccountDeliveryAddresses']);
-Route::get('checkout/get/guest/delivery/address', [CheckoutController::class, 'getGuestDeliveryAddress']);
-Route::get('checkout/select/account/delivery/address', [CheckoutController::class, 'selectAccountDeliveryAddress']);
-Route::get('checkout/delete/account/delivery/address', [CheckoutController::class, 'deleteAccountDeliveryAddress']);
-Route::get('checkout/get/account/delivery/address/by/id', [CheckoutController::class, 'getAccountDeliveryAddressById']);
-Route::post('checkout/save/account/delivery/address', [CheckoutController::class, 'saveAccountDeliveryAddress']);
-Route::post('checkout/save/guest/delivery/address', [CheckoutController::class, 'saveGuestDeliveryAddress']);
-
-Route::get('checkout/get/account/billing/address', [CheckoutController::class, 'getAccountBillingAddress']);
-Route::get('checkout/get/guest/billing/address', [CheckoutController::class, 'getGuestBillingAddress']);
-Route::get('checkout/get/account/billing/address/by/id', [CheckoutController::class, 'getAccountBillingAddressById']);
-Route::post('checkout/save/billing/address/for/account', [CheckoutController::class, 'saveBillingAddressForAccount']);
-Route::post('checkout/save/billing/address/for/guest', [CheckoutController::class, 'saveBillingAddressForGuest']);
-
-
-
-Route::get('checkout/get/account/cards', [CheckoutController::class, 'getAccountCards']);
-Route::get('checkout/get/account/card/by/id', [CheckoutController::class, 'getAccountCardById']);
-Route::get('checkout/delete/card/from/account', [CheckoutController::class, 'deleteCardFromAccount']);
-Route::get('checkout/select/card/for/account', [CheckoutController::class, 'selectCardForAccount']);
-Route::post('checkout/save/card/for/account', [CheckoutController::class, 'saveCardForAccount']);
-Route::get('checkout/get/guest/card', [CheckoutController::class, 'getGuestCard']);
-Route::post('checkout/save/card/for/guest', [CheckoutController::class, 'saveCardForGuest']);
-Route::get('checkout/delete/guest/card', [CheckoutController::class, 'deleteGuestCard']);
-
-
-Route::post('checkout', [CheckoutController::class, 'processCheckout']);
-Route::get('checkout/initiate/paypal', [CheckoutController::class, 'initiatePaypal']);
-Route::get('checkout/initiate/stripe', [CheckoutController::class, 'initiateStripe']);
-Route::get('checkout/paypal/payment/status', [CheckoutController::class, 'paypalPaymentStatus']);
-Route::get('checkout/paypal/payment/cancel', [CheckoutController::class, 'paypalPaymentCancel']);
-Route::get('checkout/success', [CheckoutController::class, 'success']);
-
-
-/////////////////////////////////////////////////////////////////Place an Order////////////////////////////////////////////////////
-Route::get('place/order', [PlaceOrderController::class, 'index']);
-
-
-
-
-////////////////////////////////////////////////////////////ACCOUNT SIGN IN AND SIGN OUT////////////////////////////////////////////////////////////////////////////////
-Route::get('account/sign/in', [SignInController::class, 'loadAccountSignIn']);
-Route::post('authenticate/account/sign/in', [SignInController::class, 'authenticateAccountSignIn']);
-
-Route::get('auth/redirect/to/{provider}/{where_to}', [SignInController::class, 'redirectToProvider']);
-Route::get('auth/{provider}/callback', [SignInController::class, 'handleProviderCallback']);
-
-Route::get('account/sign/out', [SignInController::class, 'accountSignOut'])->middleware('redirect.to.dashboard.if.authenticated');
-
-////////////////////////////////////////////////////////////CONTROL PANEL SIGN IN AND SIGN OUT////////////////////////////////////////////////////////////////////////////////
-Route::get('control/panel/sign/in', [SignInController::class, 'loadControlPanelSignIn']);
-Route::post('authenticate/control/panel/sign/in', [SignInController::class, 'authenticateControlPanelSignIn']);
-
-////////////////////////////////////////////////////////////ACCOUNT REGISTRATION////////////////////////////////////////////////////////////////////////////////
-Route::get('registration/{id?}', [RegistrationController::class, 'loadRegistration']);
-Route::post('register/personal/account', [RegistrationController::class, 'registerPersonalAccount']);
-Route::post('register/business/account', [RegistrationController::class, 'registerBusinessAccount']);
-
-////////////////////////////////////////////////////////////ACCOUNT VERIFICATION////////////////////////////////////////////////////////////////////////////////
-Route::get('email/verification/{account_id}', [EmailVerificationController::class, 'loadEmailVerification']);
-Route::post('verify/email', [EmailVerificationController::class, 'verifyEmail']);
-
-////////////////////////////////////////////////////////////FORGOTTEN PASSWORD////////////////////////////////////////////////////////////////////////////////
-Route::get('forgotten/password', [SignInController::class, 'loadForgottenPassword']);
-Route::post('send/verification/code', [EmailVerificationController::class, 'sendVerificationCode']);
-
-Route::post('resetting/password', [SignInController::class, 'loadResettingPassword']);
-
-
-////////////////////////////////////////////////////////////POST PRODUCT////////////////////////////////////////////////////////////////////////////////
-Route::get('post/product', [PostProductController::class, 'loadPostingProduct']);
-Route::get('post/product/get/categories/by/category/type/id', [PostProductController::class, 'getCategoriesByCategoryTypeId']);
-Route::get('post/product/get/child/categories/by/category/id', [PostProductController::class, 'getChildCategoriesByCategoryId']);
-Route::post('post/product/upload/file', [PostProductController::class, 'uploadFile']);
-Route::post('post/product/remove/uploaded/file', [PostProductController::class, 'removeUploadedFile']);
-Route::post('post/product', [PostProductController::class, 'postProduct']);
+Route::group([], __DIR__ . '/web/front_panel.php');
+Route::group([], __DIR__ . '/web/account_panel.php');
 
 
 
 
 
-/////////////////////////////////////////////////////Account///////////////////////////////////////////////////////////////
-
-Route::get('get/account/notifications', [\App\Http\Controllers\Account\DashboardController::class, 'getAccountNotifications'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/overview', [\App\Http\Controllers\Account\OverviewController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/settings', [\App\Http\Controllers\Account\SettingsController::class, 'account'])->middleware('redirect.to.dashboard.if.authenticated');
-
-Route::get('account/post/product', [\App\Http\Controllers\Account\PostProductController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/post/product/get/categories/{made_for}', [\App\Http\Controllers\Account\PostProductController::class, 'getCategories']);
-Route::get('account/post/product/get/child/categories/{category_id}', [\App\Http\Controllers\Account\PostProductController::class, 'getChildCategories']);
-Route::post('account/post/product', [\App\Http\Controllers\Account\PostProductController::class, 'postProduct']);
 
 
-Route::post('account/change/from/personal/to/business/account', [\App\Http\Controllers\Account\DashboardController::class, 'changeFromPersonalToBusinessAccount'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::post('account/change/from/retail/to/wholesale/account', [\App\Http\Controllers\Account\DashboardController::class, 'changeFromRetailToWholesaleAccount'])->middleware('redirect.to.dashboard.if.authenticated');
 
 
-Route::get('account/my/posting/{section}', [\App\Http\Controllers\Account\MyPostingController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
 
-Route::get('account/my/payment', [\App\Http\Controllers\Account\MyPaymentController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/my/payment/link/connected/account', [\App\Http\Controllers\Account\MyPaymentController::class, 'linkConnectedAccount'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/my/payment/connected/account/refresh/{connected_account_id}', [\App\Http\Controllers\Account\MyPaymentController::class, 'connectedAccountRefresh'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/my/payment/linked/account/success/{connected_account_id}', [\App\Http\Controllers\Account\MyPaymentController::class, 'linkedAccountSuccess'])->middleware('redirect.to.dashboard.if.authenticated');
 
-Route::get('account/notification', [\App\Http\Controllers\Account\NotificationController::class, 'index'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/notification/get/records', [\App\Http\Controllers\Account\NotificationController::class, 'getRecords'])->middleware('redirect.to.dashboard.if.authenticated');
-Route::get('account/notification/get/record', [\App\Http\Controllers\Account\NotificationController::class, 'getRecord'])->middleware('redirect.to.dashboard.if.authenticated');
+/////////////////////////////////////////////////////Account Panel///////////////////////////////////////////////////////////////
+
+
 
 //Route::get('account/panel/sign/out', [SignInController::class, 'signOut'])->middleware('redirect.to.dashboard.if.authenticated');
 

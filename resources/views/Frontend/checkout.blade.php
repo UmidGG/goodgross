@@ -52,9 +52,9 @@
                         <div class="text-secondary fw-bold p-2 mb-4" style="background-color: #efefef;">Shipping To</div>
                         <div class="card border-0 shadow-sm">
                             <div class="card-body small">
-                                <div id="delivery_addresses_container"></div>
-                                <div id="delivery_address_form_container">
-                                    <form id="delivery_address_form">
+                                <div id="shipping_addresses_container"></div>
+                                <div id="shipping_address_form_container">
+                                    <form id="shipping_address_form">
 
                                         <div class="form-floating mb-4">
                                             <select class="form-select border-0 border-bottom" name="country_id" id="country_id" style="border-color: #b1b1b1 !important; border-radius: 0;">
@@ -138,13 +138,13 @@
 
                                         <div class="row">
                                             <div class="col d-grid">
-                                                <button type="submit" class="mod_button_1" id="delivery_address_form_submit_button" style="border-radius: 0;">
-                                                    <span id="delivery_address_form_submit_button_text">Save</span>
-                                                    <span id="delivery_address_form_submit_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
+                                                <button type="submit" class="mod_button_1" id="shipping_address_form_submit_button" style="border-radius: 0;">
+                                                    <span id="shipping_address_form_submit_button_text">Save</span>
+                                                    <span id="shipping_address_form_submit_button_processing" class="sr-only"><span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span> Processing...</span>
                                                 </button>
                                             </div>
                                             <div class="col d-grid">
-                                                <button type="button" class="mod_button_2" id="delivery_address_form_cancel_button" style="border-radius: 0;">Cancel</button>
+                                                <button type="button" class="mod_button_2" id="shipping_address_form_cancel_button" style="border-radius: 0;">Cancel</button>
                                             </div>
                                         </div>
                                     </form>
@@ -428,14 +428,14 @@
             loadCheckoutItems();
 
             if (isGuest) {
-                loadDeliveryAddressForGuest();
-                loadBillingAddressForGuest();
+                loadGuestShippingAddress();
+                loadGuestBillingAddress();
             } else {
-                loadDeliveryAddressesForAccount();
-                loadBillingAddressForAccount();
+                loadAccountShippingAddresses();
+                loadAccountBillingAddress();
             }
 
-            $('#delivery_address_form_container').hide();
+            $('#shipping_address_form_container').hide();
             $('#billing_address_form_container').hide();
             $('#cards_container').hide();
             $('#card_form_container').hide();
@@ -643,37 +643,37 @@
             });
         });
 
-        function clearDeliveryAddressForm() {
-            $('#delivery_address_form').find('#id').remove();
+        function clearShippingAddressForm() {
+            $('#shipping_address_form').find('#id').remove();
             $('#country_id option').removeAttr('selected');
             $('#state_field_holder').empty();
             $('#phone_field_holder').empty();
-            $('#delivery_address_form').find('.invalid-feedback').remove();
-            $('#delivery_address_form').find('.is-invalid').removeClass('is-invalid');
-            $('#delivery_address_form')[0].reset();
+            $('#shipping_address_form').find('.invalid-feedback').remove();
+            $('#shipping_address_form').find('.is-invalid').removeClass('is-invalid');
+            $('#shipping_address_form')[0].reset();
         }
 
-        function loadDeliveryAddressesForAccount() {
+        function loadAccountShippingAddresses() {
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/get/account/delivery/addresses') }}',
+                url: '{{ url('checkout/get/account/shipping/addresses') }}',
                 success: function (result) {
                     console.log(result);
                     if (result.payload !== null && Object.keys(result.payload).length > 0) {
                         let bottomLinks;
                         let addressLine2;
-                        $('#delivery_addresses_container').empty();
+                        $('#shipping_addresses_container').empty();
                         if (result.payload.length > 1) {
                             let selectedText;
                             let selectedColor;
                             let selectForCheckoutButton;
                             $.each(result.payload, function (key, accountShipping) {
-                                bottomLinks = parseInt(accountShipping.is_selected) === 0 ? '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_delivery_address_for_account" data-id="' + accountShipping.id + '">Delete</a>' : '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a>';
+                                bottomLinks = parseInt(accountShipping.is_selected) === 0 ? '<a href="javascript:void(0)" class="edit_account_shipping_address" data-id="' + accountShipping.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_account_shipping_address" data-id="' + accountShipping.id + '">Delete</a>' : '<a href="javascript:void(0)" class="edit_account_shipping_address" data-id="' + accountShipping.id + '">Edit</a>';
                                 selectedText = parseInt(accountShipping.is_selected) === 1 ? '<div style="position: absolute; left: 0; top: 0; background: #626f68; color: #fff; padding: 5px 50px;">Selected</div>' : '';
                                 selectedColor = parseInt(accountShipping.is_selected) === 1 ? 'ghostwhite' : 'white';
                                 addressLine2 = accountShipping.address_line_2 !== null ? ', ' + accountShipping.address_line_2 : '';
-                                selectForCheckoutButton = parseInt(accountShipping.is_selected) === 0 ? '<button class="btn btn-outline-secondary select_delivery_address_for_account" style="position: absolute; left: 0; top: 0; border-radius: 0; padding: 5px 15px; font-size: 14px; border-color: #c9cfd5 !important;" data-id="' + accountShipping.id + '">Select for Checkout</button>' : '';
-                                $('#delivery_addresses_container').append(`
+                                selectForCheckoutButton = parseInt(accountShipping.is_selected) === 0 ? '<button class="btn btn-outline-secondary select_account_shipping_address" style="position: absolute; left: 0; top: 0; border-radius: 0; padding: 5px 15px; font-size: 14px; border-color: #c9cfd5 !important;" data-id="' + accountShipping.id + '">Select for Checkout</button>' : '';
+                                $('#shipping_addresses_container').append(`
                                 <div class="card mb-3" style="background-color: ` + selectedColor + `; border-radius: 0;">
                                     <div class="card-body">
                                         ` + selectedText + selectForCheckoutButton + `
@@ -688,14 +688,14 @@
                                 </div>
                             `);
                             });
-                            $('#delivery_addresses_container').append(`
-                                <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_delivery_address_for_account" style="border-radius: 0;">Add New Address</button></div></div>
+                            $('#shipping_addresses_container').append(`
+                                <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_account_shipping_address" style="border-radius: 0;">Add New Address</button></div></div>
                             `);
                         } else {
                             $.each(result.payload, function (key, accountShipping) {
-                                bottomLinks = '<a href="javascript:void(0)" class="edit_delivery_address_for_account" data-id="' + accountShipping.id + '">Edit</a>';
+                                bottomLinks = '<a href="javascript:void(0)" class="edit_account_shipping_address" data-id="' + accountShipping.id + '">Edit</a>';
                                 addressLine2 = accountShipping.address_line_2 !== null ? ', ' + accountShipping.address_line_2 : '';
-                                $('#delivery_addresses_container').append(`
+                                $('#shipping_addresses_container').append(`
                                 <div style="background-color: white;">
                                     <div>` + accountShipping.first_name + ' ' + accountShipping.last_name + `</div>
                                     <div>` + accountShipping.address_line_1 + addressLine2 + `</div>
@@ -707,8 +707,8 @@
                                 </div>
                             `);
                             });
-                            $('#delivery_addresses_container').append(`
-                                <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_delivery_address_for_account" style="border-radius: 0;">Add New Address</button></div></div>
+                            $('#shipping_addresses_container').append(`
+                                <div class="row mt-3"><div class="col d-grid"><button type="button" class="mod_button_1" id="add_account_shipping_address" style="border-radius: 0;">Add New Address</button></div></div>
                             `);
                         }
                     } else {
@@ -721,17 +721,17 @@
             });
         }
 
-        $(document).on('click', '.select_delivery_address_for_account', function () {
+        $(document).on('click', '.select_account_shipping_address', function () {
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/select/account/delivery/address') }}',
+                url: '{{ url('checkout/select/account/shipping/address') }}',
                 data: {
                     id: $(this).data('id')
                 },
                 cache: false,
                 success: function (result) {
                     console.log(result);
-                    loadDeliveryAddressesForAccount();
+                    loadAccountShippingAddresses();
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -739,17 +739,17 @@
             });
         });
 
-        $(document).on('click', '.delete_delivery_address_for_account', function () {
+        $(document).on('click', '.delete_account_shipping_address', function () {
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/delete/account/delivery/address') }}',
+                url: '{{ url('checkout/delete/account/shipping/address') }}',
                 data: {
                     id: $(this).data('id')
                 },
                 cache: false,
                 success: function (result) {
                     console.log(result);
-                    loadDeliveryAddressesForAccount();
+                    loadAccountShippingAddresses();
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -757,9 +757,9 @@
             });
         });
 
-        $(document).on('click', '#add_delivery_address_for_account', function () {
-            $('#delivery_addresses_container').empty();
-            clearDeliveryAddressForm();
+        $(document).on('click', '#add_account_shipping_address', function () {
+            $('#shipping_addresses_container').empty();
+            clearShippingAddressForm();
             let userCountry = '{{ $userCountry }}';
             let userState = '{{ $userState }}';
             if (userCountry) {
@@ -817,8 +817,8 @@
                             } else {
                                 $('#phone_field_holder').append('<div class="form-floating"><input type="text" class="form-control border-0 border-bottom" name="phone" id="phone" placeholder="Phone" style="border-color: #b1b1b1 !important; border-radius: 0;"><label for="phone">Phone</label></div>');
                             }
-                            $('#delivery_address_form_submit_button_text').text('Save');
-                            $('#delivery_address_form_container').show(1000);
+                            $('#shipping_address_form_submit_button_text').text('Save');
+                            $('#shipping_address_form_container').show(1000);
                         },
                         error: function (xhr) {
                             console.log(xhr);
@@ -833,19 +833,19 @@
 
         });
 
-        $(document).on('click', '.edit_delivery_address_for_account', function () {
+        $(document).on('click', '.edit_account_shipping_address', function () {
 
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/get/account/delivery/address/by/id') }}',
+                url: '{{ url('checkout/get/account/shipping/address/by/id') }}',
                 data: {
                     id: $(this).data('id')
                 },
                 success: function (result) {
                     console.log(result);
-                    clearDeliveryAddressForm();
-                    $('#delivery_addresses_container').empty();
-                    $('#delivery_address_form').append('<input type="hidden" name="id" id="id" value="' + result.payload.id + '">');
+                    clearShippingAddressForm();
+                    $('#shipping_addresses_container').empty();
+                    $('#shipping_address_form').append('<input type="hidden" name="id" id="id" value="' + result.payload.id + '">');
                     $('#first_name').val(result.payload.first_name);
                     $('#last_name').val(result.payload.last_name);
                     $('#country_id').val(result.payload.country_id);
@@ -892,8 +892,8 @@
                                 </div>
                             `);
                             $('#email').val(result.payload.email);
-                            $('#delivery_address_form_submit_button_text').text('Update');
-                            $('#delivery_address_form_container').show(1000);
+                            $('#shipping_address_form_submit_button_text').text('Update');
+                            $('#shipping_address_form_container').show(1000);
                         },
                         error: function (xhr) {
                             console.log(xhr);
@@ -908,23 +908,23 @@
         });
 
 
-        function loadDeliveryAddressForGuest() {
+        function loadGuestShippingAddress() {
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/get/guest/delivery/address') }}',
+                url: '{{ url('checkout/get/guest/shipping/address') }}',
                 success: function (result) {
                     console.log(result);
                     if (result.payload !== null && Object.keys(result.payload).length > 0) {
                         let addressLine2 = result.payload.address_line_2 !== null ? ', ' + result.payload.address_line_2 : '';
-                        $('#delivery_addresses_container').empty();
-                        $('#delivery_addresses_container').append(`
+                        $('#shipping_addresses_container').empty();
+                        $('#shipping_addresses_container').append(`
                             <div>` + result.payload.first_name + ' ' + result.payload.last_name + `</div>
                             <div>` + result.payload.address_line_1 + addressLine2 + `</div>
                             <div>` + result.payload.city + ' ' + result.payload.postal_code + `</div>
                             <div>` + result.payload.state + `</div>
                             <div>` + result.payload.country.name + `</div>
                             <div><img src="` + result.payload.country.flag + `" style="height: 20px;"> <span>` + result.payload.country.dialling_code + `</span> ` + result.payload.phone + `</div>
-                            <div class="mt-3"><a href="javascript:void(0)" id="edit_delivery_address_for_guest">Edit</a></div>
+                            <div class="mt-3"><a href="javascript:void(0)" id="edit_guest_shipping_address">Edit</a></div>
                         `);
                     } else {
 
@@ -937,17 +937,17 @@
             });
         }
 
-        $(document).on('click', '#edit_delivery_address_for_guest', function () {
+        $(document).on('click', '#edit_guest_shipping_address', function () {
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/get/guest/delivery/address') }}',
+                url: '{{ url('checkout/get/guest/shipping/address') }}',
                 data: {
                     id: $(this).data('id')
                 },
                 success: function (result) {
                     console.log(result);
-                    clearDeliveryAddressForm();
-                    $('#delivery_addresses_container').empty();
+                    clearShippingAddressForm();
+                    $('#shipping_addresses_container').empty();
                     $('#first_name').val(result.payload.first_name);
                     $('#last_name').val(result.payload.last_name);
                     $('#country_id').val(result.payload.country_id);
@@ -994,8 +994,8 @@
                                 </div>
                             `);
                             $('#email').val(result.payload.email);
-                            $('#delivery_address_form_submit_button_text').text('Update');
-                            $('#delivery_address_form_container').show(1000);
+                            $('#shipping_address_form_submit_button_text').text('Update');
+                            $('#shipping_address_form_container').show(1000);
                         },
                         error: function (xhr) {
                             console.log(xhr);
@@ -1012,17 +1012,17 @@
         });
 
 
-        $(document).on('submit', '#delivery_address_form', function (event) {
+        $(document).on('submit', '#shipping_address_form', function (event) {
             event.preventDefault();
-            $('#delivery_address_form').find('.invalid-feedback').remove();
-            $('#delivery_address_form').find('.is-invalid').removeClass('is-invalid');
-            $('#delivery_address_form_submit_button').addClass('disabled');
-            $('#delivery_address_form_submit_button_text').addClass('sr-only');
-            $('#delivery_address_form_submit_button_processing').removeClass('sr-only');
+            $('#shipping_address_form').find('.invalid-feedback').remove();
+            $('#shipping_address_form').find('.is-invalid').removeClass('is-invalid');
+            $('#shipping_address_form_submit_button').addClass('disabled');
+            $('#shipping_address_form_submit_button_text').addClass('sr-only');
+            $('#shipping_address_form_submit_button_processing').removeClass('sr-only');
             let formData = new FormData(this);
             formData.append('_token', '{{ csrf_token() }}');
             let isGuest = '{{ $isGuest }}';
-            let url = isGuest ? '{{ url('checkout/save/guest/delivery/address') }}' : '{{ url('checkout/save/account/delivery/address') }}';
+            let url = isGuest ? '{{ url('checkout/save/guest/shipping/address') }}' : '{{ url('checkout/save/account/shipping/address') }}';
             $.ajax({
                 method: 'post',
                 url: url,
@@ -1033,22 +1033,22 @@
                 global: false,
                 success: function (result) {
                     console.log(result);
-                    $('#delivery_address_form_submit_button').removeClass('disabled');
-                    $('#delivery_address_form_submit_button_text').removeClass('sr-only');
-                    $('#delivery_address_form_submit_button_processing').addClass('sr-only');
-                    clearDeliveryAddressForm();
-                    $('#delivery_address_form_container').hide(1000);
+                    $('#shipping_address_form_submit_button').removeClass('disabled');
+                    $('#shipping_address_form_submit_button_text').removeClass('sr-only');
+                    $('#shipping_address_form_submit_button_processing').addClass('sr-only');
+                    clearShippingAddressForm();
+                    $('#shipping_address_form_container').hide(1000);
                     if (isGuest) {
-                        loadDeliveryAddressForGuest();
+                        loadGuestShippingAddress();
                     } else {
-                        loadDeliveryAddressesForAccount();
+                        loadAccountShippingAddresses();
                     }
                 },
                 error: function (xhr) {
                     console.log(xhr);
-                    $('#delivery_address_form_submit_button').removeClass('disabled');
-                    $('#delivery_address_form_submit_button_text').removeClass('sr-only');
-                    $('#delivery_address_form_submit_button_processing').addClass('sr-only');
+                    $('#shipping_address_form_submit_button').removeClass('disabled');
+                    $('#shipping_address_form_submit_button_text').removeClass('sr-only');
+                    $('#shipping_address_form_submit_button_processing').addClass('sr-only');
                     if (xhr.responseJSON.hasOwnProperty('errors')) {
                         $.each(xhr.responseJSON.errors, function (key, value) {
                             $('#' + key).after('<div class="invalid-feedback"></div>');
@@ -1062,14 +1062,14 @@
             });
         });
 
-        $(document).on('click', '#delivery_address_form_cancel_button', function () {
-            clearDeliveryAddressForm();
-            $('#delivery_address_form_container').hide(1000);
+        $(document).on('click', '#shipping_address_form_cancel_button', function () {
+            clearShippingAddressForm();
+            $('#shipping_address_form_container').hide(1000);
             let isGuest = '{{ $isGuest }}';
             if (isGuest) {
-                loadDeliveryAddressForGuest();
+                loadGuestShippingAddress();
             } else {
-                loadDeliveryAddressesForAccount();
+                loadAccountShippingAddresses();
             }
         });
 
@@ -1152,7 +1152,7 @@
             $('#billing_address_form')[0].reset();
         }
 
-        function loadBillingAddressForAccount() {
+        function loadAccountBillingAddress() {
             $.ajax({
                 method: 'get',
                 url: '{{ url('checkout/get/account/billing/address') }}',
@@ -1168,12 +1168,11 @@
                             <div>` + result.payload.state + `</div>
                             <div>` + result.payload.country.name + `</div>
                             <div><img src="` + result.payload.country.flag + `" style="height: 20px;"> <span>` + result.payload.country.dialling_code + `</span> ` + result.payload.phone + `</div>
-                            <div class="mt-3"><a href="javascript:void(0)" id="edit_billing_address_for_account" data-id="` + result.payload.id + `">Edit</a></div>
+                            <div class="mt-3"><a href="javascript:void(0)" id="edit_account_billing_address" data-id="` + result.payload.id + `">Edit</a></div>
                         `);
                     } else {
 
                     }
-
                 },
                 error: function (xhr) {
                     console.log(xhr)
@@ -1181,7 +1180,7 @@
             });
         }
 
-        function loadBillingAddressForGuest() {
+        function loadGuestBillingAddress() {
             $.ajax({
                 method: 'get',
                 url: '{{ url('checkout/get/guest/billing/address') }}',
@@ -1197,7 +1196,7 @@
                             <div>` + result.payload.state + `</div>
                             <div>` + result.payload.country.name + `</div>
                             <div><img src="` + result.payload.country.flag + `" style="height: 20px;"> <span>` + result.payload.country.dialling_code + `</span> ` + result.payload.phone + `</div>
-                            <div class="mt-3"><a href="javascript:void(0)" id="edit_billing_address_for_guest">Edit</a></div>
+                            <div class="mt-3"><a href="javascript:void(0)" id="edit_guest_billing_address">Edit</a></div>
                         `);
                     } else {
 
@@ -1211,7 +1210,7 @@
         }
 
 
-        $(document).on('click', '#edit_billing_address_for_account', function () {
+        $(document).on('click', '#edit_account_billing_address', function () {
             $.ajax({
                 method: 'get',
                 url: '{{ url('checkout/get/account/billing/address/by/id') }}',
@@ -1287,7 +1286,7 @@
         });
 
 
-        $(document).on('click', '#edit_billing_address_for_guest', function () {
+        $(document).on('click', '#edit_guest_billing_address', function () {
             $.ajax({
                 method: 'get',
                 url: '{{ url('checkout/get/guest/billing/address') }}',
@@ -1370,7 +1369,7 @@
             formData.append('_token', '{{ csrf_token() }}');
 
             let isGuest = '{{ $isGuest }}';
-            let url = isGuest ? '{{ url('checkout/save/billing/address/for/guest') }}' : '{{ url('checkout/save/billing/address/for/account') }}';
+            let url = isGuest ? '{{ url('checkout/save/guest/billing/address') }}' : '{{ url('checkout/save/account/billing/address') }}';
             $.ajax({
                 method: 'post',
                 url: url,
@@ -1387,9 +1386,9 @@
                     $('#billing_address_form_container').hide(1000);
                     clearBillingAddressForm();
                     if (isGuest) {
-                        loadBillingAddressForGuest();
+                        loadGuestBillingAddress();
                     } else {
-                        loadBillingAddressForAccount();
+                        loadAccountBillingAddress();
                     }
                 },
                 error: function (xhr) {
@@ -1416,9 +1415,9 @@
             $('#billing_address_form_container').hide(1000);
             let isGuest = '{{ $isGuest }}';
             if (isGuest) {
-                loadBillingAddressForGuest();
+                loadGuestBillingAddress();
             } else {
-                loadBillingAddressForAccount();
+                loadAccountBillingAddress();
             }
         });
 
@@ -1433,18 +1432,17 @@
         }
 
 
-        $(document).on('click', '.delete_card_from_account', function () {
+        $(document).on('click', '.delete_account_card', function () {
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/delete/card/from/account') }}',
+                url: '{{ url('checkout/delete/account/card') }}',
                 data: {
                     id: $(this).data('id')
                 },
                 cache: false,
                 success: function (result) {
                     console.log(result);
-                    loadCardsForAccount();
-
+                    loadAccountCards();
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -1452,18 +1450,17 @@
             });
         });
 
-        $(document).on('click', '.select_card_for_account', function () {
+        $(document).on('click', '.select_account_card', function () {
             $.ajax({
                 method: 'get',
-                url: '{{ url('checkout/select/card/for/account') }}',
+                url: '{{ url('checkout/select/account/card') }}',
                 data: {
                     id: $(this).data('id')
                 },
                 cache: false,
                 success: function (result) {
                     console.log(result);
-                    loadCardsForAccount();
-
+                    loadAccountCards();
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -1471,7 +1468,7 @@
             });
         });
 
-        $(document).on('click', '#add_card_for_account', function () {
+        $(document).on('click', '#add_account_card', function () {
             clearCardForm();
             $('#cards_container').empty().hide();
             $('#payment_option_message').removeClass('text-success').addClass('text-danger').text('Enter Your Card Details');
@@ -1480,7 +1477,7 @@
             $('#card_form_container').show(1000);
         });
 
-        $(document).on('click', '.edit_card_for_account', function () {
+        $(document).on('click', '.edit_account_card', function () {
             let id = $(this).data('id');
             $.ajax({
                 method: 'get',
@@ -1549,8 +1546,6 @@
                                 </div>
                             </div>
 
-
-
                             <div class="row mt-4">
                                 <div class="col-3 pe-0"><div class="input-group-text small border-0 border-bottom text-wrap" style="color: #615f75; border-radius: 0; height: 100%; border-color: #b1b1b1 !important;">Expiry Date</div></div>
                                 <div class="col-9 ps-0">
@@ -1577,8 +1572,6 @@
                                 </div>
                             </div>
 
-
-
                             <div class="row mt-4">
                                 <div class="col d-grid">
                                     <button type="submit" class="mod_button_1" id="card_form_for_edit_submit_button" style="border-radius: 0;">
@@ -1594,7 +1587,7 @@
 
                         </form>
                     `);
-                    $('#add_card_for_account').parent().remove();
+                    $('#add_account_card').parent().remove();
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -1615,7 +1608,7 @@
             formData.append('_token', '{{ csrf_token() }}');
 
             let isGuest = '{{ $isGuest }}';
-            let url = isGuest ? '{{ url('checkout/save/card/for/guest') }}' : '{{ url('checkout/save/card/for/account') }}';
+            let url = isGuest ? '{{ url('checkout/save/guest/card') }}' : '{{ url('checkout/save/account/card') }}';
             $.ajax({
                 method: 'post',
                 url: url,
@@ -1631,9 +1624,9 @@
                     $('#card_form_for_edit_submit_button_processing').addClass('sr-only');
                     if (result.success === true) {
                         if (isGuest) {
-                            loadCardForGuest();
+                            loadGuestCard();
                         } else {
-                            loadCardsForAccount();
+                            loadAccountCards();
                         }
                     } else {
                         $('#card_form_for_edit').prepend('<div class="text-danger small invalid-feedback d-block mb-4">' + result.message + '</div>');
@@ -1680,13 +1673,13 @@
         $(document).on('click', '#card_form_for_edit_cancel_button', function () {
             let isGuest = '{{ $isGuest }}';
             if (isGuest) {
-                loadCardForGuest();
+                loadGuestCard();
             } else {
-                loadCardsForAccount();
+                loadAccountCards();
             }
         });
 
-        function loadCardsForAccount() {
+        function loadAccountCards() {
             $('#cards_container').hide();
             $('#card_form_container').hide();
             $.ajax({
@@ -1709,10 +1702,10 @@
                             $.each(result.payload, function (key, card) {
                                 cardBrandImagePath = card.card_brand === 'Visa' ? '{{ asset('storage/img/application/visa-card.png') }}' : (card.card_brand === 'American Express' ? '{{ asset('storage/img/application/american-express-card.png') }}' : (card.card_brand === 'MasterCard' ? '{{ asset('storage/img/application/master-card.png') }}' : (card.card_brand === 'Discover' ? '{{ asset('storage/img/application/discover-card.png') }}' : '')));
                                 cardNumberLast4Digits = card.card_number.substr(-4);
-                                bottomLinks = '<a href="javascript:void(0)" class="edit_card_for_account" data-id="' + card.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_card_from_account" data-id="' + card.id + '">Delete</a>';
+                                bottomLinks = '<a href="javascript:void(0)" class="edit_account_card" data-id="' + card.id + '">Edit</a> | <a href="javascript:void(0)" class="delete_account_card" data-id="' + card.id + '">Delete</a>';
                                 selectedCardColor = parseInt(card.is_selected) === 1 ? 'ghostwhite' : 'white';
                                 selectedText = parseInt(card.is_selected) === 1 ? '<div style="position: absolute; left: 0; top: 0; background: #626f68; color: #fff; padding: 5px 50px;">Selected</div>' : '';
-                                selectCardForCheckoutButton = parseInt(card.is_selected) === 0 ? '<button class="btn btn-outline-secondary select_card_for_account" data-id="' + card.id + '" style="position: absolute; left: 0; top: 0; border-radius: 0; padding: 5px 15px; font-size: 14px; border-color: #c9cfd5 !important;">Select for Checkout</button>' : '';
+                                selectCardForCheckoutButton = parseInt(card.is_selected) === 0 ? '<button class="btn btn-outline-secondary select_account_card" data-id="' + card.id + '" style="position: absolute; left: 0; top: 0; border-radius: 0; padding: 5px 15px; font-size: 14px; border-color: #c9cfd5 !important;">Select for Checkout</button>' : '';
                                 if (parseInt(card.is_selected) === 1) {
                                     selectedCardLast4Digits = card.card_number.substr(-4);
                                 }
@@ -1748,7 +1741,7 @@
                                                         <div>` + card.card_brand + ` ending in ` + cardNumberLast4Digits + `</div>
                                                         <div>Expires on ` + card.expiry_month + '/' + card.expiry_year  + `</div>
                                                         <div class="mt-3">
-                                                            <a href="javascript:void(0)" class="edit_card_for_account" data-id="` + card.id + `">Edit</a> | <a href="javascript:void(0)" class="delete_card_from_account" data-id="` + card.id + `">Delete</a>
+                                                            <a href="javascript:void(0)" class="edit_account_card" data-id="` + card.id + `">Edit</a> | <a href="javascript:void(0)" class="delete_account_card" data-id="` + card.id + `">Delete</a>
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
@@ -1762,7 +1755,7 @@
                             });
                         }
                         if (result.payload.length < 3) {
-                            $('#cards_container').append('<div class="mt-4 ps-4 d-grid"><button type="button" class="mod_button_1" id="add_card_for_account" style="border-radius: 0;">Add New Card</button></div>');
+                            $('#cards_container').append('<div class="mt-4 ps-4 d-grid"><button type="button" class="mod_button_1" id="add_account_card" style="border-radius: 0;">Add New Card</button></div>');
                         }
 
                         $('#cards_container').show(1000);
@@ -1783,7 +1776,7 @@
             });
         }
 
-        function loadCardForGuest() {
+        function loadGuestCard() {
             $('#cards_container').hide();
             $('#card_form_container').hide();
             $.ajax({
@@ -1793,12 +1786,6 @@
                 success: function (result) {
                     console.log(result);
                     if (result.payload !== null && Object.keys(result.payload).length > 0) {
-
-                    } else {
-
-                    }
-                    if (result.payload !== null) {
-
                         $('#cards_container').empty();
 
                         let cardBrandImagePath = result.payload.card_brand === 'Visa' ? '{{ asset('storage/img/application/visa-card.png') }}' : (result.payload.card_brand === 'American Express' ? '{{ asset('storage/img/application/american-express-card.png') }}' : (result.payload.card_brand === 'MasterCard' ? '{{ asset('storage/img/application/master-card.png') }}' : (result.payload.card_brand === 'Discover' ? '{{ asset('storage/img/application/discover-card.png') }}' : '')));
@@ -1812,7 +1799,7 @@
                                                 <div>` + result.payload.card_brand + ` ending in ` + result.payload.card_number.substr(-4) + `</div>
                                                 <div>Expires on ` + result.payload.expiry_month + '/' + result.payload.expiry_year  + `</div>
                                                 <div class="mt-3">
-                                                    <a href="javascript:void(0)" id="edit_card_for_guest" data-card_number="` + result.payload.card_number + `">Edit</a> | <a href="javascript:void(0)" id="delete_card_for_guest">Delete</a>
+                                                    <a href="javascript:void(0)" id="edit_guest_card" data-card_number="` + result.payload.card_number + `">Edit</a> | <a href="javascript:void(0)" id="delete_guest_card">Delete</a>
                                                 </div>
                                             </div>
                                             <div class="col-4">
@@ -1827,14 +1814,12 @@
                         $('#payment_option_message').removeClass('text-danger').addClass('text-success').text('You will finish checkout with card ending in ' + result.payload.card_number.substr(-4));
                         $('#place_order_button_text').text('Place Order');
                         $('#place_order_button').removeAttr('disabled');
-
                     } else {
                         $('#payment_option_message').removeClass('text-success').addClass('text-danger').text('Enter Your Card Details');
                         $('#place_order_button_text').text('Confirm to Place Order');
                         $('#place_order_button').attr('disabled', true);
                         $('#card_form_container').show(1000);
                     }
-
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -1843,12 +1828,11 @@
         }
 
 
-        $(document).on('click', '#edit_card_for_guest', function () {
+        $(document).on('click', '#edit_guest_card', function () {
             let cardNumber = $(this).data('card_number');
             $.ajax({
                 method: 'get',
                 url: '{{ url('checkout/get/guest/card') }}',
-
                 cache: false,
                 success: function (result) {
                     console.log(result);
@@ -1960,7 +1944,7 @@
         });
 
 
-        $(document).on('click', '#delete_card_for_guest', function () {
+        $(document).on('click', '#delete_guest_card', function () {
             $.ajax({
                 method: 'get',
                 url: '{{ url('checkout/delete/guest/card') }}',
@@ -1968,7 +1952,7 @@
                 success: function (result) {
                     console.log(result);
                     clearCardForm();
-                    loadCardForGuest();
+                    loadGuestCard();
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -1982,9 +1966,9 @@
 
                 let isGuest = '{{ $isGuest }}';
                 if (isGuest) {
-                    loadCardForGuest();
+                    loadGuestCard();
                 } else {
-                    loadCardsForAccount();
+                    loadAccountCards();
                 }
 
             } else if ($(this).val() === 'PayPal') {
@@ -2011,7 +1995,7 @@
             formData.append('_token', '{{ csrf_token() }}');
 
             let isGuest = '{{ $isGuest }}';
-            let url = isGuest ? '{{ url('checkout/save/card/for/guest') }}' : '{{ url('checkout/save/card/for/account') }}';
+            let url = isGuest ? '{{ url('checkout/save/guest/card') }}' : '{{ url('checkout/save/account/card') }}';
             $.ajax({
                 method: 'post',
                 url: url,
@@ -2028,9 +2012,9 @@
 
                     if (result.success === true) {
                         if (isGuest) {
-                            loadCardForGuest();
+                            loadGuestCard();
                         } else {
-                            loadCardsForAccount();
+                            loadAccountCards();
                         }
                         $('#cards_container').before('<div id="card_saved_alert"></div>');
                         $('#card_saved_alert').addClass('alert alert-success alert-dismissible fade show mt-4').attr('role', 'alert').css('margin-left', '25px').append('<div>The card ending in ' + result.payload.card_number.substr(-4) + ' has been saved.</div>').append('<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>');
@@ -2040,9 +2024,6 @@
                     } else {
                         $('#card_form').prepend('<div class="text-danger small invalid-feedback d-block mb-4">' + result.message + '</div>');
                     }
-
-
-
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -2106,29 +2087,6 @@
             $('#place_order_button_text').text('Confirm to Place Order');
             $('#place_order_button').attr('disabled', true);
         });
-
-
-
-
-        $(document).on('change', '#create_an_account', function () {
-            if ($(this).is(':checked') === true) {
-                $('#first_name_for_account').removeAttr('disabled');
-                $('#last_name_for_account').removeAttr('disabled');
-                $('#email_for_account').removeAttr('disabled');
-                $('#password_for_account').removeAttr('disabled');
-                $('#create_an_account').parent().css('padding-top', '0');
-                $('#account_information_details').show(1000);
-            } else {
-                $('#first_name_for_account').attr('disabled', true);
-                $('#last_name_for_account').attr('disabled', true);
-                $('#email_for_account').attr('disabled', true);
-                $('#password_for_account').attr('disabled', true);
-                $('#create_an_account').parent().css('padding-top', '75px');
-                $('#account_information_details').hide(1000);
-            }
-            return true;
-        });
-
 
         $(document).on('click', '#place_order_button', function () {
             let formData = new FormData();

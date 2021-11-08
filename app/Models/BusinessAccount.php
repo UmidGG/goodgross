@@ -15,4 +15,9 @@ class BusinessAccount extends Model
     public function account() {
         return $this->belongsTo(Account::class);
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\AccountPanel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Account;
@@ -13,7 +13,7 @@ class OverviewController extends Controller
     {
         $title = 'Overview';
         $activeNav = 'Overview';
-        return view('Account.overview', compact('title', 'activeNav'));
+        return view('AccountPanel.overview', compact('title', 'activeNav'));
 
     }
 

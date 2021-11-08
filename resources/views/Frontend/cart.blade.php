@@ -461,7 +461,6 @@
                     console.log(result);
                     $('#cart_counter').text(result.payload);
                     loadCartItems()
-
                 },
                 error: function (xhr) {
                     console.log(xhr)
@@ -474,20 +473,20 @@
             $.ajax({
                 method: 'get',
                 url: '{{ url('check/account/login/status') }}',
-                success: function (loginStatusResult) {
-                    console.log(loginStatusResult);
-                    if (loginStatusResult.account_login_status === true) {
+                success: function (result) {
+                    console.log(result);
+                    if (result.payload === true) {
                         $.ajax({
                             method: 'get',
                             url: '{{ url('cart/copy/items/to/checkout') }}',
-                            success: function (checkoutResult) {
-                                console.log(checkoutResult);
+                            success: function (result) {
+                                console.log(result);
                                 $.ajax({
                                     method: 'get',
-                                    url: '{{ url('is/shipping/address/available') }}',
-                                    success: function (shippingAddressResult) {
-                                        console.log(shippingAddressResult);
-                                        if (shippingAddressResult.payload.length > 0) {
+                                    url: '{{ url('is/account/shipping/address/available') }}',
+                                    success: function (result) {
+                                        console.log(result);
+                                        if (result.payload.length > 0) {
                                             location = '{{ url('checkout') }}';
                                         } else {
                                             location = '{{ url('delivery/address') }}';
@@ -538,25 +537,25 @@
                 processData: false,
                 cache: false,
                 global: false,
-                success: function (authenticationResult) {
-                    console.log(authenticationResult);
+                success: function (result) {
+                    console.log(result);
                     $('#sign_in_form_submit').removeClass('disabled');
                     $('#sign_in_form_submit_text').removeClass('sr-only');
                     $('#sign_in_form_submit_processing').addClass('sr-only');
-                    if (authenticationResult.success === true) {
+                    if (result.success === true) {
                         $('#sign_in_modal .btn-close').click();
                         if (whichAction === 'proceed_to_checkout') {
                             $.ajax({
                                 method: 'get',
                                 url: '{{ url('cart/copy/items/to/checkout') }}',
-                                success: function (checkoutResult) {
-                                    console.log(checkoutResult);
+                                success: function (result) {
+                                    console.log(result);
                                     $.ajax({
                                         method: 'get',
-                                        url: '{{ url('is/shipping/address/available') }}',
-                                        success: function (shippingAddressResult) {
-                                            console.log(shippingAddressResult);
-                                            if (shippingAddressResult.payload.length > 0) {
+                                        url: '{{ url('is/account/shipping/address/available') }}',
+                                        success: function (result) {
+                                            console.log(result);
+                                            if (result.payload.length > 0) {
                                                 location = '{{ url('checkout') }}';
                                             } else {
                                                 location = '{{ url('delivery/address') }}';
@@ -575,10 +574,10 @@
 
                         }
                     } else {
-                        if (authenticationResult.message === 'Pending Account') {
-                            location = '{{ url('email/verification') }}/' + authenticationResult.account.id;
+                        if (result.message === 'Pending Account') {
+                            location = '{{ url('email/verification') }}/' + result.account.id;
                         } else {
-                            $('#sign_in_form_message').text(authenticationResult.message).addClass('mb-3');
+                            $('#sign_in_form_message').text(result.message).addClass('mb-3');
                         }
 
                     }
@@ -607,15 +606,15 @@
             $.ajax({
                 method: 'get',
                 url: '{{ url('cart/copy/items/to/checkout') }}',
-                success: function (checkoutResult) {
-                    console.log(checkoutResult);
+                success: function (result) {
+                    console.log(result);
 
                     $.ajax({
                         method: 'get',
-                        url: '{{ url('is/guest/delivery/address/exist') }}',
-                        success: function (deliveryAddressResult) {
-                            console.log(deliveryAddressResult);
-                            if (deliveryAddressResult.payload === null) {
+                        url: '{{ url('is/guest/shipping/address/available') }}',
+                        success: function (result) {
+                            console.log(result);
+                            if (result.payload === null) {
                                 location = '{{ url('delivery/address') }}';
                             } else {
                                 location = '{{ url('checkout') }}';

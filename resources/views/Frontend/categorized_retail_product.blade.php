@@ -655,7 +655,7 @@
                                             console.log(checkoutResult);
                                             $.ajax({
                                                 method: 'get',
-                                                url: '{{ url('is/shipping/address/available') }}',
+                                                url: '{{ url('is/account/shipping/address/available') }}',
                                                 success: function (shippingAddressResult) {
                                                     console.log(shippingAddressResult);
                                                     if (shippingAddressResult.payload.length > 0) {
@@ -844,7 +844,7 @@
                                         console.log(checkoutResult);
                                         $.ajax({
                                             method: 'get',
-                                            url: '{{ url('is/shipping/address/available') }}',
+                                            url: '{{ url('is/account/shipping/address/available') }}',
                                             success: function (shippingAddressResult) {
                                                 console.log(shippingAddressResult);
                                                 if (shippingAddressResult.payload.length > 0) {
@@ -902,7 +902,7 @@
                             console.log(checkoutResult);
                             $.ajax({
                                 method: 'get',
-                                url: '{{ url('is/guest/delivery/address/exist') }}',
+                                url: '{{ url('is/guest/shipping/address/available') }}',
                                 success: function (deliveryAddressResult) {
                                     console.log(deliveryAddressResult);
                                     if (deliveryAddressResult.payload === null) {

@@ -398,16 +398,25 @@
         .form-control {
             color: #636363;
             font-size: 14px;
+            border: 0;
+            border-bottom: 1px solid #b1b1b1 !important;
+            border-radius: 0;
         }
 
         .form-select {
             color: #636363;
             font-size: 14px;
+            border: 0;
+            border-bottom: 1px solid #b1b1b1 !important;
+            border-radius: 0;
         }
 
         .input-group-text {
             color: #636363;
             font-size: 14px;
+            border: 0;
+            border-bottom: 1px solid #b1b1b1 !important;
+            border-radius: 0;
         }
 
         input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
@@ -735,7 +744,7 @@
                             <div class="col-12 col-sm-12 col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-text" id="search_filter" style="background-color: #ffffff; border-right: none; border-radius: 0;">
-                                        <select class="form-select" id="search_filter_options" style="border: none; color: #636363;">
+                                        <select class="form-select" id="search_filter_options" style="border: none !important; color: #636363;">
                                             <optgroup>
                                                 <option value="">All</option>
                                                 <option value="">Retail</option>
@@ -896,7 +905,7 @@
                                 <div class="accordion-item" style="border-color: aliceblue;">
                                     <h2 class="accordion-header" id="left_menu_my_selling_heading">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#left_menu_my_selling_body" aria-expanded="false" aria-controls="left_menu_my_selling_body">
-                                            <a href="#" class="text-decoration-none text-dark small"><i class="fas fa-hand-holding-usd"></i> My Selling</a>
+                                            <a href="#" class="text-decoration-none text-dark small"><i class="fas fa-dollar-sign"></i> My Selling</a>
                                         </button>
                                     </h2>
                                     <div id="left_menu_my_selling_body" class="accordion-collapse collapse" aria-labelledby="left_menu_my_selling_heading" data-bs-parent="#accordionFlushExample">

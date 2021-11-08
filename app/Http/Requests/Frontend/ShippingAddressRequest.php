@@ -5,7 +5,7 @@ namespace App\Http\Requests\Frontend;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class DeliveryAddressRequest extends FormRequest
+class ShippingAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

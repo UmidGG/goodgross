@@ -102,9 +102,7 @@ class RegistrationController extends Controller
     }
 
 
-    public function getStatesByCountryId(Request $request) {
-        return response()->json(State::where('country_id', $request->country_id)->get());
-    }
+
 
     public function registerBusinessAccount(RegistrationBusinessRequest $request)
     {
